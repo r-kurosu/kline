@@ -892,7 +892,7 @@ print('計算時間:{:.1f}s'.format(t2-t1))
 plt.axis("scaled")
 plt.tight_layout()
 # ax.set_aspect('equal')
-plt.savefig('output_data/bf85.png', dpi = 2000)
+plt.savefig('output_data/output.png', dpi = 2000)
 
 
 t3 = time.time()
