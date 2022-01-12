@@ -709,7 +709,7 @@ def detailed_packing(DK,output):
         dp = df.iloc[i,7]
         mindp, maxlp = aisle_check_seg(12-DK, df.iloc[i,4]) # 通路制約
 
-        df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,True])
+        df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,True], inplace=True)
         for car in range(len(df_car)): 
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
