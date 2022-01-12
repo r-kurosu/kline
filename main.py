@@ -97,10 +97,10 @@ def datainput(DK):
         # df_car[i] = pd.read_csv("data/car_"+str(i)+"dk_1.csv")
         # df_car[i] = pd.read_csv("data/car_group/cargroup"+str(i)+"_1.csv")
         df_car[i] = pd.read_csv("data/car_group/seggroup"+str(i)+"_1.csv")
-        df_ship_[i] = pd.read_csv("data/ship_"+str(i)+"dk.csv")
-        df_ramp_[i] = pd.read_csv("data/ramp_"+str(i)+"dk.csv")
-        df_obs_[i] = pd.read_csv("data/obs_"+str(i)+"dk.csv")
-        df_aisle_[i] = pd.read_csv("data/aisle_"+str(i)+"dk.csv")
+        df_ship_[i] = pd.read_csv("data/ship_data/ship_"+str(i)+"dk.csv")
+        df_ramp_[i] = pd.read_csv("data/ramp_data/ramp_"+str(i)+"dk.csv")
+        df_obs_[i] = pd.read_csv("data/obs_data/obs_"+str(i)+"dk.csv")
+        df_aisle_[i] = pd.read_csv("data/aisle_data/aisle_"+str(i)+"dk.csv")
     return df_car[DK], df_ship_[DK], df_ramp_[DK], df_obs_[DK], df_aisle_[DK]
 
 # ここで使用するデッキを選択
