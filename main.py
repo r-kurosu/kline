@@ -708,7 +708,6 @@ def detailed_packing(DK,output):
         lp = df.iloc[i,6]
         dp = df.iloc[i,7]
         mindp, maxlp = aisle_check_seg(12-DK, df.iloc[i,4]) # 通路制約
-
         # df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
         for car in range(len(df_car)): 
             car_w = df_car.iloc[car,1]
