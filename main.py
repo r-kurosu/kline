@@ -815,7 +815,6 @@ def detailed_packing(DK,output):
     if output == 1:
         print(df)
 
-
 # main
 def packing():
     global b
