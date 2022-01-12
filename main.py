@@ -709,7 +709,7 @@ def detailed_packing(DK,output):
         dp = df.iloc[i,7]
         mindp, maxlp = aisle_check_seg(12-DK, df.iloc[i,4]) # 通路制約
 
-        # df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
+        df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,True])
         for car in range(len(df_car)): 
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
@@ -735,15 +735,15 @@ def detailed_packing(DK,output):
                         remain_car[DK] += car_amount - count
                         break
                     # DP,LPによる通路制約を確認
-                    # if car_dp > mindp or car_lp < maxlp:
-                    #     flag = 1
-                    #     for l in range(len(df_aisle)):
-                    #         if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] - car_h < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3]):
-                    #             stock_sheet[new_x] += 1
-                    #             flag = 0
-                    #             break
-                    #     if flag == 0:
-                    #         continue
+                    if car_dp > mindp or car_lp < maxlp:
+                        flag = 1
+                        for l in range(len(df_aisle)):
+                            if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] - car_h < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3]):
+                                stock_sheet[new_x] += 1
+                                flag = 0
+                                break
+                        if flag == 0:
+                            continue
                     if gap >= car_w and (calc_nfp(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
                         for j in range(car_w):
                             stock_sheet[new_x + j] += car_h
@@ -777,15 +777,15 @@ def detailed_packing(DK,output):
                         remain_car[DK] += car_amount - count
                         break
                     # DP,LPによる通路制約を確認
-                    # if car_dp > mindp or car_lp < maxlp:
-                    #     flag = 1
-                    #     for l in range(len(df_aisle)):
-                    #         if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3] + car_h):
-                    #             reverse_sheet[new_x] -= 1
-                    #             flag = 0
-                    #             break
-                    #     if flag == 0:
-                    #         continue
+                    if car_dp > mindp or car_lp < maxlp:
+                        flag = 1
+                        for l in range(len(df_aisle)):
+                            if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3] + car_h):
+                                reverse_sheet[new_x] -= 1
+                                flag = 0
+                                break
+                        if flag == 0:
+                            continue
                     if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
                         for j in range(car_w):
                             reverse_sheet[new_x + j] -= car_h
