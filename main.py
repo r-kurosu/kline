@@ -690,7 +690,6 @@ def detailed_packing(DK,output):
             axes[4-DK].add_patch(obstacle)
 
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
-    # lp_order = [0]*len(df_lp)
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
     print(lp_order)
     # main packing
@@ -699,16 +698,10 @@ def detailed_packing(DK,output):
     for i in range(n):
     # for i in lp_order:
         stock_sheet = [0]*w_sol[i]
-        # reverse_sheet = [0]*w_sol[i]
         reverse_sheet = [h_sol[i]]*w_sol[i]
-        
-        # car_w = df.iloc[i,1]
-        # car_h = df.iloc[i,2]
-        # car_amount = df.iloc[i,3]
         lp = df.iloc[i,6]
         dp = df.iloc[i,7]
-        mindp, maxlp = aisle_check_seg(12-DK, df.iloc[i,4]) # 通路制約
-
+        mindp, maxlp = aisle_check_seg(12-DK, df.iloc[i,4])
         df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,True], inplace=True)
         for car in range(len(df_car)): 
             car_w = df_car.iloc[car,1]
@@ -770,7 +763,6 @@ def detailed_packing(DK,output):
                 df.iloc[i,3] -= count
 
             elif car_seg == 2:
-                # reverse_sheet = [h_sol[i]]*w_sol[i]
                 while car_amount != count:
                     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[i])
                     if new_y - car_h < 0:
