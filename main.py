@@ -691,9 +691,13 @@ def detailed_packing(DK,output):
 
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
-    print(lp_order)
+    # print(lp_order)
     # main packing
     df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
+    seg1 = df_car['SEG'] == 1
+    seg2 = df_car['SEG'] == 2
+    print(seg1.sum())
+    df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,True])
     
     for i in range(n):
     # for i in lp_order:
@@ -702,8 +706,8 @@ def detailed_packing(DK,output):
         lp = df.iloc[i,6]
         dp = df.iloc[i,7]
         mindp, maxlp = aisle_check_seg(12-DK, df.iloc[i,4])
-        df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,True], inplace=True)
-        for car in range(len(df_car)): 
+        
+        for car in range(seg1.sum()):
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
             car_amount = df_car.iloc[car,3]
