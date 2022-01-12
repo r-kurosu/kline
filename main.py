@@ -690,27 +690,24 @@ def detailed_packing(DK,output):
             axes[4-DK].add_patch(obstacle)
 
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
-    # lp_order = [0]*len(df_lp)
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
-    print(lp_order)
+    # print(lp_order)
     # main packing
     df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
+    seg1 = df_car['SEG'] == 1
+    seg2 = df_car['SEG'] == 2
+    df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
     
-    for i in range(n):
-    # for i in lp_order:
+    # for i in range(n):
+    for i in lp_order:
         stock_sheet = [0]*w_sol[i]
-        # reverse_sheet = [0]*w_sol[i]
         reverse_sheet = [h_sol[i]]*w_sol[i]
-        
-        # car_w = df.iloc[i,1]
-        # car_h = df.iloc[i,2]
-        # car_amount = df.iloc[i,3]
         lp = df.iloc[i,6]
         dp = df.iloc[i,7]
-        mindp, maxlp = aisle_check_seg(12-DK, df.iloc[i,4]) # 通路制約
+        mindp, maxlp = aisle_check_seg(12-DK, df.iloc[i,4])
 
-        # df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
-        for car in range(len(df_car)): 
+        df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
+        for car in range(seg1.sum()):
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
             car_amount = df_car.iloc[car,3]
@@ -735,15 +732,15 @@ def detailed_packing(DK,output):
                         remain_car[DK] += car_amount - count
                         break
                     # DP,LPによる通路制約を確認
-                    # if car_dp > mindp or car_lp < maxlp:
-                    #     flag = 1
-                    #     for l in range(len(df_aisle)):
-                    #         if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] - car_h < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3]):
-                    #             stock_sheet[new_x] += 1
-                    #             flag = 0
-                    #             break
-                    #     if flag == 0:
-                    #         continue
+                    if car_dp > mindp or car_lp < maxlp:
+                        flag = 1
+                        for l in range(len(df_aisle)):
+                            if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] - car_h < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3]):
+                                stock_sheet[new_x] += 1
+                                flag = 0
+                                break
+                        if flag == 0:
+                            continue
                     if gap >= car_w and (calc_nfp(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
                         for j in range(car_w):
                             stock_sheet[new_x + j] += car_h
@@ -769,23 +766,41 @@ def detailed_packing(DK,output):
 
                 df.iloc[i,3] -= count
 
-            elif car_seg == 2:
-                # reverse_sheet = [h_sol[i]]*w_sol[i]
+        df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[False,True,False,False])
+        for car in range(seg2.sum()):
+            car_w = df_car.iloc[car,1]
+            car_h = df_car.iloc[car,2]
+            car_amount = df_car.iloc[car,3]
+            car_seg = df_car.iloc[car,4]
+            car_lp = df_car.iloc[car,6]
+            car_dp = df_car.iloc[car,7]
+            count = 0
+            if car_seg != df.at[i,'SEG'] or car_lp != lp or car_dp != dp:
+                continue
+            nfp = []
+            nfp_p = []
+            for j in range(len(df_obs)):
+                nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
+                nfp.append(nfp_obs)
+                nfpp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
+                nfp_p.append(nfpp_obs)
+                
+            if car_seg == 2:
                 while car_amount != count:
                     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[i])
                     if new_y - car_h < 0:
                         remain_car[DK] += car_amount - count
                         break
                     # DP,LPによる通路制約を確認
-                    # if car_dp > mindp or car_lp < maxlp:
-                    #     flag = 1
-                    #     for l in range(len(df_aisle)):
-                    #         if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3] + car_h):
-                    #             reverse_sheet[new_x] -= 1
-                    #             flag = 0
-                    #             break
-                    #     if flag == 0:
-                    #         continue
+                    if car_dp > mindp or car_lp < maxlp:
+                        flag = 1
+                        for l in range(len(df_aisle)):
+                            if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3] + car_h):
+                                reverse_sheet[new_x] -= 1
+                                flag = 0
+                                break
+                        if flag == 0:
+                            continue
                     if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
                         for j in range(car_w):
                             reverse_sheet[new_x + j] -= car_h
@@ -819,17 +834,13 @@ def detailed_packing(DK,output):
     if output == 1:
         print(df)
 
-
 # main
 def packing():
     global b
     for DK in range(5):
         bestvalue = 1000
-        start_time = time.perf_counter()
         bestsol = 1
         for b in range(5,6):
-        # while True:
-            # best = random.uniform(1, 2)
             best = b/10 + 1
             group_packing(DK,best,0)
             if model.Status != gp.GRB.OPTIMAL or model2.Status != gp.GRB.OPTIMAL:
@@ -838,8 +849,6 @@ def packing():
             if bestvalue >= remain_car[DK]:
                 bestvalue = remain_car[DK]
                 bestsol = best
-            # if time.time() - start_time >= 300:
-            #     break
         group_packing(DK,bestsol,1)
         detailed_packing(DK,1)
         make_arrow(DK)
