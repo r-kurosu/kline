@@ -397,6 +397,21 @@ def aisle_check_seg(DK, seg):
     return mindp, maxlp
 
 
+def add_hold_size(DK):
+    global seg1_size, seg2_size
+    df_hold = pd.read_csv('data/hold_data/hold.csv')
+    if DK == 12:
+        seg1_size = 206+246
+        seg2_size = 206+180
+    elif DK == 11:
+        seg1_size = 216+236
+        seg2_size = 192+180
+        
+    sepalation_line = int(1900 * seg1_size / (seg1_size+seg2_size))
+    return sepalation_line
+
+add_hold_size(12)
+
 # output --
 fig = plt.figure()
 axes = []
