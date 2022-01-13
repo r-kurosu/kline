@@ -416,7 +416,7 @@ def add_hold_size(DK):
         seg1_size = 200+215
         seg2_size = 206+184
         
-    sepalation_line = int(1900 * seg1_size / (seg1_size+seg2_size))
+    sepalation_line = int(2000 * seg1_size / (seg1_size+seg2_size))
     return sepalation_line
 
 # output --
