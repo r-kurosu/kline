@@ -448,8 +448,8 @@ def group_packing(DK,b,output):
             print('siguma+ : {}'.format(siguma))
             print('siguma- : {}'.format(siguma_))
         width = ship_w
-        height = 950
-        depth = 950
+        height = 1000
+        depth = 1000
         area = [df.iloc[i,1]*df.iloc[i,2]*df.iloc[i,3] for i in range(n)]
 
         x_sol = [0]*n
