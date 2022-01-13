@@ -523,10 +523,7 @@ def group_packing(DK,b,output):
                 c1[i] = model.addConstr(x[i] <= width - w[i])
                 c2[i] = model.addConstr(y[i] <= height - h[i])
                 c3[i] = model.addConstr(w[i]*h[i] >= area[i])
-                if df.at[i,'AMOUNT'] >= 5:
-                    c5[i] = model.addConstr(w[i]*h[i] <= a*area[i])
-                else:
-                    c5[i] = model.addConstr(w[i]*h[i] <= 2*area[i])
+                c5[i] = model.addConstr(w[i]*h[i] <= a*area[i])
                 for j in range(n):
                     if df.at[j,'SEG'] != segment:
                         continue
@@ -541,11 +538,11 @@ def group_packing(DK,b,output):
             # 実行
             model.params.NonConvex = 2
             model.Params.OutputFlag = 0
-            # model.Params.MIPFocus = 2
+            model.Params.MIPFocus = 3
             model.optimize()
             # output
             if model.Status == gp.GRB.OPTIMAL:
-                print(a.X)
+                # print(a.X)
                 for i in range(n):
                     if df.at[i,'SEG'] != segment:
                         continue
@@ -598,10 +595,7 @@ def group_packing(DK,b,output):
                 c3[i] = model2.addConstr(y[i] <= ship_h - h[i])
                 c4[i] = model2.addConstr(w[i]*h[i] >= area[i])
                 # -original constraint- #
-                if df.at[i,'AMOUNT'] >= 5:
-                    c5[i] = model2.addConstr(w[i]*h[i] <= a*area[i])
-                else:
-                    c5[i] = model2.addConstr(w[i]*h[i] <= 2*area[i])
+                c5[i] = model2.addConstr(w[i]*h[i] <= a*area[i])
                 
                 temp_list = [j for j in range(len(df)) if df.at[j,'SEG'] == 2]
                 if siguma.index(i) <= min(temp_list) or siguma_.index(i) <= min(temp_list):
@@ -622,7 +616,7 @@ def group_packing(DK,b,output):
             # # 実行
             model2.params.NonConvex = 2
             model2.Params.OutputFlag = 0
-            # model2.Params.MIPFocus = 2
+            model2.Params.MIPFocus = 3
             model2.optimize()
             # output
             if model2.Status == gp.GRB.OPTIMAL:
