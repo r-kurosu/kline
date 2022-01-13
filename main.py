@@ -443,245 +443,201 @@ remain_car = [0]*5
 
 # first packing --
 def group_packing(DK,b,output):
-        global x_sol, y_sol, w_sol, h_sol
-        global model, model2
-        df, df_ship, df_ramp, df_obs, df_aisle= datainput(12-DK)
-        obs = []
-        sepalation_line = add_hold_size(12-DK)
-        print(sepalation_line)
-        
-        # ランプ情報
-        enter_line = df_ramp.iloc[0,1]
-        if output == 1:
-            for i in range(len(df_ramp)):
-                ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
-                axes[4-DK].add_patch(ramp)
+    global x_sol, y_sol, w_sol, h_sol
+    global model, model2
+    df, df_ship, df_ramp, df_obs, df_aisle= datainput(12-DK)
+    obs = []
+    sepalation_line = add_hold_size(12-DK)
+    print(sepalation_line)
+    
+    # ランプ情報
+    enter_line = df_ramp.iloc[0,1]
+    if output == 1:
+        for i in range(len(df_ramp)):
+            ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
+            axes[4-DK].add_patch(ramp)
 
-        n = len(df)
-        df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
-        df_dp = df.sort_values(by=['SEG','DP','LP'], ascending = [True, False, True])
-        x = [0]*n
-        y = [0]*n
-        w = [0]*n
-        h = [0]*n
-        siguma = [0]*n
-        siguma_ = [0]*n
-        for i in range(n):
-            siguma[i] = df_lp.iloc[i,0]
-            siguma_[i] = df_dp.iloc[i,0]
-        if output == 1:
-            print('siguma+ : {}'.format(siguma))
-            print('siguma- : {}'.format(siguma_))
-        width = ship_w
-        height = sepalation_line
-        depth = sepalation_line
-        area = [df.iloc[i,1]*df.iloc[i,2]*df.iloc[i,3] for i in range(n)]
+    n = len(df)
+    df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
+    df_dp = df.sort_values(by=['SEG','DP','LP'], ascending = [True, False, True])
+    x = [0]*n
+    y = [0]*n
+    w = [0]*n
+    h = [0]*n
+    siguma = [0]*n
+    siguma_ = [0]*n
+    for i in range(n):
+        siguma[i] = df_lp.iloc[i,0]
+        siguma_[i] = df_dp.iloc[i,0]
+    if output == 1:
+        print('siguma+ : {}'.format(siguma))
+        print('siguma- : {}'.format(siguma_))
+    width = ship_w
+    height = sepalation_line
+    depth = sepalation_line
+    area = [df.iloc[i,1]*df.iloc[i,2]*df.iloc[i,3] for i in range(n)]
+    
+    df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
+    max_height = [0]*n
+    max_width = [0]*n
+    for i in range(n):
+        seg_i = df.at[i,'SEG']
+        lp_i = df.at[i,'LP']
+        dp_i = df.at[i,'DP']
+        max_height[i] = df_car[(df_car['SEG'] == seg_i) & (df_car['LP'] == lp_i) & (df_car['DP'] == dp_i)].loc[:,'HEIGHT'].max()
+        max_width[i] = df_car[(df_car['SEG'] == seg_i) & (df_car['LP'] == lp_i) & (df_car['DP'] == dp_i)].loc[:,'WIDTH'].max()
+    
+    x_sol = [0]*n
+    y_sol = [0]*n
+    w_sol = [0]*n
+    h_sol = [0]*n
+    # modeling
+    for segment in range(1,3):
+        if segment == 1:
+            model = gp.Model(name = "Gurobisample1")
+            # 変数定義
+            x = [0]*n
+            y = [0]*n
+            w = [0]*n
+            h = [0]*n
+            a = model.addVar(lb=1, vtype=gp.GRB.CONTINUOUS)
+            for i in range(n):
+                x[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
+                y[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
+                w[i] = model.addVar(lb = max_width[i] + 4, vtype=gp.GRB.CONTINUOUS)
+                h[i] = model.addVar(lb = max_height[i] + 1, vtype=gp.GRB.CONTINUOUS)
+            model.update
+            # 目的関数
+            model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1) - a, sense=gp.GRB.MAXIMIZE)
+            # model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1)*10000 - a*10000 - gp.quicksum(w[j]*h[j]-area[j] for j in range(n) if df.iloc[j,4] == 1), sense=gp.GRB.MAXIMIZE)
+            # 制約
+            c1 = [0]*n
+            c2 = [0]*n
+            c3 = [0]*n
+            c4 = [0]*n
+            c5 = [0]*n
+            c = []
+            for i in range(n):
+                if df.at[i,'SEG'] != segment:
+                    continue
+                c1[i] = model.addConstr(x[i] <= width - w[i])
+                c2[i] = model.addConstr(y[i] <= height - h[i])
+                c3[i] = model.addConstr(w[i]*h[i] >= area[i])
+                c5[i] = model.addConstr(w[i]*h[i] <= a*area[i])
+                if df.at[i,'AMOUNT'] <= 10:
+                    c5[i] = model.addConstr(w[i]*h[i] <= 2*area[i])
+                for j in range(n):
+                    if df.at[j,'SEG'] != segment:
+                        continue
+                    if i == j:
+                        continue
+                    elif siguma.index(i) < siguma.index(j) and siguma_.index(i) < siguma_.index(j):
+                        c.append(model.addConstr(y[i] + h[i] <= y[j]))
+                    elif siguma.index(i) < siguma.index(j) and siguma_.index(i) > siguma_.index(j):
+                        c.append(model.addConstr(x[i] + w[i] <= x[j]))
+            model.update
 
-        x_sol = [0]*n
-        y_sol = [0]*n
-        w_sol = [0]*n
-        h_sol = [0]*n
-        # modeling
-        for segment in range(1,3):
-            if segment == 1:
-                model = gp.Model(name = "Gurobisample1")
-                # 変数定義
-                x = [0]*n
-                y = [0]*n
-                w = [0]*n
-                h = [0]*n
-                b1 = [[0]*n]*len(df_ramp)
-                b2 = [[0]*n]*len(df_ramp)
-                b3 = [[0]*n]*len(df_ramp)
-                b4 = [[0]*n]*len(df_ramp)
-                a = model.addVar(lb=1, vtype=gp.GRB.CONTINUOUS)
-                for i in range(n):
-                    x[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                    y[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                    w[i] = model.addVar(lb = df.iloc[i,1] + 4, vtype=gp.GRB.CONTINUOUS)
-                    h[i] = model.addVar(lb = df.iloc[i,2] + 1, vtype=gp.GRB.CONTINUOUS)
-                    # height = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                    for k in range(len(df_ramp)):
-                        b1[k][i] = model.addVar(vtype=gp.GRB.BINARY)
-                        b2[k][i] = model.addVar(vtype=gp.GRB.BINARY)
-                        b3[k][i] = model.addVar(vtype=gp.GRB.BINARY)
-                        b4[k][i] = model.addVar(vtype=gp.GRB.BINARY)
-                
-                model.update
-                # 目的関数
-                # model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1), sense=gp.GRB.MAXIMIZE)
-                model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1) - a, sense=gp.GRB.MAXIMIZE)
-                
-                # 制約
-                c1 = [0]*n
-                c2 = [0]*n
-                c3 = [0]*n
-                c4 = [0]*n
-                c5 = [0]*n
-                c = []
-                cc1 = [0]*len(df_ramp)
-                cc2 = [0]*len(df_ramp)
-                cc3 = [0]*len(df_ramp)
-                cc4 = [0]*len(df_ramp)
-                ccc = [[0]*n]*len(df_ramp)
+            # 実行
+            model.params.NonConvex = 2
+            model.Params.OutputFlag = 0
+            model.Params.MIPFocus = 3
+            model.optimize()
+            # output
+            if model.Status == gp.GRB.OPTIMAL:
+                # print(a.X)
                 for i in range(n):
                     if df.at[i,'SEG'] != segment:
                         continue
-                    c1[i] = model.addConstr(x[i] <= width - w[i])
-                    c2[i] = model.addConstr(y[i] <= height - h[i])
-                    c3[i] = model.addConstr(w[i]*h[i] >= area[i])
-                    if df.at[i,'AMOUNT'] >= 5:
-                        c5[i] = model.addConstr(w[i]*h[i] <= a*area[i])
-                    else:
-                        c5[i] = model.addConstr(w[i]*h[i] <= 2*area[i])
-                    for j in range(n):
-                        if df.at[j,'SEG'] != segment:
-                            continue
-                        if i == j:
-                            continue
-                        elif siguma.index(i) < siguma.index(j) and siguma_.index(i) < siguma_.index(j):
-                            c.append(model.addConstr(y[i] + h[i] <= y[j]))
-                        elif siguma.index(i) < siguma.index(j) and siguma_.index(i) > siguma_.index(j):
-                            c.append(model.addConstr(x[i] + w[i] <= x[j]))
-                    # ランプと重ならない制約を追加したい．．．
-                    # for k in range(len(df_ramp)):
-                    #     cc1[k] = model.addConstr((b1[k][i] == 1) >> (x[i] + w[i] <= df_ramp.iloc[k,0]))
-                    #     cc2[k] = model.addConstr((b2[k][i] == 1) >> (x[i] >= df_ramp.iloc[k,0] + df_ramp.iloc[k,2]))
-                    #     cc3[k] = model.addConstr((b3[k][i] == 1) >> (y[i] + h[i] <= df_ramp.iloc[k,1]))
-                    #     cc4[k] = model.addConstr((b4[k][i] == 1) >> (y[i] >= df_ramp.iloc[k,1] + df_ramp.iloc[k,3]))
-                    #     ccc[k][i] = model.addConstr(b1[k][i] + b2[k][i] + b3[k][i] + b4[k][i] >= 1)
-                model.update
+                    x_sol[i] = round(x[i].X)
+                    y_sol[i] = round(y[i].X)
+                    w_sol[i] = round(w[i].X)
+                    h_sol[i] = round(h[i].X)
+                    if output == 1:
+                        cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
+                        axes[4-DK].add_patch(cars)
+                        axes[4-DK].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
+            else:
+                remain_car[DK] = 10000
+                print('最適解が見つかりませんでした')
+                print('model1.status = {}'.format(model.Status))
+                
+        elif segment == 2:
+            model2 = gp.Model(name = "Gurobisample2")
+            # 変数定義
+            x = [0]*n
+            y = [0]*n
+            w = [0]*n
+            h = [0]*n
+            b1 = [[0]*n]*len(df_ramp)
+            b2 = [[0]*n]*len(df_ramp)
+            b3 = [[0]*n]*len(df_ramp)
+            b4 = [[0]*n]*len(df_ramp)
+            a = model2.addVar(lb=1, vtype=gp.GRB.CONTINUOUS)
+            for i in range(n):
+                x[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
+                y[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
+                w[i] = model2.addVar(lb = max_width[i] + 4, vtype=gp.GRB.CONTINUOUS)
+                h[i] = model2.addVar(lb = max_height[i] + 1, vtype=gp.GRB.CONTINUOUS)
+            model2.update
 
-                # 実行
-                # print("-" * 40)
-                # print('{}DK下'.format(12-DK))
-                model.params.NonConvex = 2
-                model.Params.OutputFlag = 0
-                # model.Params.MIPFocus = 2
-                model.optimize()
-                # print("-" * 40)
-                # output
-                if model.Status == gp.GRB.OPTIMAL:
-                    print(a.X)
-                    for i in range(n):
-                        if df.at[i,'SEG'] != segment:
-                            continue
-                        x_sol[i] = round(x[i].X)
-                        y_sol[i] = round(y[i].X)
-                        w_sol[i] = round(w[i].X)
-                        h_sol[i] = round(h[i].X)
-                        if output == 1:
-                            cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
-                            axes[4-DK].add_patch(cars)
-                            axes[4-DK].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
-                else:
-                    remain_car[DK] = 10000
-                    print('最適解が見つかりませんでした')
-                    
-            elif segment == 2:
-                model2 = gp.Model(name = "Gurobisample2")
-                # 変数定義
-                x = [0]*n
-                y = [0]*n
-                w = [0]*n
-                h = [0]*n
-                b1 = [[0]*n]*len(df_ramp)
-                b2 = [[0]*n]*len(df_ramp)
-                b3 = [[0]*n]*len(df_ramp)
-                b4 = [[0]*n]*len(df_ramp)
-                a = model2.addVar(lb=1, vtype=gp.GRB.CONTINUOUS)
-                for i in range(n):
-                    x[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                    y[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                    w[i] = model2.addVar(lb = df.iloc[i,1] + 4, vtype=gp.GRB.CONTINUOUS)
-                    h[i] = model2.addVar(lb = df.iloc[i,2] + 1, vtype=gp.GRB.CONTINUOUS)
-                    # depth = model2.addVar(ub = ship_h, vtype=gp.GRB.CONTINUOUS)
-                    for k in range(len(df_ramp)):
-                        b1[k][i] = model2.addVar(vtype=gp.GRB.BINARY)
-                        b2[k][i] = model2.addVar(vtype=gp.GRB.BINARY)
-                        b3[k][i] = model2.addVar(vtype=gp.GRB.BINARY)
-                        b4[k][i] = model2.addVar(vtype=gp.GRB.BINARY)
-                model2.update
+            # 目的関数
+            model2.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 2) - a, sense=gp.GRB.MAXIMIZE)
 
-                # 目的関数
-                # model2.setObjective(depth, sense=gp.GRB.MAXIMIZE)
-                # model2.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.at[j,'SEG'] == 2), sense=gp.GRB.MAXIMIZE)
-                # model2.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 2), sense=gp.GRB.MAXIMIZE)
-                model2.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 2) - a, sense=gp.GRB.MAXIMIZE)
-
-                # 制約›
-                c1 = [0]*n
-                c2 = [0]*n
-                c3 = [0]*n
-                c4 = [0]*n
-                c5 = [0]*n
-                c = []
-                cc1 = [0]*len(df_ramp)
-                cc2 = [0]*len(df_ramp)
-                cc3 = [0]*len(df_ramp)
-                cc4 = [0]*len(df_ramp)
-                ccc = [[0]*n]*len(df_ramp)
-                for i in range(n):
-                    if df.at[i,'SEG'] != 2:
+            # 制約›
+            c1 = [0]*n
+            c2 = [0]*n
+            c3 = [0]*n
+            c4 = [0]*n
+            c5 = [0]*n
+            c = []
+            for i in range(n):
+                if df.at[i,'SEG'] != 2:
+                    continue
+                c1[i] = model2.addConstr(x[i] <= width - w[i])
+                c2[i] = model2.addConstr(y[i] >= depth)
+                c3[i] = model2.addConstr(y[i] <= ship_h - h[i])
+                c4[i] = model2.addConstr(w[i]*h[i] >= area[i])
+                # -original constraint- #
+                c5[i] = model2.addConstr(w[i]*h[i] <= a*area[i])
+                
+                temp_list = [j for j in range(len(df)) if df.at[j,'SEG'] == 2]
+                if siguma.index(i) <= min(temp_list) or siguma_.index(i) <= min(temp_list):
+                    c4[i] = model2.addConstr(w[i]*h[i] >= b*area[i])
+                    c5[i] = model2.addConstr(w[i]*h[i] <= b*a*area[i])
+                # -original constraint- #
+                for j in range(n):
+                    if df.at[j,'SEG'] != segment:
                         continue
-                    c1[i] = model2.addConstr(x[i] <= width - w[i])
-                    c2[i] = model2.addConstr(y[i] >= depth)
-                    c3[i] = model2.addConstr(y[i] <= ship_h - h[i])
-                    c4[i] = model2.addConstr(w[i]*h[i] >= area[i])
-                    # -original constraint- #
-                    if df.at[i,'AMOUNT'] >= 5:
-                        c5[i] = model2.addConstr(w[i]*h[i] <= a*area[i])
-                    else:
-                        c5[i] = model2.addConstr(w[i]*h[i] <= 2*area[i])
-                    
-                    temp_list = [j for j in range(len(df)) if df.at[j,'SEG'] == 2]
-                    if siguma.index(i) <= min(temp_list) or siguma_.index(i) <= min(temp_list):
-                        c4[i] = model2.addConstr(w[i]*h[i] >= b*area[i])
-                        c5[i] = model2.addConstr(w[i]*h[i] <= b*a*area[i])
-                    # -original constraint- #
-                    for j in range(n):
-                        if df.at[j,'SEG'] != segment:
-                            continue
-                        if i == j:
-                            continue
-                        elif siguma.index(i) < siguma.index(j) and siguma_.index(i) < siguma_.index(j):
-                            c.append(model2.addConstr(y[j] + h[j] <= y[i]))
-                        elif siguma.index(i) < siguma.index(j) and siguma_.index(i) > siguma_.index(j):
-                            c.append(model2.addConstr(x[i] + w[i] <= x[j]))
-                        # ランプと重ならない制約を追加したい．．．
-                    # for k in range(len(df_ramp)):
-                    #     cc1[k] = model2.addConstr((b1[k][i] == 1) >> (x[i] + w[i] <= df_ramp.iloc[k,0]))
-                    #     cc2[k] = model2.addConstr((b2[k][i] == 1) >> (x[i] >= df_ramp.iloc[k,0] + df_ramp.iloc[k,2]))
-                    #     cc3[k] = model2.addConstr((b3[k][i] == 1) >> (y[i] + h[i] <= df_ramp.iloc[k,1]))
-                    #     cc4[k] = model2.addConstr((b4[k][i] == 1) >> (y[i] >= df_ramp.iloc[k,1] + df_ramp.iloc[k,3]))
-                    #     ccc[k][i] = model2.addConstr(b1[k][i] + b2[k][i] + b3[k][i] + b4[k][i] >= 1)
+                    if i == j:
+                        continue
+                    elif siguma.index(i) < siguma.index(j) and siguma_.index(i) < siguma_.index(j):
+                        c.append(model2.addConstr(y[j] + h[j] <= y[i]))
+                    elif siguma.index(i) < siguma.index(j) and siguma_.index(i) > siguma_.index(j):
+                        c.append(model2.addConstr(x[i] + w[i] <= x[j]))
+                    # ランプと重ならない制約を追加したい．．．
 
-
-                # # 実行
-                # print("-" * 40)
-                # print('{}DK上'.format(12-DK))
-                model2.params.NonConvex = 2
-                model2.Params.OutputFlag = 0
-                # model2.Params.MIPFocus = 2
-                # model2.setParam('TimeLimit', 100)
-                model2.optimize()
-                # print("-" * 40)
-                # output
-                if model2.Status == gp.GRB.OPTIMAL:
-                    for i in range(n):
-                        if df.at[i,'SEG'] != segment:
-                            continue
-                        x_sol[i] = round(x[i].X)
-                        y_sol[i] = round(y[i].X)
-                        w_sol[i] = round(w[i].X)
-                        h_sol[i] = round(h[i].X)
-                        if output == 1:
-                            cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
-                            axes[4-DK].add_patch(cars)
-                            axes[4-DK].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
-                else:
-                    print('最適解が見つかりませんでした．')
-                    remain_car[DK] = 10000
+            # # 実行
+            model2.params.NonConvex = 2
+            model2.Params.OutputFlag = 0
+            model2.Params.MIPFocus = 3
+            model2.optimize()
+            # output
+            if model2.Status == gp.GRB.OPTIMAL:
+                for i in range(n):
+                    if df.at[i,'SEG'] != segment:
+                        continue
+                    x_sol[i] = round(x[i].X)
+                    y_sol[i] = round(y[i].X)
+                    w_sol[i] = round(w[i].X)
+                    h_sol[i] = round(h[i].X)
+                    if output == 1:
+                        cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
+                        axes[4-DK].add_patch(cars)
+                        axes[4-DK].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
+            else:
+                print('最適解が見つかりませんでした．')
+                print('model2.status = {}'.format(model2.Status))
+                remain_car[DK] = 10000
 
 
 # second packing -- 
@@ -863,9 +819,10 @@ def detailed_packing(DK,output):
 def packing():
     global b
     for DK in range(5):
+        start = time.time()
         bestvalue = 1000
         bestsol = 1
-        for b in range(5,6):
+        for b in range(4,5):
             best = b/10 + 1
             group_packing(DK,best,0)
             if model.Status != gp.GRB.OPTIMAL or model2.Status != gp.GRB.OPTIMAL:
@@ -879,7 +836,8 @@ def packing():
         make_arrow(DK)
         print('このデッキの余りは{}台です．'.format(remain_car[DK]))
         print(bestsol)
-
+        end = time.time()
+        print(str(12-DK)+'の計算時間:{:.1f}s'.format(end-start))
 packing()
 
 def packing_func(DK):
