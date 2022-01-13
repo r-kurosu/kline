@@ -557,7 +557,7 @@ def group_packing(DK,b,output):
                 # print('{}DK下'.format(12-DK))
                 model.params.NonConvex = 2
                 model.Params.OutputFlag = 0
-                model.Params.MIPFocus = 2
+                # model.Params.MIPFocus = 2
                 model.optimize()
                 # print("-" * 40)
                 # output
@@ -662,7 +662,7 @@ def group_packing(DK,b,output):
                 # print('{}DK上'.format(12-DK))
                 model2.params.NonConvex = 2
                 model2.Params.OutputFlag = 0
-                model2.Params.MIPFocus = 2
+                # model2.Params.MIPFocus = 2
                 # model2.setParam('TimeLimit', 100)
                 model2.optimize()
                 # print("-" * 40)
