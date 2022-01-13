@@ -486,7 +486,6 @@ def group_packing(DK,b,output):
         dp_i = df.at[i,'DP']
         max_height[i] = df_car[(df_car['SEG'] == seg_i) & (df_car['LP'] == lp_i) & (df_car['DP'] == dp_i)].loc[:,'HEIGHT'].max()
         max_width[i] = df_car[(df_car['SEG'] == seg_i) & (df_car['LP'] == lp_i) & (df_car['DP'] == dp_i)].loc[:,'WIDTH'].max()
-    print(max_height)
     
     x_sol = [0]*n
     y_sol = [0]*n
@@ -557,6 +556,7 @@ def group_packing(DK,b,output):
             else:
                 remain_car[DK] = 10000
                 print('最適解が見つかりませんでした')
+                print(model.Status)
                 
         elif segment == 2:
             model2 = gp.Model(name = "Gurobisample2")
@@ -815,6 +815,7 @@ def detailed_packing(DK,output):
 def packing():
     global b
     for DK in range(5):
+        start = time.time()
         bestvalue = 1000
         bestsol = 1
         for b in range(5,6):
@@ -831,7 +832,8 @@ def packing():
         make_arrow(DK)
         print('このデッキの余りは{}台です．'.format(remain_car[DK]))
         print(bestsol)
-
+        end = time.time()
+        print(str(DK)+'の計算時間:{:.1f}s'.format(end-start))
 packing()
 
 def packing_func(DK):
