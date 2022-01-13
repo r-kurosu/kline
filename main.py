@@ -397,6 +397,28 @@ def aisle_check_seg(DK, seg):
     return mindp, maxlp
 
 
+def add_hold_size(DK):
+    global sepalation_line
+    df_hold = pd.read_csv('data/hold_data/hold.csv')
+    if DK == 12:
+        seg1_size = 206+246
+        seg2_size = 206+180
+    elif DK == 11:
+        seg1_size = 216+236
+        seg2_size = 192+180
+    elif DK == 10:
+        seg1_size = 209+246
+        seg2_size = 180+188
+    elif DK == 9:
+        seg1_size = 212+252
+        seg2_size = 170+187
+    elif DK == 8:
+        seg1_size = 200+215
+        seg2_size = 206+184
+        
+    sepalation_line = int(2000 * seg1_size / (seg1_size+seg2_size))
+    return sepalation_line
+
 # output --
 fig = plt.figure()
 axes = []
@@ -425,6 +447,9 @@ def group_packing(DK,b,output):
         global model, model2
         df, df_ship, df_ramp, df_obs, df_aisle= datainput(12-DK)
         obs = []
+        sepalation_line = add_hold_size(12-DK)
+        print(sepalation_line)
+        
         # ランプ情報
         enter_line = df_ramp.iloc[0,1]
         if output == 1:
@@ -448,8 +473,8 @@ def group_packing(DK,b,output):
             print('siguma+ : {}'.format(siguma))
             print('siguma- : {}'.format(siguma_))
         width = ship_w
-        height = 1000
-        depth = 1000
+        height = sepalation_line
+        depth = sepalation_line
         area = [df.iloc[i,1]*df.iloc[i,2]*df.iloc[i,3] for i in range(n)]
 
         x_sol = [0]*n
@@ -532,7 +557,7 @@ def group_packing(DK,b,output):
                 # print('{}DK下'.format(12-DK))
                 model.params.NonConvex = 2
                 model.Params.OutputFlag = 0
-                model.Params.MIPFocus = 2
+                # model.Params.MIPFocus = 2
                 model.optimize()
                 # print("-" * 40)
                 # output
@@ -637,7 +662,7 @@ def group_packing(DK,b,output):
                 # print('{}DK上'.format(12-DK))
                 model2.params.NonConvex = 2
                 model2.Params.OutputFlag = 0
-                model2.Params.MIPFocus = 2
+                # model2.Params.MIPFocus = 2
                 # model2.setParam('TimeLimit', 100)
                 model2.optimize()
                 # print("-" * 40)
