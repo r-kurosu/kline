@@ -476,7 +476,18 @@ def group_packing(DK,b,output):
     height = sepalation_line
     depth = sepalation_line
     area = [df.iloc[i,1]*df.iloc[i,2]*df.iloc[i,3] for i in range(n)]
-
+    
+    df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
+    max_height = [0]*n
+    max_width = [0]*n
+    for i in range(n):
+        seg_i = df.at[i,'SEG']
+        lp_i = df.at[i,'LP']
+        dp_i = df.at[i,'DP']
+        max_height[i] = df_car[(df_car['SEG'] == seg_i) & (df_car['LP'] == lp_i) & (df_car['DP'] == dp_i)].loc[:,'HEIGHT'].max()
+        max_width[i] = df_car[(df_car['SEG'] == seg_i) & (df_car['LP'] == lp_i) & (df_car['DP'] == dp_i)].loc[:,'WIDTH'].max()
+    print(max_height)
+    
     x_sol = [0]*n
     y_sol = [0]*n
     w_sol = [0]*n
