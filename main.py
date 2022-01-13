@@ -501,28 +501,15 @@ def group_packing(DK,b,output):
             y = [0]*n
             w = [0]*n
             h = [0]*n
-            b1 = [[0]*n]*len(df_ramp)
-            b2 = [[0]*n]*len(df_ramp)
-            b3 = [[0]*n]*len(df_ramp)
-            b4 = [[0]*n]*len(df_ramp)
             a = model.addVar(lb=1, vtype=gp.GRB.CONTINUOUS)
             for i in range(n):
                 x[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
                 y[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                w[i] = model.addVar(lb = df.iloc[i,1] + 4, vtype=gp.GRB.CONTINUOUS)
-                h[i] = model.addVar(lb = df.iloc[i,2] + 1, vtype=gp.GRB.CONTINUOUS)
-                # height = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                for k in range(len(df_ramp)):
-                    b1[k][i] = model.addVar(vtype=gp.GRB.BINARY)
-                    b2[k][i] = model.addVar(vtype=gp.GRB.BINARY)
-                    b3[k][i] = model.addVar(vtype=gp.GRB.BINARY)
-                    b4[k][i] = model.addVar(vtype=gp.GRB.BINARY)
-            
+                w[i] = model.addVar(lb = max_width[i] + 4, vtype=gp.GRB.CONTINUOUS)
+                h[i] = model.addVar(lb = max_height[i] + 1, vtype=gp.GRB.CONTINUOUS)
             model.update
             # 目的関数
-            # model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1), sense=gp.GRB.MAXIMIZE)
             model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1) - a, sense=gp.GRB.MAXIMIZE)
-            
             # 制約
             c1 = [0]*n
             c2 = [0]*n
@@ -530,11 +517,6 @@ def group_packing(DK,b,output):
             c4 = [0]*n
             c5 = [0]*n
             c = []
-            cc1 = [0]*len(df_ramp)
-            cc2 = [0]*len(df_ramp)
-            cc3 = [0]*len(df_ramp)
-            cc4 = [0]*len(df_ramp)
-            ccc = [[0]*n]*len(df_ramp)
             for i in range(n):
                 if df.at[i,'SEG'] != segment:
                     continue
@@ -554,7 +536,6 @@ def group_packing(DK,b,output):
                         c.append(model.addConstr(y[i] + h[i] <= y[j]))
                     elif siguma.index(i) < siguma.index(j) and siguma_.index(i) > siguma_.index(j):
                         c.append(model.addConstr(x[i] + w[i] <= x[j]))
-                # ランプと重ならない制約を追加したい．．．
             model.update
 
             # 実行
@@ -595,20 +576,11 @@ def group_packing(DK,b,output):
             for i in range(n):
                 x[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
                 y[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                w[i] = model2.addVar(lb = df.iloc[i,1] + 4, vtype=gp.GRB.CONTINUOUS)
-                h[i] = model2.addVar(lb = df.iloc[i,2] + 1, vtype=gp.GRB.CONTINUOUS)
-                # depth = model2.addVar(ub = ship_h, vtype=gp.GRB.CONTINUOUS)
-                for k in range(len(df_ramp)):
-                    b1[k][i] = model2.addVar(vtype=gp.GRB.BINARY)
-                    b2[k][i] = model2.addVar(vtype=gp.GRB.BINARY)
-                    b3[k][i] = model2.addVar(vtype=gp.GRB.BINARY)
-                    b4[k][i] = model2.addVar(vtype=gp.GRB.BINARY)
+                w[i] = model2.addVar(lb = max_width[i] + 4, vtype=gp.GRB.CONTINUOUS)
+                h[i] = model2.addVar(lb = max_height[i] + 1, vtype=gp.GRB.CONTINUOUS)
             model2.update
 
             # 目的関数
-            # model2.setObjective(depth, sense=gp.GRB.MAXIMIZE)
-            # model2.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.at[j,'SEG'] == 2), sense=gp.GRB.MAXIMIZE)
-            # model2.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 2), sense=gp.GRB.MAXIMIZE)
             model2.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 2) - a, sense=gp.GRB.MAXIMIZE)
 
             # 制約›
@@ -618,11 +590,6 @@ def group_packing(DK,b,output):
             c4 = [0]*n
             c5 = [0]*n
             c = []
-            cc1 = [0]*len(df_ramp)
-            cc2 = [0]*len(df_ramp)
-            cc3 = [0]*len(df_ramp)
-            cc4 = [0]*len(df_ramp)
-            ccc = [[0]*n]*len(df_ramp)
             for i in range(n):
                 if df.at[i,'SEG'] != 2:
                     continue
