@@ -509,6 +509,7 @@ def group_packing(DK,b,output):
             model.update
             # 目的関数
             model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1) - a, sense=gp.GRB.MAXIMIZE)
+            # model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1)*10000 - a*10000 - gp.quicksum(w[j]*h[j]-area[j] for j in range(n) if df.iloc[j,4] == 1), sense=gp.GRB.MAXIMIZE)
             # 制約
             c1 = [0]*n
             c2 = [0]*n
@@ -523,6 +524,8 @@ def group_packing(DK,b,output):
                 c2[i] = model.addConstr(y[i] <= height - h[i])
                 c3[i] = model.addConstr(w[i]*h[i] >= area[i])
                 c5[i] = model.addConstr(w[i]*h[i] <= a*area[i])
+                if df.at[i,'AMOUNT'] <= 10:
+                    c5[i] = model.addConstr(w[i]*h[i] <= 2*area[i])
                 for j in range(n):
                     if df.at[j,'SEG'] != segment:
                         continue
@@ -556,7 +559,7 @@ def group_packing(DK,b,output):
             else:
                 remain_car[DK] = 10000
                 print('最適解が見つかりませんでした')
-                print(model.Status)
+                print('model1.status = {}'.format(model.Status))
                 
         elif segment == 2:
             model2 = gp.Model(name = "Gurobisample2")
@@ -633,6 +636,7 @@ def group_packing(DK,b,output):
                         axes[4-DK].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
             else:
                 print('最適解が見つかりませんでした．')
+                print('model2.status = {}'.format(model2.Status))
                 remain_car[DK] = 10000
 
 
@@ -818,7 +822,7 @@ def packing():
         start = time.time()
         bestvalue = 1000
         bestsol = 1
-        for b in range(5,6):
+        for b in range(4,5):
             best = b/10 + 1
             group_packing(DK,best,0)
             if model.Status != gp.GRB.OPTIMAL or model2.Status != gp.GRB.OPTIMAL:
@@ -833,7 +837,7 @@ def packing():
         print('このデッキの余りは{}台です．'.format(remain_car[DK]))
         print(bestsol)
         end = time.time()
-        print(str(DK)+'の計算時間:{:.1f}s'.format(end-start))
+        print(str(12-DK)+'の計算時間:{:.1f}s'.format(end-start))
 packing()
 
 def packing_func(DK):
