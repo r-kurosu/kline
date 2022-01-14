@@ -14,6 +14,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 import gurobipy as gp
 from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
+import math
 
 
 t1 = time.time()
@@ -815,7 +816,7 @@ def detailed_packing(DK,output):
 # main
 def packing():
     global b
-    for DK in range(1,2):
+    for DK in range(5):
         start = time.time()
         bestvalue = 1000
         bestsol = 1
