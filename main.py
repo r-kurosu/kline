@@ -542,6 +542,7 @@ def group_packing(DK,b,output):
             model.Params.OutputFlag = 0
             model.Params.MIPFocus = 3
             model.optimize()
+            print(a.X)
             # output
             if model.Status == gp.GRB.OPTIMAL:
                 # print(a.X)
@@ -568,10 +569,6 @@ def group_packing(DK,b,output):
             y = [0]*n
             w = [0]*n
             h = [0]*n
-            b1 = [[0]*n]*len(df_ramp)
-            b2 = [[0]*n]*len(df_ramp)
-            b3 = [[0]*n]*len(df_ramp)
-            b4 = [[0]*n]*len(df_ramp)
             a = model2.addVar(lb=1, vtype=gp.GRB.CONTINUOUS)
             for i in range(n):
                 x[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
@@ -818,7 +815,7 @@ def detailed_packing(DK,output):
 # main
 def packing():
     global b
-    for DK in range(5):
+    for DK in range(1,2):
         start = time.time()
         bestvalue = 1000
         bestsol = 1
