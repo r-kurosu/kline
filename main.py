@@ -525,8 +525,6 @@ def group_packing(DK,b,output):
                 c2[i] = model.addConstr(y[i] <= height - h[i])
                 c3[i] = model.addConstr(w[i]*h[i] >= area[i])
                 c5[i] = model.addConstr(w[i]*h[i] <= a*area[i])
-                if df.at[i,'AMOUNT'] <= 10:
-                    c5[i] = model.addConstr(w[i]*h[i] <= 2*area[i])
                 for j in range(n):
                     if df.at[j,'SEG'] != segment:
                         continue
