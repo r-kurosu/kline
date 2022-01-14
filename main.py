@@ -14,6 +14,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 import gurobipy as gp
 from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
+import math
 
 
 t1 = time.time()
@@ -524,8 +525,6 @@ def group_packing(DK,b,output):
                 c2[i] = model.addConstr(y[i] <= height - h[i])
                 c3[i] = model.addConstr(w[i]*h[i] >= area[i])
                 c5[i] = model.addConstr(w[i]*h[i] <= a*area[i])
-                if df.at[i,'AMOUNT'] <= 10:
-                    c5[i] = model.addConstr(w[i]*h[i] <= 2*area[i])
                 for j in range(n):
                     if df.at[j,'SEG'] != segment:
                         continue
@@ -542,6 +541,7 @@ def group_packing(DK,b,output):
             model.Params.OutputFlag = 0
             model.Params.MIPFocus = 3
             model.optimize()
+            print(a.X)
             # output
             if model.Status == gp.GRB.OPTIMAL:
                 # print(a.X)
@@ -568,10 +568,6 @@ def group_packing(DK,b,output):
             y = [0]*n
             w = [0]*n
             h = [0]*n
-            b1 = [[0]*n]*len(df_ramp)
-            b2 = [[0]*n]*len(df_ramp)
-            b3 = [[0]*n]*len(df_ramp)
-            b4 = [[0]*n]*len(df_ramp)
             a = model2.addVar(lb=1, vtype=gp.GRB.CONTINUOUS)
             for i in range(n):
                 x[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
