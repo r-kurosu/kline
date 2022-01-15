@@ -21,6 +21,7 @@ s.t. <br>
 変数：x[j], y[j]<br>
 入力：w[j], h[j], X[i], Y[i], W[i], H[i]
 <br>
+<br>
 目的関数なし<br>
 s.t. <br>
 + X[i] < x[j] < X[i] + W[i] (car[j] is in group i)<br>
