@@ -19,9 +19,9 @@ import math
 
 t1 = time.time()
 
-df_list = [0]*5
-for i in range(5):
-    df_list[i] = pd.read_csv('data/car_group/seggroup'+str(12-i)+'_1.csv')
+df_list = [0]*13
+for i in range(8,13):
+    df_list[i] = pd.read_csv('data/car_group/seggroup'+str(i)+'_1.csv')
 
 
 seg_dp12 = [0,0,0]
@@ -95,8 +95,6 @@ df_obs_ = [0]*13
 df_aisle_ = [0]*13
 def datainput(DK):
     for i in range(8,13):
-        # df_car[i] = pd.read_csv("data/car_"+str(i)+"dk_1.csv")
-        # df_car[i] = pd.read_csv("data/car_group/cargroup"+str(i)+"_1.csv")
         df_car[i] = pd.read_csv("data/car_group/seggroup"+str(i)+"_1.csv")
         df_ship_[i] = pd.read_csv("data/ship_data/ship_"+str(i)+"dk.csv")
         df_ramp_[i] = pd.read_csv("data/ramp_data/ramp_"+str(i)+"dk.csv")
@@ -337,7 +335,7 @@ def color_check(key):  #出力時のカラーを決める
 
 # ランプの矢印を書く
 def make_arrow(DK):
-    match 12-DK:
+    match DK:
         case 12:
             axes[4-DK].text(300, 750, '↓')
         case 11:
