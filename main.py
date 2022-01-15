@@ -39,20 +39,20 @@ def make_segtree():
     global seg_lp12, seg_lp11, seg_lp10, seg_lp9, seg_lp8
     
     root1 = Node(0, parent=None)
-    seg_dp8[2] = Node(df_list[4][df_list[4]['SEG'] == 2].loc[:,'DP'].min(), parent=root1)
-    seg_dp8[1] = Node(df_list[4][df_list[4]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp8[2])
+    seg_dp8[2] = Node(df_list[8][df_list[8]['SEG'] == 2].loc[:,'DP'].min(), parent=root1)
+    seg_dp8[1] = Node(df_list[8][df_list[8]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp8[2])
 
-    seg_dp9[1] = Node(df_list[3][df_list[3]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp8[2])
-    seg_dp9[2] = Node(df_list[3][df_list[3]['SEG'] == 2].loc[:,'DP'].min(), parent=seg_dp9[1])
+    seg_dp9[1] = Node(df_list[9][df_list[9]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp8[2])
+    seg_dp9[2] = Node(df_list[9][df_list[9]['SEG'] == 2].loc[:,'DP'].min(), parent=seg_dp9[1])
 
-    seg_dp10[2] = Node(df_list[2][df_list[2]['SEG'] == 2].loc[:,'DP'].min(), parent=seg_dp9[2])
-    seg_dp10[1] = Node(df_list[2][df_list[2]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp10[2])
+    seg_dp10[2] = Node(df_list[10][df_list[10]['SEG'] == 2].loc[:,'DP'].min(), parent=seg_dp9[2])
+    seg_dp10[1] = Node(df_list[10][df_list[10]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp10[2])
 
-    seg_dp11[2] = Node(df_list[1][df_list[1]['SEG'] == 2].loc[:,'DP'].min(), parent=seg_dp10[2])
-    seg_dp11[1] = Node(df_list[1][df_list[1]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp11[2])
+    seg_dp11[2] = Node(df_list[11][df_list[11]['SEG'] == 2].loc[:,'DP'].min(), parent=seg_dp10[2])
+    seg_dp11[1] = Node(df_list[11][df_list[11]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp11[2])
 
-    seg_dp12[1] = Node(df_list[0][df_list[0]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp11[1])
-    seg_dp12[2] = Node(df_list[0][df_list[0]['SEG'] == 2].loc[:,'DP'].min(), parent=seg_dp12[1])
+    seg_dp12[1] = Node(df_list[12][df_list[12]['SEG'] == 1].loc[:,'DP'].min(), parent=seg_dp11[1])
+    seg_dp12[2] = Node(df_list[12][df_list[12]['SEG'] == 2].loc[:,'DP'].min(), parent=seg_dp12[1])
 
     # 各ノードには部分木のDP最小値を保存する
     for node in PostOrderIter(root1):
@@ -62,20 +62,20 @@ def make_segtree():
             node.name = min(node.name, child.name)
 
     root2 = Node(0, parent=None)
-    seg_lp8[2] = Node(df_list[4][df_list[4]['SEG'] == 2].loc[:,'LP'].max(), parent=root2)
-    seg_lp8[1] = Node(df_list[4][df_list[4]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp8[2])
+    seg_lp8[2] = Node(df_list[8][df_list[8]['SEG'] == 2].loc[:,'LP'].max(), parent=root2)
+    seg_lp8[1] = Node(df_list[8][df_list[8]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp8[2])
 
-    seg_lp9[1] = Node(df_list[3][df_list[3]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp8[2])
-    seg_lp9[2] = Node(df_list[3][df_list[3]['SEG'] == 2].loc[:,'LP'].max(), parent=seg_lp9[1])
+    seg_lp9[1] = Node(df_list[9][df_list[9]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp8[2])
+    seg_lp9[2] = Node(df_list[9][df_list[9]['SEG'] == 2].loc[:,'LP'].max(), parent=seg_lp9[1])
 
-    seg_lp10[2] = Node(df_list[2][df_list[2]['SEG'] == 2].loc[:,'LP'].max(), parent=seg_lp9[2])
-    seg_lp10[1] = Node(df_list[2][df_list[2]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp10[2])
+    seg_lp10[2] = Node(df_list[10][df_list[10]['SEG'] == 2].loc[:,'LP'].max(), parent=seg_lp9[2])
+    seg_lp10[1] = Node(df_list[10][df_list[10]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp10[2])
 
-    seg_lp11[2] = Node(df_list[1][df_list[1]['SEG'] == 2].loc[:,'LP'].max(), parent=seg_lp10[2])
-    seg_lp11[1] = Node(df_list[1][df_list[1]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp11[2])
+    seg_lp11[2] = Node(df_list[11][df_list[11]['SEG'] == 2].loc[:,'LP'].max(), parent=seg_lp10[2])
+    seg_lp11[1] = Node(df_list[11][df_list[11]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp11[2])
 
-    seg_lp12[1] = Node(df_list[0][df_list[0]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp11[1])
-    seg_lp12[2] = Node(df_list[0][df_list[0]['SEG'] == 2].loc[:,'LP'].max(), parent=seg_lp12[1])    
+    seg_lp12[1] = Node(df_list[12][df_list[12]['SEG'] == 1].loc[:,'LP'].max(), parent=seg_lp11[1])
+    seg_lp12[2] = Node(df_list[12][df_list[12]['SEG'] == 2].loc[:,'LP'].max(), parent=seg_lp12[1])    
 
     # 各ノードには部分木のDP最小値を保存する
     for node in PostOrderIter(root2):
@@ -440,7 +440,7 @@ nfp_p = []
 count = 0
 tuduki = 0
 area = []
-remain_car = [0]*5
+remain_car = [0]*13
 
 # first packing --
 def group_packing(DK,b,output):
