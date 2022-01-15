@@ -1,10 +1,10 @@
-# 実行方法：
+## 実行方法：
 python3 main.py
 
-# 出力：
+## 出力：
 output_data/output.png
 
-# 定式化
+## 定式化
 1. 第一段階のパッキング
 変数：x[i],y[i],w[i],h[i] (for all i) 
 入力：segment-size, S[i]
