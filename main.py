@@ -337,22 +337,24 @@ def color_check(key):  #出力時のカラーを決める
 
 # ランプの矢印を書く
 def make_arrow(DK):
-    if 12 - DK == 12:
-        axes[4-DK].text(300, 750, '↓')
-    elif 12 - DK == 11:
-        axes[4-DK].text(300, 1100, '↓')
-        axes[4-DK].text(300, 900, '↓', color = 'w')
-    elif 12 - DK == 10:
-        axes[4-DK].text(70, 1250, '↑')
-        axes[4-DK].text(300, 1250, '↓', color = 'w')
-    elif 12 - DK == 9:
-        axes[4-DK].text(60, 900, '↑')
-        axes[4-DK].text(60, 1100, '↑', color = 'w')
-    elif 12 - DK == 8:
-        axes[4-DK].text(60, 800, '↑', color = 'w')
-        axes[4-DK].text(10, 800, '↓')
-    else:
-        pass
+    match 12-DK:
+        case 12:
+            axes[4-DK].text(300, 750, '↓')
+        case 11:
+            axes[4-DK].text(300, 1100, '↓')
+            axes[4-DK].text(300, 900, '↓', color = 'w')
+        case 10:
+            axes[4-DK].text(70, 1250, '↑')
+            axes[4-DK].text(300, 1250, '↓', color = 'w')
+        case 9:
+            axes[4-DK].text(60, 900, '↑')
+            axes[4-DK].text(60, 1100, '↑', color = 'w')
+        case 8:
+            axes[4-DK].text(60, 800, '↑', color = 'w')
+            axes[4-DK].text(10, 800, '↓')
+        case _:
+            pass
+
 
 # 通路制約を追加(hold)
 # 通路制約を追加(seg)
@@ -834,6 +836,7 @@ def packing():
         print(bestsol)
         end = time.time()
         print(str(12-DK)+'の計算時間:{:.1f}s'.format(end-start))
+
 packing()
 
 def packing_func(DK):
