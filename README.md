@@ -10,10 +10,9 @@ output_data/output.png
 入力：segment-size, S[i]  
 <br>
 max. ∑ w[i]*h[i]<br>
-s.t.<br>
-w[i]*s[i] <= S[i] (for all  group i)<br>
-w[i] >= max{car_width} (for i in group i)<br>  
-h[i] >= max{car_height} (for i in group i)  <br>
+s.t. w[i]*s[i] <= S[i] (for all  group i)<br>
+    w[i] >= max{car_width} (for i in group i)<br>  
+    h[i] >= max{car_height} (for i in group i)  <br>
 + 各長方形の位置関係<br>
 
 
