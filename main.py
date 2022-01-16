@@ -94,7 +94,7 @@ df_ramp_ = [0]*13
 df_obs_ = [0]*13
 df_aisle_ = [0]*13
 def datainput(DK):
-    for i in range(8,13):
+    for i in range(1,13):
         df_car[i] = pd.read_csv("data/car_group/seggroup"+str(i)+"_1.csv")
         df_ship_[i] = pd.read_csv("data/ship_data/ship_"+str(i)+"dk.csv")
         df_ramp_[i] = pd.read_csv("data/ramp_data/ramp_"+str(i)+"dk.csv")
@@ -337,19 +337,19 @@ def color_check(key):  #出力時のカラーを決める
 def make_arrow(DK):
     match DK:
         case 12:
-            axes[4-DK].text(300, 750, '↓')
+            axes[DK].text(300, 750, '↓')
         case 11:
-            axes[4-DK].text(300, 1100, '↓')
-            axes[4-DK].text(300, 900, '↓', color = 'w')
+            axes[DK].text(300, 1100, '↓')
+            axes[DK].text(300, 900, '↓', color = 'w')
         case 10:
-            axes[4-DK].text(70, 1250, '↑')
-            axes[4-DK].text(300, 1250, '↓', color = 'w')
+            axes[DK].text(70, 1250, '↑')
+            axes[DK].text(300, 1250, '↓', color = 'w')
         case 9:
-            axes[4-DK].text(60, 900, '↑')
-            axes[4-DK].text(60, 1100, '↑', color = 'w')
+            axes[DK].text(60, 900, '↑')
+            axes[DK].text(60, 1100, '↑', color = 'w')
         case 8:
-            axes[4-DK].text(60, 800, '↑', color = 'w')
-            axes[4-DK].text(10, 800, '↓')
+            axes[DK].text(60, 800, '↑', color = 'w')
+            axes[DK].text(10, 800, '↓')
         case _:
             pass
 
@@ -416,6 +416,9 @@ def add_hold_size(DK):
     elif DK == 8:
         seg1_size = 200+215
         seg2_size = 206+184
+    else:
+        ship_data = pd.read_csv('data/ship_data/ship_'+str(DK)+'dk.csv')
+        return ship_data.at[0,'HEIGHT']/2
         
     sepalation_line = int(2000 * seg1_size / (seg1_size+seg2_size))
     return sepalation_line
@@ -423,9 +426,9 @@ def add_hold_size(DK):
 # output --
 fig = plt.figure()
 axes = []
-for i in range(5):
-    axes.append(fig.add_subplot(1,5,i+1))
-    subplot_title = (str(i+8)+'dk')
+for i in range(12):
+    axes.append(fig.add_subplot(1,12,i+1))
+    subplot_title = (str(i+1)+'dk')
     axes[i].set_title(subplot_title)
     ship = patches.Rectangle(xy=(0, 0), width=ship_w, height=ship_h, ec='k', fill =False, linewidth = 0.2)
     axes[i].add_patch(ship)
@@ -456,7 +459,7 @@ def group_packing(DK,b,output):
     if output == 1:
         for i in range(len(df_ramp)):
             ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
-            axes[4-DK].add_patch(ramp)
+            axes[DK].add_patch(ramp)
 
     n = len(df)
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
@@ -554,8 +557,8 @@ def group_packing(DK,b,output):
                     h_sol[i] = round(h[i].X)
                     if output == 1:
                         cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
-                        axes[4-DK].add_patch(cars)
-                        axes[4-DK].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
+                        axes[DK].add_patch(cars)
+                        axes[DK].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
             else:
                 remain_car[DK] = 10000
                 print('最適解が見つかりませんでした')
@@ -628,8 +631,8 @@ def group_packing(DK,b,output):
                     h_sol[i] = round(h[i].X)
                     if output == 1:
                         cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
-                        axes[4-DK].add_patch(cars)
-                        axes[4-DK].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
+                        axes[DK].add_patch(cars)
+                        axes[DK].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
             else:
                 print('最適解が見つかりませんでした．')
                 print('model2.status = {}'.format(model2.Status))
@@ -654,7 +657,7 @@ def detailed_packing(DK,output):
     if output == 1:
         for i in range(len(df_ramp)):
             ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
-            axes[4-DK].add_patch(ramp)
+            axes[DK].add_patch(ramp)
 
     # 障害物情報
     obs = []
@@ -664,7 +667,7 @@ def detailed_packing(DK,output):
     if output == 1:
         for i in range(len(obs)):
             obstacle = patches.Rectangle(xy=(obs[i].x, obs[i].y), width = obs[i].w, height = obs[i].h, fc = 'k')
-            axes[4-DK].add_patch(obstacle)
+            axes[DK].add_patch(obstacle)
 
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
@@ -723,9 +726,9 @@ def detailed_packing(DK,output):
                             stock_sheet[new_x + j] += car_h
                         if output == 1:
                             cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i]), width = car_w, height = car_h, fc = color_check(df.iloc[i,7]), ec = 'k', linewidth = 0.2)
-                            axes[4-DK].add_patch(cars)
-                            axes[4-DK].text(new_x+x_sol[i]+0.5, new_y+y_sol[i]+2, count, fontsize = 1)
-                            axes[4-DK].text(new_x+x_sol[i]+car_w/2, new_y+y_sol[i] + car_h/2, '↑', fontsize = 1)
+                            axes[DK].add_patch(cars)
+                            axes[DK].text(new_x+x_sol[i]+0.5, new_y+y_sol[i]+2, count, fontsize = 1)
+                            axes[DK].text(new_x+x_sol[i]+car_w/2, new_y+y_sol[i] + car_h/2, '↑', fontsize = 1)
                             df_obs = df_obs.append({'X':new_x+x_sol[i], 'Y':new_y+y_sol[i], 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
                         count += 1
 
@@ -783,9 +786,9 @@ def detailed_packing(DK,output):
                             reverse_sheet[new_x + j] -= car_h
                         if output == 1:    
                             cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[i,7]), ec = 'k', linewidth = 0.2)
-                            axes[4-DK].add_patch(cars)
-                            axes[4-DK].text(new_x+x_sol[i] + 0.5, new_y+y_sol[i] - car_h + 2, count, fontsize = 1)
-                            axes[4-DK].text(new_x+x_sol[i] + car_w/2, new_y+y_sol[i] - car_h/2, '↓', fontsize = 1)
+                            axes[DK].add_patch(cars)
+                            axes[DK].text(new_x+x_sol[i] + 0.5, new_y+y_sol[i] - car_h + 2, count, fontsize = 1)
+                            axes[DK].text(new_x+x_sol[i] + car_w/2, new_y+y_sol[i] - car_h/2, '↓', fontsize = 1)
                             df_obs = df_obs.append({'X':new_x+x_sol[i], 'Y':new_y+y_sol[i] - car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
                         count += 1
                     elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == False):
@@ -806,7 +809,7 @@ def detailed_packing(DK,output):
     if output == 1:
         for i in range(len(df_ramp)):
                 ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
-                axes[4-DK].add_patch(ramp)
+                axes[DK].add_patch(ramp)
     # make_arrow(DK) 
     if output == 1:
         print(df)
@@ -814,7 +817,7 @@ def detailed_packing(DK,output):
 # main
 def packing():
     global b
-    for DK in range(5):
+    for DK in range(12):
         start = time.time()
         bestvalue = 1000
         bestsol = 1
@@ -823,12 +826,12 @@ def packing():
             group_packing(DK,best,0)
             if model.Status != gp.GRB.OPTIMAL or model2.Status != gp.GRB.OPTIMAL:
                 continue
-            detailed_packing(DK,0)
-            if bestvalue >= remain_car[DK]:
-                bestvalue = remain_car[DK]
-                bestsol = best
+            # detailed_packing(DK,0)
+            # if bestvalue >= remain_car[DK]:
+            #     bestvalue = remain_car[DK]
+            #     bestsol = best
         group_packing(DK,bestsol,1)
-        detailed_packing(DK,1)
+        # detailed_packing(DK,1)
         make_arrow(DK)
         print('このデッキの余りは{}台です．'.format(remain_car[DK]))
         print(bestsol)
@@ -881,7 +884,7 @@ print('計算時間:{:.1f}s'.format(t2-t1))
 plt.axis("scaled")
 plt.tight_layout()
 # ax.set_aspect('equal')
-plt.savefig('output_data/output.png', dpi = 2000)
+plt.savefig('output_data/output_test.png', dpi = 2000)
 
 
 t3 = time.time()
