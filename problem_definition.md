@@ -1,13 +1,14 @@
 ## 定式化
 ### 第一段階のパッキング  
 変数：x[i],y[i],w[i],h[i] (for all i)   
-入力：segment-size, S[i]  
+入力：segment-size(I), S[i]  
 <br>
 max. ∑ w[i]*h[i]<br>
 s.t. <br> 
 + w[i]*s[i] <= S[i] (for all  group i)<br>
-+ w[i] >= max{car_width} (for i in group i)<br>  
-+ h[i] >= max{car_height} (for i in group i)  <br>
++ w[i] >= max{car_width} (for i in group I)<br>  
++ h[i] >= max{car_height} (for i in group I)  <br>
++ ∑w[i]*h[i](for i in group I) <= segment-size(I)
 + 各長方形の位置関係<br>
 
 
