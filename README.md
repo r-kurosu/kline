@@ -5,7 +5,7 @@ python3 main.py
 output_data/output.png
 
 ## 定式化
-### 第一段階のパッキング  
+### 第一段階（グループパッキング）
 変数：x[i],y[i],w[i],h[i] (for all i)   
 入力：segment-size, S[i]  
 <br>
@@ -17,7 +17,7 @@ s.t. <br>
 + 各長方形の位置関係<br>
 
 
-### 第二段階のパッキング
+### 第二段階（個別パッキング）
 変数：x[j], y[j]<br>
 入力：w[j], h[j], X[i], Y[i], W[i], H[i]
 <br>
