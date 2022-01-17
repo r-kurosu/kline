@@ -841,17 +841,15 @@ def bl_packing(stock_sheet,group):
             stock_sheet[new_x + j] = tonari
     return 0
 
-def tl_packing(reverse_sheet,group,count):
+def tl_packing(reverse_sheet,group):
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
     if new_y + y_sol[group] - car_h < 0:
-        # print('over')
-        return
+        return 0
     # DP,LPによる通路制約は省略
     if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
-        # print('OK')
         for j in range(car_w):
             reverse_sheet[new_x + j] -= car_h
-        count += 1
+        return 1
     elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False):
         reverse_sheet[new_x] -= 1
     else:
@@ -863,6 +861,7 @@ def tl_packing(reverse_sheet,group,count):
             tonari = max(reverse_sheet[new_x - 1], reverse_sheet[new_x + gap])
         for j in range(gap):
             reverse_sheet[new_x + j] = tonari
+    return 0
 
 
 center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
@@ -885,21 +884,18 @@ def new_detailed_packing(DK):
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_1.csv')
-    df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
+    # df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
     
     for i in lp_order:
         stock_sheet = [0]*w_sol[i]
         reverse_sheet = [h_sol[i]]*w_sol[i]
         group_i = (df_car['SEG'] == df_lp.at[i,'SEG']) & (df_car['LP'] == df_lp.at[i,'LP']) & (df_car['DP'] == df_lp.at[i,'DP'])
+        count_sum = 0
         for car in range(group_i.sum()): # for car in group(i)にしたい
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
             car_amount = df_car.iloc[car,3]
-            car_seg = df_car.iloc[car,4]
-            car_lp = df_car.iloc[car,6]
-            car_dp = df_car.iloc[car,7]
             count = 0
-            count_sum = 0
             nfp = []
             for j in range(len(df_obs)):
                 nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
@@ -909,15 +905,15 @@ def new_detailed_packing(DK):
                 if new_y + y_sol[i] > h_sol[i]:
                     break
                 if new_y + y_sol[i] > center_line_list[DK]:
-                    tl_packing(reverse_sheet,i,count)
+                    count += tl_packing(reverse_sheet,i)
                     if new_y + y_sol[i] - car_h < center_line_list[DK]:
                         break
                 else:
                     count += bl_packing(stock_sheet,i)
             
-            df.iloc[i,3] -= count
             count_sum += count
-    print(count_sum)
+        # print(count_sum)
+        df.iloc[i,3] -= count_sum
     print(df)
 
 
