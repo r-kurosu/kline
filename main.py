@@ -816,7 +816,7 @@ def detailed_packing(DK,output):
     if output == 1:
         print(df)
 
-def bl_packing(stock_sheet,group):
+def bl_packing(stock_sheet,group,DK):
     new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
     # print(new_x, new_y)
     if new_y + y_sol[group] + car_h > h_sol[group]:
@@ -826,6 +826,11 @@ def bl_packing(stock_sheet,group):
     if gap >= car_w and (calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
         for j in range(car_w):
             stock_sheet[new_x + j] += car_h
+        cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group]), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
+        axes[4-DK].add_patch(cars)
+        axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count, fontsize = 1)
+        axes[4-DK].text(new_x+x_sol[group]+car_w/2, new_y+y_sol[group] + car_h/2, '↑', fontsize = 1)
+        # ここで車を障害物リストに追加したい
         return 1
 
     elif gap >= car_w and calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False:
@@ -841,7 +846,7 @@ def bl_packing(stock_sheet,group):
             stock_sheet[new_x + j] = tonari
     return 0
 
-def tl_packing(reverse_sheet,group):
+def tl_packing(reverse_sheet,group,DK):
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
     if new_y + y_sol[group] - car_h < 0:
         return 0
@@ -849,6 +854,11 @@ def tl_packing(reverse_sheet,group):
     if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
         for j in range(car_w):
             reverse_sheet[new_x + j] -= car_h
+        cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
+        axes[4-DK].add_patch(cars)
+        axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count, fontsize = 1)
+        axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
+        # ここで車も障害物リストに追加したい
         return 1
     elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False):
         reverse_sheet[new_x] -= 1
@@ -887,6 +897,7 @@ def new_detailed_packing(DK):
     # df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
     
     for i in lp_order:
+        print('group{}に詰め込めます'.format(i))
         stock_sheet = [0]*w_sol[i]
         reverse_sheet = [h_sol[i]]*w_sol[i]
         group_i = (df_car['SEG'] == df_lp.at[i,'SEG']) & (df_car['LP'] == df_lp.at[i,'LP']) & (df_car['DP'] == df_lp.at[i,'DP'])
@@ -902,23 +913,23 @@ def new_detailed_packing(DK):
                 nfp.append(nfp_obs)
             while car_amount != count:
                 new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
-                if new_y + y_sol[i] > h_sol[i]:
-                    break
                 if new_y + y_sol[i] > center_line_list[DK]:
-                    count += tl_packing(reverse_sheet,i)
-                    if new_y + y_sol[i] - car_h < center_line_list[DK]:
+                    count += tl_packing(reverse_sheet,i,0)
+                    if new_y + y_sol[i] - car_h < 0:
                         break
                 else:
-                    count += bl_packing(stock_sheet,i)
+                    if new_y + y_sol[i] > h_sol[i]:
+                        break
+                    count += bl_packing(stock_sheet,i,0)
             
             count_sum += count
         # print(count_sum)
         df.iloc[i,3] -= count_sum
     print(df)
 
-
-group_packing(0,1,0)
-new_detailed_packing(12)
+for DK_number in range(8,13):
+    group_packing(12-DK_number,1,1)
+    new_detailed_packing(DK_number)
 
 
 # main
