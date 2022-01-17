@@ -903,6 +903,8 @@ def new_detailed_packing(DK):
         reverse_sheet = [h_sol[i]]*w_sol[i]
         group_i = (df_car['SEG'] == df_lp.at[i,'SEG']) & (df_car['LP'] == df_lp.at[i,'LP']) & (df_car['DP'] == df_lp.at[i,'DP'])
         count_sum = 0
+        
+        # print(group_i['AMOUNT'].sum())
         for car in range(group_i.sum()): # for car in group(i)にしたい
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
@@ -912,7 +914,7 @@ def new_detailed_packing(DK):
             for j in range(len(df_obs)):
                 nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
                 nfp.append(nfp_obs)
-            while car_amount != count:
+            while car_amount > count:
                 new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
                 if new_y + y_sol[i] > center_line_list[DK]:
                     count += tl_packing(reverse_sheet,i,12-DK)
