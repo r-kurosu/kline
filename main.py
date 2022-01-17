@@ -815,6 +815,51 @@ def detailed_packing(DK,output):
     if output == 1:
         print(df)
 
+def bl_packing(sheet):
+    pass
+
+def tl_packing(sheet):
+    pass
+
+center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
+
+def new_detailed_packing(DK):
+    print('今から'+str(DK)+'dkに詰め込みます')
+    df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
+    
+    df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
+    lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
+
+    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_1.csv')
+    df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
+    
+    for i in lp_order:
+        stock_sheet = [0]*w_sol[i]
+        reverse_sheet = [h_sol[i]]*w_sol[i]
+        
+        for car in range(10): # for car in group(i)にしたい
+            car_w = df_car.iloc[car,1]
+            car_h = df_car.iloc[car,2]
+            car_amount = df_car.iloc[car,3]
+            car_seg = df_car.iloc[car,4]
+            car_lp = df_car.iloc[car,6]
+            car_dp = df_car.iloc[car,7]
+            count = 0
+            
+            while car_amount != count:
+                new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
+                if new_y + y_sol[i] > h_sol[i]:
+                    break
+                if new_y + y_sol[i] > center_line_list[DK]:
+                    tl_packing(0)
+                else:
+                    bl_packing(0)
+                
+
+group_packing(0,1,0)
+new_detailed_packing(12)
+
+
 # main
 def packing():
     global b
@@ -839,7 +884,7 @@ def packing():
         end = time.time()
         print(str(12-DK)+'の計算時間:{:.1f}s'.format(end-start))
 
-packing()
+# packing()
 
 def packing_func(DK):
     global b
