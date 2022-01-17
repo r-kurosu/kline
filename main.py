@@ -818,7 +818,7 @@ def detailed_packing(DK,output):
 
 def bl_packing(stock_sheet,group,DK):
     new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
-    # print(new_x, new_y)
+    df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_1.csv')
     if new_y + y_sol[group] + car_h > h_sol[group]:
         print('over')
         return 0
@@ -848,7 +848,8 @@ def bl_packing(stock_sheet,group,DK):
 
 def tl_packing(reverse_sheet,group,DK):
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
-    if new_y + y_sol[group] - car_h < 0:
+    df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_1.csv')
+    if new_y + y_sol[group] - car_h < 0 or new_y + y_sol[i] - car_h < center_line_list[DK]:
         return 0
     # DP,LPによる通路制約は省略
     if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
@@ -914,13 +915,14 @@ def new_detailed_packing(DK):
             while car_amount != count:
                 new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
                 if new_y + y_sol[i] > center_line_list[DK]:
-                    count += tl_packing(reverse_sheet,i,0)
-                    if new_y + y_sol[i] - car_h < 0:
+                    count += tl_packing(reverse_sheet,i,12-DK)
+                    new_x,new_y,gap = find_highest_gap(reverse_sheet,w_sol[i])
+                    if new_y + y_sol[i] - car_h < center_line_list[DK] or new_y + y_sol[i] - car_h < 0:
                         break
                 else:
-                    if new_y + y_sol[i] > h_sol[i]:
+                    if new_y + y_sol[i] + car_h > h_sol[i]:
                         break
-                    count += bl_packing(stock_sheet,i,0)
+                    count += bl_packing(stock_sheet,i,12-DK)
             
             count_sum += count
         # print(count_sum)
