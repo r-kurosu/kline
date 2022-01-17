@@ -6,7 +6,7 @@ from pandas.core.frame import DataFrame
 df_input = [0]*13
 df_output =[0]*13
 df_output_seg = [0]*13
-for booking in range(1,2):
+for booking in range(1,4):
     for i in range(1,13):
         df_input[i] = pd.read_csv("data/new_car/carinfo_"+str(i)+"_"+str(booking)+".csv")
         df_output_seg[i] = pd.read_csv("data/new_car/template.csv")
