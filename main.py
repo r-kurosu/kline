@@ -816,45 +816,48 @@ def detailed_packing(DK,output):
     if output == 1:
         print(df)
 
-def bl_packing(stock_sheet,count):
-    new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[i])
-    print(new_x, new_y)
-    # print(stock_sheet)
-    if new_y + car_h > h_sol[i]:
-        return
+def bl_packing(stock_sheet,group):
+    new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
+    # print(new_x, new_y)
+    if new_y + y_sol[group] + car_h > h_sol[group]:
+        print('over')
+        return 0
     # DP,LPによる通路制約は今は省略
-    if gap >= car_w and (calc_nfp(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
+    if gap >= car_w and (calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
         for j in range(car_w):
             stock_sheet[new_x + j] += car_h
-        count += 1
-        
-    elif gap >= car_w and calc_nfp(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == False:
+        return 1
+
+    elif gap >= car_w and calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False:
         stock_sheet[new_x] += 1
     else:
         if new_x == 0:
             tonari = stock_sheet[gap]
-        elif new_x + gap == w_sol[i]:
+        elif new_x + gap == w_sol[group]:
             tonari = stock_sheet[new_x - 1]
         else:
             tonari = min(stock_sheet[new_x - 1], stock_sheet[new_x + gap ])
         for j in range(gap):
             stock_sheet[new_x + j] = tonari
+    return 0
 
-def tl_packing(reverse_sheet,count):
-    new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[i])
-    if new_y - car_h < 0:
+def tl_packing(reverse_sheet,group,count):
+    new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
+    if new_y + y_sol[group] - car_h < 0:
+        # print('over')
         return
     # DP,LPによる通路制約は省略
-    if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
+    if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
+        # print('OK')
         for j in range(car_w):
             reverse_sheet[new_x + j] -= car_h
         count += 1
-    elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == False):
+    elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False):
         reverse_sheet[new_x] -= 1
     else:
         if new_x == 0:
             tonari = reverse_sheet[gap]
-        elif new_x + gap == w_sol[i]:
+        elif new_x + gap == w_sol[group]:
             tonari = reverse_sheet[new_x - 1]
         else:
             tonari = max(reverse_sheet[new_x - 1], reverse_sheet[new_x + gap])
@@ -885,13 +888,9 @@ def new_detailed_packing(DK):
     df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
     
     for i in lp_order:
-        global width
-        width = w_sol[i]
         stock_sheet = [0]*w_sol[i]
         reverse_sheet = [h_sol[i]]*w_sol[i]
         group_i = (df_car['SEG'] == df_lp.at[i,'SEG']) & (df_car['LP'] == df_lp.at[i,'LP']) & (df_car['DP'] == df_lp.at[i,'DP'])
-        print(group_i)
-        print(group_i.sum())
         for car in range(group_i.sum()): # for car in group(i)にしたい
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
@@ -900,19 +899,26 @@ def new_detailed_packing(DK):
             car_lp = df_car.iloc[car,6]
             car_dp = df_car.iloc[car,7]
             count = 0
-            
+            count_sum = 0
+            nfp = []
+            for j in range(len(df_obs)):
+                nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
+                nfp.append(nfp_obs)
             while car_amount != count:
                 new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
                 if new_y + y_sol[i] > h_sol[i]:
                     break
                 if new_y + y_sol[i] > center_line_list[DK]:
-                    print('tl_p')
-                    tl_packing(reverse_sheet,count)
+                    tl_packing(reverse_sheet,i,count)
+                    if new_y + y_sol[i] - car_h < center_line_list[DK]:
+                        break
                 else:
-                    bl_packing(stock_sheet,count)
-                    # print('bl_p')
+                    count += bl_packing(stock_sheet,i)
             
             df.iloc[i,3] -= count
+            count_sum += count
+    print(count_sum)
+    print(df)
 
 
 group_packing(0,1,0)
