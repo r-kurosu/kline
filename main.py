@@ -1,4 +1,5 @@
 import random
+from tokenize import group
 from typing import BinaryIO
 from anytree import node
 from anytree.node import nodemixin
@@ -815,17 +816,67 @@ def detailed_packing(DK,output):
     if output == 1:
         print(df)
 
-def bl_packing(sheet):
-    pass
+def bl_packing(stock_sheet,count):
+    new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[i])
+    print(new_x, new_y)
+    # print(stock_sheet)
+    if new_y + car_h > h_sol[i]:
+        return
+    # DP,LPによる通路制約は今は省略
+    if gap >= car_w and (calc_nfp(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
+        for j in range(car_w):
+            stock_sheet[new_x + j] += car_h
+        count += 1
+        
+    elif gap >= car_w and calc_nfp(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == False:
+        stock_sheet[new_x] += 1
+    else:
+        if new_x == 0:
+            tonari = stock_sheet[gap]
+        elif new_x + gap == w_sol[i]:
+            tonari = stock_sheet[new_x - 1]
+        else:
+            tonari = min(stock_sheet[new_x - 1], stock_sheet[new_x + gap ])
+        for j in range(gap):
+            stock_sheet[new_x + j] = tonari
 
-def tl_packing(sheet):
-    pass
+def tl_packing(reverse_sheet,count):
+    new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[i])
+    if new_y - car_h < 0:
+        return
+    # DP,LPによる通路制約は省略
+    if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
+        for j in range(car_w):
+            reverse_sheet[new_x + j] -= car_h
+        count += 1
+    elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == False):
+        reverse_sheet[new_x] -= 1
+    else:
+        if new_x == 0:
+            tonari = reverse_sheet[gap]
+        elif new_x + gap == w_sol[i]:
+            tonari = reverse_sheet[new_x - 1]
+        else:
+            tonari = max(reverse_sheet[new_x - 1], reverse_sheet[new_x + gap])
+        for j in range(gap):
+            reverse_sheet[new_x + j] = tonari
+
 
 center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
 
 def new_detailed_packing(DK):
     print('今から'+str(DK)+'dkに詰め込みます')
+    global new_x, new_y
+    global df_obs, obs
+    global nfp, nfp_p
+    global center_line_list
+    global stock_sheet, reverse_sheet
+    global x_sol, y_sol, w_sol, h_sol
+    global count
+    global car_w, car_h, car_amount
+    
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
+    center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
     
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
@@ -834,10 +885,14 @@ def new_detailed_packing(DK):
     df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
     
     for i in lp_order:
+        global width
+        width = w_sol[i]
         stock_sheet = [0]*w_sol[i]
         reverse_sheet = [h_sol[i]]*w_sol[i]
-        
-        for car in range(10): # for car in group(i)にしたい
+        group_i = (df_car['SEG'] == df_lp.at[i,'SEG']) & (df_car['LP'] == df_lp.at[i,'LP']) & (df_car['DP'] == df_lp.at[i,'DP'])
+        print(group_i)
+        print(group_i.sum())
+        for car in range(group_i.sum()): # for car in group(i)にしたい
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
             car_amount = df_car.iloc[car,3]
@@ -848,13 +903,18 @@ def new_detailed_packing(DK):
             
             while car_amount != count:
                 new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
+                print(new_x, new_y, gap)
                 if new_y + y_sol[i] > h_sol[i]:
                     break
                 if new_y + y_sol[i] > center_line_list[DK]:
-                    tl_packing(0)
+                    print('tl_p')
+                    tl_packing(stock_sheet,count)
                 else:
-                    bl_packing(0)
-                
+                    bl_packing(reverse_sheet,count)
+                    # print('bl_p')
+            
+            df.iloc[i,3] -= count
+
 
 group_packing(0,1,0)
 new_detailed_packing(12)
