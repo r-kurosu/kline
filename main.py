@@ -653,6 +653,8 @@ def detailed_packing(DK,output):
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(12 - DK)
     n = len(df)
     remain_car[DK] = 0
+    center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
+    
     if output == 1:
         for i in range(len(df_ramp)):
             ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
