@@ -903,14 +903,13 @@ def new_detailed_packing(DK):
             
             while car_amount != count:
                 new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
-                print(new_x, new_y, gap)
                 if new_y + y_sol[i] > h_sol[i]:
                     break
                 if new_y + y_sol[i] > center_line_list[DK]:
                     print('tl_p')
-                    tl_packing(stock_sheet,count)
+                    tl_packing(reverse_sheet,count)
                 else:
-                    bl_packing(reverse_sheet,count)
+                    bl_packing(stock_sheet,count)
                     # print('bl_p')
             
             df.iloc[i,3] -= count
