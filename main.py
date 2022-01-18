@@ -919,8 +919,8 @@ def new_detailed_packing(DK):
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_1.csv')
-    # df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
-    # df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False], inplace = True)
+    df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
+    car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
     
     for i in lp_order:
         print('group{}に詰め込めます'.format(i))
@@ -930,9 +930,9 @@ def new_detailed_packing(DK):
         # print(group_i)
         print(group_i['AMOUNT'].sum())
         count_sum = 0
-        
-        for car in range(len(df_car)): # for car in group(i)にしたい
-            if (df_car.at[car,'SEG'] != df_lp.at[i,'SEG']) or (df_car.at[car,'LP'] != df_lp.at[i,'LP']) or (df_car.at[car,'DP'] != df_lp.at[i,'DP']):
+        for car in car_order: # for car in group(i)にしたい
+            if (df_car.iloc[car,4] != df_lp.at[i,'SEG']) or (df_car.iloc[car,6] != df_lp.at[i,'LP']) or (df_car.iloc[car,7] != df_lp.at[i,'DP']):
+            # if (df_car.at[car,'SEG'] != df_lp.at[i,'SEG']) or (df_car.at[car,'LP'] != df_lp.at[i,'LP']) or (df_car.at[car,'DP'] != df_lp.at[i,'DP']):
                 continue
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
