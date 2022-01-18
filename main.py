@@ -843,7 +843,7 @@ def bl_packing(stock_sheet,group,DK):
         axes[4-DK].add_patch(cars)
         axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count, fontsize = 1)
         axes[4-DK].text(new_x+x_sol[group]+car_w/2, new_y+y_sol[group] + car_h/2, '↑', fontsize = 1)
-        df_obs = df_obs.append({'X':new_x+x_sol[i], 'Y':new_y+y_sol[i], 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
+        df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group], 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         return 1
 
     elif gap >= car_w and calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False:
@@ -873,7 +873,7 @@ def tl_packing(reverse_sheet,group,DK):
         axes[4-DK].add_patch(cars)
         axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count, fontsize = 1)
         axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
-        df_obs = df_obs.append({'X':new_x+x_sol[i], 'Y':new_y+y_sol[i] - car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
+        df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group] - car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         return 1
     elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False):
         reverse_sheet[new_x] -= 1
