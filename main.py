@@ -435,20 +435,18 @@ for i in range(5):
     plt.axis("scaled")
     axes[i].axis('off')
     
-def output_func(DK):
+def output_func(DK): #真のデッキ番号
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
-    for i in range(len(df_ramp)):
-        ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
-        axes[12-DK].add_patch(ramp)
     obs = []
     for i in range(len(df_obs)):
         class_obs = Obstacle(df_obs.iloc[i, 0], df_obs.iloc[i, 1], df_obs.iloc[i,2], df_obs.iloc[i,3])
         obs.append(class_obs)
     for i in range(len(obs)):
         obstacle = patches.Rectangle(xy=(obs[i].x, obs[i].y), width = obs[i].w, height = obs[i].h, fc = 'k')
-        axes[12-DK].add_patch(obstacle)
-    make_arrow(DK)
-
+        axes[DK-8].add_patch(obstacle)
+    for i in range(len(df_ramp)):
+        ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
+        axes[DK-8].add_patch(ramp)
 # 変数定義（なくてもいいかも）
 new_x = 0
 new_y = 0
@@ -962,7 +960,8 @@ def new_detailed_packing(DK):
 for DK_number in range(8,13):
     group_packing(12-DK_number,1,1)
     new_detailed_packing(DK_number)
-    # output_func(12-DK_number)
+    output_func(DK_number)
+    make_arrow(12-DK_number)
     print(remain_car)
 
 # main
