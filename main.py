@@ -457,7 +457,7 @@ nfp_p = []
 count = 0
 tuduki = 0
 area = []
-remain_car = [0]*5
+remain_car = [0]*13
 
 # first packing --
 def group_packing(DK,b,output):
@@ -920,6 +920,7 @@ def new_detailed_packing(DK):
 
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_1.csv')
     # df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
+    # df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False], inplace = True)
     
     for i in lp_order:
         print('group{}に詰め込めます'.format(i))
