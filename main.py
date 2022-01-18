@@ -954,6 +954,7 @@ def new_detailed_packing(DK):
                     count += bl_packing(stock_sheet,i,12-DK)
             df.iloc[i,3] -= count
             count_sum += count
+        remain_car[DK] += df.iloc[i,3]
         print(count_sum)
     print(df)
 
@@ -961,6 +962,7 @@ for DK_number in range(8,13):
     group_packing(12-DK_number,1,1)
     new_detailed_packing(DK_number)
     # output_func(12-DK_number)
+    print(remain_car)
 
 # main
 def packing():
