@@ -434,6 +434,20 @@ for i in range(5):
     axes[i].add_patch(ship)
     plt.axis("scaled")
     axes[i].axis('off')
+    
+def output_func(DK):
+    df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
+    for i in range(len(df_ramp)):
+        ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
+        axes[12-DK].add_patch(ramp)
+    obs = []
+    for i in range(len(df_obs)):
+        class_obs = Obstacle(df_obs.iloc[i, 0], df_obs.iloc[i, 1], df_obs.iloc[i,2], df_obs.iloc[i,3])
+        obs.append(class_obs)
+    for i in range(len(obs)):
+        obstacle = patches.Rectangle(xy=(obs[i].x, obs[i].y), width = obs[i].w, height = obs[i].h, fc = 'k')
+        axes[12-DK].add_patch(obstacle)
+    make_arrow(DK)
 
 # 変数定義（なくてもいいかも）
 new_x = 0
@@ -817,6 +831,7 @@ def detailed_packing(DK,output):
         print(df)
 
 def bl_packing(stock_sheet,group,DK):
+    global df_obs
     new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_1.csv')
     if new_y + car_h > h_sol[group]:
@@ -830,7 +845,7 @@ def bl_packing(stock_sheet,group,DK):
         axes[4-DK].add_patch(cars)
         axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count, fontsize = 1)
         axes[4-DK].text(new_x+x_sol[group]+car_w/2, new_y+y_sol[group] + car_h/2, '↑', fontsize = 1)
-        # ここで車を障害物リストに追加したい
+        # df_obs = df_obs.append({'X':new_x+x_sol[i], 'Y':new_y+y_sol[i], 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         return 1
 
     elif gap >= car_w and calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False:
@@ -847,6 +862,7 @@ def bl_packing(stock_sheet,group,DK):
     return 0
 
 def tl_packing(reverse_sheet,group,DK):
+    global df_obs
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_1.csv')
     if new_y - car_h < 0 or new_y + y_sol[group] - car_h < center_line_list[12-DK]:
@@ -859,7 +875,7 @@ def tl_packing(reverse_sheet,group,DK):
         axes[4-DK].add_patch(cars)
         axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count, fontsize = 1)
         axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
-        # ここで車も障害物リストに追加したい
+        # df_obs = df_obs.append({'X':new_x+x_sol[i], 'Y':new_y+y_sol[i] - car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         return 1
     elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False):
         reverse_sheet[new_x] -= 1
@@ -893,6 +909,12 @@ def new_detailed_packing(DK):
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
     center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
     
+    # 障害物情報
+    obs = []
+    for i in range(len(df_obs)):
+        class_obs = Obstacle(df_obs.iloc[i, 0], df_obs.iloc[i, 1], df_obs.iloc[i,2], df_obs.iloc[i,3])
+        obs.append(class_obs)
+    
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
@@ -921,7 +943,7 @@ def new_detailed_packing(DK):
                 nfp.append(nfp_obs)
             while car_amount > count:
                 new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
-                if new_y + y_sol[i] > center_line_list[DK]:
+                if new_y + y_sol[i] + car_h > center_line_list[DK]:
                     count += tl_packing(reverse_sheet,i,12-DK)
                     new_x,new_y,gap = find_highest_gap(reverse_sheet,w_sol[i])
                     if new_y + y_sol[i] - car_h < center_line_list[DK] or new_y - car_h < 0:
@@ -938,7 +960,7 @@ def new_detailed_packing(DK):
 for DK_number in range(8,13):
     group_packing(12-DK_number,1,1)
     new_detailed_packing(DK_number)
-
+    # output_func(12-DK_number)
 
 # main
 def packing():
@@ -958,7 +980,7 @@ def packing():
                 bestsol = best
         group_packing(DK,bestsol,1)
         detailed_packing(DK,1)
-        make_arrow(DK)
+        make_arrow(12-DK)
         print('このデッキの余りは{}台です．'.format(remain_car[DK]))
         print(bestsol)
         end = time.time()
