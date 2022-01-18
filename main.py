@@ -913,7 +913,7 @@ def new_detailed_packing(DK):
         class_obs = Obstacle(df_obs.iloc[i, 0], df_obs.iloc[i, 1], df_obs.iloc[i,2], df_obs.iloc[i,3])
         obs.append(class_obs)
     
-    df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
+    df_lp = df.sort_values(by=['LP','DP'], ascending = [True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_1.csv')
