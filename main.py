@@ -876,6 +876,7 @@ def tl_packing(reverse_sheet,group,DK):
 
 
 center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
+remain_car = [0]*13
 
 def new_detailed_packing(DK):
     print('今から'+str(DK)+'dkに詰め込みます')
@@ -887,6 +888,7 @@ def new_detailed_packing(DK):
     global x_sol, y_sol, w_sol, h_sol
     global count
     global car_w, car_h, car_amount
+    global remain_car
     
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
     center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
@@ -901,11 +903,14 @@ def new_detailed_packing(DK):
         print('group{}に詰め込めます'.format(i))
         stock_sheet = [0]*w_sol[i]
         reverse_sheet = [h_sol[i]]*w_sol[i]
-        group_i = (df_car['SEG'] == df_lp.at[i,'SEG']) & (df_car['LP'] == df_lp.at[i,'LP']) & (df_car['DP'] == df_lp.at[i,'DP'])
+        group_i = df_car[(df_car['SEG'] == df_lp.at[i,'SEG']) & (df_car['LP'] == df_lp.at[i,'LP']) & (df_car['DP'] == df_lp.at[i,'DP'])]
+        # print(group_i)
+        print(group_i['AMOUNT'].sum())
         count_sum = 0
         
-        # print(group_i['AMOUNT'].sum())
-        for car in range(group_i.sum()): # for car in group(i)にしたい
+        for car in range(len(df_car)): # for car in group(i)にしたい
+            if (df_car.at[car,'SEG'] != df_lp.at[i,'SEG']) or (df_car.at[car,'LP'] != df_lp.at[i,'LP']) or (df_car.at[car,'DP'] != df_lp.at[i,'DP']):
+                continue
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
             car_amount = df_car.iloc[car,3]
