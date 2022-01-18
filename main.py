@@ -928,7 +928,7 @@ def new_detailed_packing(DK):
         reverse_sheet = [h_sol[i]]*w_sol[i]
         group_i = df_car[(df_car['SEG'] == df_lp.at[i,'SEG']) & (df_car['LP'] == df_lp.at[i,'LP']) & (df_car['DP'] == df_lp.at[i,'DP'])]
         # print(group_i)
-        print(group_i['AMOUNT'].sum())
+        print('quota: {}'.format(group_i['AMOUNT'].sum()))
         count_sum = 0
         for car in car_order: # for car in group(i)にしたい
             if (df_car.iloc[car,4] != df_lp.at[i,'SEG']) or (df_car.iloc[car,6] != df_lp.at[i,'LP']) or (df_car.iloc[car,7] != df_lp.at[i,'DP']):
@@ -956,7 +956,7 @@ def new_detailed_packing(DK):
             df.iloc[i,3] -= count
             count_sum += count
         remain_car[DK] += df.iloc[i,3]
-        print(count_sum)
+        print('packed:{}'.format(count_sum))
     print(df)
 
 for DK_number in range(8,13):
