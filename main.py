@@ -974,7 +974,7 @@ def main():
         print(remain_car)
 
 # single_packing() # 一つだけ詰め込みたいとき #
-main()
+main() # 複数デッキ #
 
 
 
