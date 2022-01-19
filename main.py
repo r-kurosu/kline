@@ -1,6 +1,6 @@
 import random
 from tokenize import group
-from typing import BinaryIO
+from typing import BinaryIO, OrderedDict
 from anytree import node
 from anytree.node import nodemixin
 import pandas as pd
@@ -456,11 +456,16 @@ count = 0
 tuduki = 0
 area = []
 remain_car = [0]*13
+unpacked_car = []
+lp_order = []
 
 # first packing --
 def group_packing(DK,b,output):
     global x_sol, y_sol, w_sol, h_sol
     global model, model2
+    global unpacked_car
+    global siguma
+    
     df, df_ship, df_ramp, df_obs, df_aisle= datainput(12-DK)
     obs = []
     sepalation_line = add_hold_size(12-DK)
@@ -492,6 +497,7 @@ def group_packing(DK,b,output):
     height = sepalation_line
     depth = sepalation_line
     area = [df.iloc[i,1]*df.iloc[i,2]*df.iloc[i,3] for i in range(n)]
+    unpacked_car = [0]*n
     
     df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
     max_height = [0]*n
@@ -902,10 +908,11 @@ def new_detailed_packing(DK):
     global x_sol, y_sol, w_sol, h_sol
     global count
     global car_w, car_h, car_amount
-    global remain_car
+    global remain_car, unpacked_car
     
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
     center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
+    unpacked_car = [0]*len(df)
     
     # 障害物情報
     obs = []
@@ -926,7 +933,7 @@ def new_detailed_packing(DK):
         reverse_sheet = [h_sol[i]]*w_sol[i]
         group_i = df_car[(df_car['SEG'] == df_lp.at[i,'SEG']) & (df_car['LP'] == df_lp.at[i,'LP']) & (df_car['DP'] == df_lp.at[i,'DP'])]
         # print(group_i)
-        print('quota: {}'.format(group_i['AMOUNT'].sum()))
+        # print('quota: {}'.format(group_i['AMOUNT'].sum()))
         count_sum = 0
         for car in car_order: # for car in group(i)にしたい
             if (df_car.iloc[car,4] != df_lp.at[i,'SEG']) or (df_car.iloc[car,6] != df_lp.at[i,'LP']) or (df_car.iloc[car,7] != df_lp.at[i,'DP']):
@@ -954,21 +961,51 @@ def new_detailed_packing(DK):
             df.iloc[i,3] -= count
             count_sum += count
         remain_car[DK] += df.iloc[i,3]
-        print('packed:{}'.format(count_sum))
+        # print('packed:{}'.format(count_sum))
     print(df)
+    unpacked_car = [df.iloc[i,3] for i in range(len(df))]
+    # unpacked_car = [df.iloc[i,3] for i in lp_order]
+
+def local_search(DK,Y,H,unpacked_car):
+    print('===local search==')
+    df = pd.read_csv('data/car_group/seggroup'+str(DK)+'_1.csv')
+    df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
+    lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 1]
+    unpacked_car = [4, 0, 0, 52, 14]
+    print(unpacked_car)
+    for i in range(len(lp_order)):
+        for j in range(len(lp_order)):
+            if unpacked_car[i] >= 10 and unpacked_car[j] == 0:
+                print('test')
+                if Y[i] + H[i] == Y[j]:
+                    vol_up = i
+                    vol_down = j
+                    print(vol_up, vol_down)
+                    break
+
+    H[vol_down] = H[vol_down] - 50
+    Y[vol_up] = Y[vol_down] + H[vol_down]
+    H[vol_up] = H[vol_up] + 50
+
 
 def single_packing():
     DK_number = int(input('何番デッキに詰め込みますか?'))
     group_packing(12-DK_number,1,1)
     new_detailed_packing(DK_number)
+
     output_func(DK_number)
     make_arrow(12-DK_number)
     print(remain_car)
 
+unpacked_car = [4, 0, 0, 52, 14]
 def main():
-    for DK_number in range(8,13):
+    for DK_number in range(11,12):
         group_packing(12-DK_number,1,1)
         new_detailed_packing(DK_number)
+        print(unpacked_car)
+        local_search(DK_number, y_sol, h_sol, unpacked_car)
+        new_detailed_packing(DK_number)
+        print(unpacked_car)
         output_func(DK_number)
         make_arrow(12-DK_number)
         print(remain_car)
@@ -1001,38 +1038,8 @@ def packing():
         end = time.time()
         print(str(12-DK)+'の計算時間:{:.1f}s'.format(end-start))
 
-def packing_func(DK):
-    global b
-    bestvalue = 1000
-    bestsol = 1
-    for b in range(10):
-        best = b/10 + 1
-        group_packing(DK,best,0)
-        if model.Status != gp.GRB.OPTIMAL or model2.Status != gp.GRB.OPTIMAL:
-            continue
-        detailed_packing(DK,0)
-        if bestvalue >= remain_car[DK]:
-            bestvalue = remain_car[DK]
-            bestsol = best
-    group_packing(DK,bestsol,1)
-    detailed_packing(DK,1)
-    make_arrow(DK)
-    print('このデッキの余りは{}台です．'.format(remain_car[DK]))
-    print(bestsol)
 
 
-# process_list = []
-# if __name__ == '__main__':
-#     for i in range(5):
-#         process = Process(
-#             target=packing_func(i),
-#         )
-#         process.start()
-#         process_list.append(process)
-
-#     for process in process_list:
-#         process.join()
-    
 
 sum_remain = sum(remain_car)
 print(remain_car)
