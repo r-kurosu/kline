@@ -834,7 +834,7 @@ def detailed_packing(DK,output):
     if output == 1:
         print(df)
 
-def bl_packing(stock_sheet,group,DK):
+def bl_packing(stock_sheet,group,DK,output):
     global df_obs
     new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_1.csv')
@@ -845,10 +845,11 @@ def bl_packing(stock_sheet,group,DK):
     if gap >= car_w and (calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
         for j in range(car_w):
             stock_sheet[new_x + j] += car_h
-        cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group]), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
-        axes[4-DK].add_patch(cars)
-        axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count, fontsize = 1)
-        axes[4-DK].text(new_x+x_sol[group]+car_w/2, new_y+y_sol[group] + car_h/2, '↑', fontsize = 1)
+        if output == 1:
+            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group]), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
+            axes[4-DK].add_patch(cars)
+            axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count, fontsize = 1)
+            axes[4-DK].text(new_x+x_sol[group]+car_w/2, new_y+y_sol[group] + car_h/2, '↑', fontsize = 1)
         df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group], 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         return 1
 
@@ -865,7 +866,7 @@ def bl_packing(stock_sheet,group,DK):
             stock_sheet[new_x + j] = tonari
     return 0
 
-def tl_packing(reverse_sheet,group,DK):
+def tl_packing(reverse_sheet,group,DK,output):
     global df_obs
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_1.csv')
@@ -875,10 +876,11 @@ def tl_packing(reverse_sheet,group,DK):
     if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
         for j in range(car_w):
             reverse_sheet[new_x + j] -= car_h
-        cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
-        axes[4-DK].add_patch(cars)
-        axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count, fontsize = 1)
-        axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
+        if output == 1:
+            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
+            axes[4-DK].add_patch(cars)
+            axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count, fontsize = 1)
+            axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
         df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group] - car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         return 1
     elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False):
@@ -898,7 +900,7 @@ def tl_packing(reverse_sheet,group,DK):
 center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
 remain_car = [0]*13
 
-def new_detailed_packing(DK):
+def new_detailed_packing(DK, output):
     print('今から'+str(DK)+'dkに詰め込みます')
     global new_x, new_y
     global df_obs, obs
@@ -950,14 +952,14 @@ def new_detailed_packing(DK):
             while car_amount > count:
                 new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
                 if new_y + y_sol[i] + car_h > center_line_list[DK]:
-                    count += tl_packing(reverse_sheet,i,12-DK)
+                    count += tl_packing(reverse_sheet,i,12-DK,output)
                     new_x,new_y,gap = find_highest_gap(reverse_sheet,w_sol[i])
                     if new_y + y_sol[i] - car_h < center_line_list[DK] or new_y - car_h < 0:
                         break
                 else:
                     if new_y + car_h > h_sol[i]:
                         break
-                    count += bl_packing(stock_sheet,i,12-DK)
+                    count += bl_packing(stock_sheet,i,12-DK,output)
             df.iloc[i,3] -= count
             count_sum += count
         remain_car[DK] += df.iloc[i,3]
@@ -998,13 +1000,14 @@ def single_packing():
     print(remain_car)
 
 unpacked_car = [4, 0, 0, 52, 14]
+
 def main():
     for DK_number in range(11,12):
         group_packing(12-DK_number,1,1)
-        new_detailed_packing(DK_number)
+        new_detailed_packing(DK_number, output=0)
         print(unpacked_car)
         local_search(DK_number, y_sol, h_sol, unpacked_car)
-        new_detailed_packing(DK_number)
+        new_detailed_packing(DK_number, output=1)
         print(unpacked_car)
         output_func(DK_number)
         make_arrow(12-DK_number)
