@@ -957,14 +957,27 @@ def new_detailed_packing(DK):
         print('packed:{}'.format(count_sum))
     print(df)
 
-for DK_number in range(8,13):
+def single_packing():
+    DK_number = int(input('何番デッキに詰め込みますか?'))
     group_packing(12-DK_number,1,1)
     new_detailed_packing(DK_number)
     output_func(DK_number)
     make_arrow(12-DK_number)
     print(remain_car)
 
-# main
+def main():
+    for DK_number in range(8,13):
+        group_packing(12-DK_number,1,1)
+        new_detailed_packing(DK_number)
+        output_func(DK_number)
+        make_arrow(12-DK_number)
+        print(remain_car)
+
+# single_packing() # 一つだけ詰め込みたいとき #
+main()
+
+
+
 def packing():
     global b
     for DK in range(5):
@@ -987,8 +1000,6 @@ def packing():
         print(bestsol)
         end = time.time()
         print(str(12-DK)+'の計算時間:{:.1f}s'.format(end-start))
-
-# packing()
 
 def packing_func(DK):
     global b
