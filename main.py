@@ -968,9 +968,12 @@ def new_detailed_packing(DK, output):
     unpacked_car = [df.iloc[i,3] for i in range(len(df))]
     # unpacked_car = [df.iloc[i,3] for i in lp_order]
 
+last_remain_car = 0
 def local_search(DK,Y,H,unpacked_car):
     global y_sol, h_sol
+    global last_remain_car
     print('===local search==')
+    last_remain_car = remain_car[DK]
     remain_car[DK] = 0
     df = pd.read_csv('data/car_group/seggroup'+str(DK)+'_1.csv')
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
@@ -991,19 +994,17 @@ def local_search(DK,Y,H,unpacked_car):
                     break
         if flag == 1:
             break
-
     for i in range(len(df)):
         cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
         axes[DK-8].add_patch(cars)
         axes[DK-8].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
-
+    
 
 
 def single_packing():
     DK_number = int(input('何番デッキに詰め込みますか?'))
     group_packing(12-DK_number,1,1)
     new_detailed_packing(DK_number)
-
     output_func(DK_number)
     make_arrow(12-DK_number)
     print(remain_car)
@@ -1019,6 +1020,7 @@ def main():
         local_search(DK_number, y_sol, h_sol, unpacked_car)
         new_detailed_packing(DK_number, output=1)
         print(unpacked_car)
+        print('local searchで更に{}台詰め込めました'.format(last_remain_car - remain_car[DK_number]))
         output_func(DK_number)
         make_arrow(12-DK_number)
         print(remain_car)
