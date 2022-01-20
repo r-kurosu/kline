@@ -969,25 +969,35 @@ def new_detailed_packing(DK, output):
     # unpacked_car = [df.iloc[i,3] for i in lp_order]
 
 def local_search(DK,Y,H,unpacked_car):
+    global y_sol, h_sol
     print('===local search==')
     df = pd.read_csv('data/car_group/seggroup'+str(DK)+'_1.csv')
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 1]
     unpacked_car = [4, 0, 0, 52, 14]
     print(unpacked_car)
+    flag = 0
     for i in range(len(lp_order)):
         for j in range(len(lp_order)):
             if unpacked_car[i] >= 10 and unpacked_car[j] == 0:
                 print('test')
-                if Y[i] + H[i] == Y[j]:
+                if y_sol[i] + h_sol[i] == y_sol[j]:
                     vol_up = i
                     vol_down = j
                     print(vol_up, vol_down)
+                    y_sol[vol_down] = y_sol[vol_down] + 100
+                    h_sol[vol_down] = h_sol[vol_down] - 100
+                    h_sol[vol_up] = h_sol[vol_up] + 100
+                    flag = 1
                     break
+        if flag == 1:
+            break
 
-    H[vol_down] = H[vol_down] - 50
-    Y[vol_up] = Y[vol_down] + H[vol_down]
-    H[vol_up] = H[vol_up] + 50
+    for i in range(len(df)):
+        cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
+        axes[DK-8].add_patch(cars)
+        axes[DK-8].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
+            
 
 
 def single_packing():
@@ -1003,8 +1013,9 @@ unpacked_car = [4, 0, 0, 52, 14]
 
 def main():
     for DK_number in range(11,12):
-        group_packing(12-DK_number,1,1)
+        group_packing(12-DK_number,1,output=0)
         new_detailed_packing(DK_number, output=0)
+        unpacked_car = [4, 0, 0, 52, 14]
         print(unpacked_car)
         local_search(DK_number, y_sol, h_sol, unpacked_car)
         new_detailed_packing(DK_number, output=1)
