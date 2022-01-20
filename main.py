@@ -991,7 +991,18 @@ def local_search(DK,Y,H,unpacked_car):
                     h_sol[vol_down] = h_sol[vol_down] - 100
                     h_sol[vol_up] = h_sol[vol_up] + 100
                     flag = 1
+                    # new_detailed_packing(DK,output=1)
                     break
+                elif y_sol[j] + h_sol[j] == y_sol[i] and x_sol[i] == x_sol[j]:
+                    vol_up = i
+                    vol_down = j
+                    print(vol_up, vol_down)
+                    y_sol[vol_down] = y_sol[vol_down]
+                    h_sol[vol_down] = h_sol[vol_down] - 100
+                    y_sol[vol_up] = y_sol[vol_up] - 100
+                    h_sol[vol_up] = h_sol[vol_up] + 100
+                    flag = 1
+                    pass
         if flag == 1:
             break
     for i in range(len(df)):
@@ -1009,13 +1020,11 @@ def single_packing():
     make_arrow(12-DK_number)
     print(remain_car)
 
-unpacked_car = [4, 0, 0, 52, 14]
 
 def main():
-    for DK_number in range(11,12):
+    for DK_number in range(8,13):
         group_packing(12-DK_number,1,output=0)
         new_detailed_packing(DK_number, output=0)
-        unpacked_car = [4, 0, 0, 52, 14]
         print(unpacked_car)
         local_search(DK_number, y_sol, h_sol, unpacked_car)
         new_detailed_packing(DK_number, output=1)
