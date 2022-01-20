@@ -971,11 +971,10 @@ def new_detailed_packing(DK, output):
 def local_search(DK,Y,H,unpacked_car):
     global y_sol, h_sol
     print('===local search==')
+    remain_car[DK] = 0
     df = pd.read_csv('data/car_group/seggroup'+str(DK)+'_1.csv')
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 1]
-    unpacked_car = [4, 0, 0, 52, 14]
-    print(unpacked_car)
     flag = 0
     for i in range(len(lp_order)):
         for j in range(len(lp_order)):
@@ -997,7 +996,7 @@ def local_search(DK,Y,H,unpacked_car):
         cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
         axes[DK-8].add_patch(cars)
         axes[DK-8].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
-            
+
 
 
 def single_packing():
