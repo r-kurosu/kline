@@ -1,0 +1,54 @@
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  20 JAN 2022 16:59
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**/Users/kurosuryou/kline/paper/template.tex -halt-on-error
+(/Users/kurosuryou/kline/paper/template.tex
+pLaTeX2e <2021-11-15> (based on LaTeX2e <2021-11-15> patch level 1)
+L3 programming layer <2022-01-12> (/usr/local/texlive/2021/texmf-dist/tex/uplatex/base/ujreport.cls
+Document Class: ujreport 2020/09/30 v1.8f-u00 Standard upLaTeX class
+\c@@paper=\count184
+(/usr/local/texlive/2021/texmf-dist/tex/uplatex/base/ujsize10.clo
+File: ujsize10.clo 2020/09/30 v1.8f-u00 Standard upLaTeX file (size option)
+)
+\c@part=\count185
+\c@chapter=\count186
+\c@section=\count187
+\c@subsection=\count188
+\c@subsubsection=\count189
+\c@paragraph=\count190
+\c@subparagraph=\count191
+\c@figure=\count192
+\c@table=\count193
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+
+
+! LaTeX Error: Encoding scheme `JY2' unknown.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.703 ...\DeclareSymbolFont{mincho}{JY2}{mc}{m}{n}
+                                                  
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.703 ...\DeclareSymbolFont{mincho}{JY2}{mc}{m}{n}
+                                                  
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+ 
+Here is how much of TeX's memory you used:
+ 246 strings out of 478749
+ 3346 string characters out of 5859015
+ 298969 words of memory out of 5000000
+ 18757 multiletter control sequences out of 15000+600000
+ 473130 words of font info for 45 fonts, out of 8000000 for 9000
+ 929 hyphenation exceptions out of 8191
+ 33i,0n,38p,197b,35s stack positions out of 5000i,500n,10000p,200000b,80000s
+No pages of output.
