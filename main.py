@@ -977,34 +977,39 @@ def local_search(DK,Y,H,unpacked_car):
     remain_car[DK] = 0
     df = pd.read_csv('data/car_group/seggroup'+str(DK)+'_1.csv')
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
-    lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 1]
-    flag = 0
-    for i in range(len(lp_order)):
-        for j in range(len(lp_order)):
-            if unpacked_car[i] >= 10 and unpacked_car[j] == 0:
-                print('test')
-                if y_sol[i] + h_sol[i] == y_sol[j] and x_sol[i] == x_sol[j]:
-                    vol_up = i
-                    vol_down = j
-                    print(vol_up, vol_down)
-                    y_sol[vol_down] = y_sol[vol_down] + 100
-                    h_sol[vol_down] = h_sol[vol_down] - 100
-                    h_sol[vol_up] = h_sol[vol_up] + 100
-                    flag = 1
-                    # new_detailed_packing(DK,output=1)
-                    break
-                elif y_sol[j] + h_sol[j] == y_sol[i] and x_sol[i] == x_sol[j]:
-                    vol_up = i
-                    vol_down = j
-                    print(vol_up, vol_down)
-                    y_sol[vol_down] = y_sol[vol_down]
-                    h_sol[vol_down] = h_sol[vol_down] - 100
-                    y_sol[vol_up] = y_sol[vol_up] - 100
-                    h_sol[vol_up] = h_sol[vol_up] + 100
-                    flag = 1
-                    pass
-        if flag == 1:
-            break
+    df_seg = [0]*3
+    df_seg[1] = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 1]
+    df_seg[2] = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 2]
+    for seg in range(1,3):
+        flag = 0
+        for i in range(len(df_seg[seg])):
+            for j in range(len(df_seg[seg])):
+                if unpacked_car[i] >= 10 and unpacked_car[j] == 0:
+                    print('test')
+                    change_rate = unpacked_car[i]*50/20
+                    if y_sol[i] + h_sol[i] == y_sol[j] and x_sol[i] == x_sol[j]:
+                        vol_up = i
+                        vol_down = j
+                        print(vol_up, vol_down)
+                        y_sol[vol_down] = y_sol[vol_down] + change_rate
+                        h_sol[vol_down] = h_sol[vol_down] - change_rate
+                        h_sol[vol_up] = h_sol[vol_up] + change_rate
+                        flag = 1
+                        # new_detailed_packing(DK,output=1)
+                        break
+                    elif y_sol[j] + h_sol[j] == y_sol[i] and x_sol[i] == x_sol[j]:
+                        vol_up = i
+                        vol_down = j
+                        print(vol_up, vol_down)
+                        y_sol[vol_down] = y_sol[vol_down]
+                        h_sol[vol_down] = h_sol[vol_down] - change_rate
+                        y_sol[vol_up] = y_sol[vol_up] - change_rate
+                        h_sol[vol_up] = h_sol[vol_up] + change_rate
+                        flag = 1
+                        pass
+            if flag == 1:
+                break
+
     for i in range(len(df)):
         cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
         axes[DK-8].add_patch(cars)
