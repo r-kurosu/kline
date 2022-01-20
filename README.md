@@ -7,5 +7,5 @@ output_data/output.png
 --
 ## tex
 
-cd paper
+cd paper //
 latexmk template.tex
