@@ -980,7 +980,7 @@ def local_search(DK,Y,H,unpacked_car):
         for j in range(len(lp_order)):
             if unpacked_car[i] >= 10 and unpacked_car[j] == 0:
                 print('test')
-                if y_sol[i] + h_sol[i] == y_sol[j]:
+                if y_sol[i] + h_sol[i] == y_sol[j] and x_sol[i] == x_sol[j]:
                     vol_up = i
                     vol_down = j
                     print(vol_up, vol_down)
