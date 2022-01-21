@@ -20,6 +20,8 @@ import math
 BOOKING = 3
 COLOR = 6   # 6 = LP, 7 = DP
 
+print('booking plan {} を実行します'.format(BOOKING))
+
 t1 = time.time()
 
 df_list = [0]*5
@@ -747,7 +749,7 @@ def detailed_packing(DK,output):
                         for j in range(car_w):
                             stock_sheet[new_x + j] += car_h
                         if output == 1:
-                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i]), width = car_w, height = car_h, fc = color_check(df.iloc[i,7]), ec = 'k', linewidth = 0.2)
+                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i]), width = car_w, height = car_h, fc = color_check(df.iloc[i,COLOR]), ec = 'k', linewidth = 0.2)
                             axes[4-DK].add_patch(cars)
                             axes[4-DK].text(new_x+x_sol[i]+0.5, new_y+y_sol[i]+2, count, fontsize = 1)
                             axes[4-DK].text(new_x+x_sol[i]+car_w/2, new_y+y_sol[i] + car_h/2, '↑', fontsize = 1)
@@ -807,7 +809,7 @@ def detailed_packing(DK,output):
                         for j in range(car_w):
                             reverse_sheet[new_x + j] -= car_h
                         if output == 1:    
-                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[i,7]), ec = 'k', linewidth = 0.2)
+                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[i,COLOR]), ec = 'k', linewidth = 0.2)
                             axes[4-DK].add_patch(cars)
                             axes[4-DK].text(new_x+x_sol[i] + 0.5, new_y+y_sol[i] - car_h + 2, count, fontsize = 1)
                             axes[4-DK].text(new_x+x_sol[i] + car_w/2, new_y+y_sol[i] - car_h/2, '↓', fontsize = 1)
@@ -848,7 +850,7 @@ def bl_packing(stock_sheet,group,DK,output):
         for j in range(car_w):
             stock_sheet[new_x + j] += car_h
         if output == 1:
-            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group]), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
+            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group]), width = car_w, height = car_h, fc = color_check(df.iloc[group,COLOR]), ec = 'k', linewidth = 0.2)
             axes[4-DK].add_patch(cars)
             axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count, fontsize = 1)
             axes[4-DK].text(new_x+x_sol[group]+car_w/2, new_y+y_sol[group] + car_h/2, '↑', fontsize = 1)
@@ -879,7 +881,7 @@ def tl_packing(reverse_sheet,group,DK,output):
         for j in range(car_w):
             reverse_sheet[new_x + j] -= car_h
         if output == 1:
-            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
+            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[group,COLOR]), ec = 'k', linewidth = 0.2)
             axes[4-DK].add_patch(cars)
             axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count, fontsize = 1)
             axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
