@@ -1,13 +1,14 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (TeX Live 2022/dev) (preloaded format=latex 2022.1.20)  20 JAN 2022 15:51
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  20 JAN 2022 15:54
 entering extended mode
  restricted \write18 enabled.
+ file:line:error style messages enabled.
  %&-line parsing enabled.
 **abstract.tex
 (./abstract.tex
-LaTeX2e <2021-11-15> patch level 1
+pLaTeX2e <2021-11-15> (based on LaTeX2e <2021-11-15> patch level 1)
 L3 programming layer <2022-01-12>
 
-! LaTeX Error: Missing \begin{document}.
+./abstract.tex:7: LaTeX Error: Missing \begin{document}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -15,22 +16,24 @@ Type  H <return>  for immediate help.
                                                   
 l.7 \begin{center}
                   {\LARGE A column generation approach \\for the bus crew sc...
+
 ? 
-! Emergency stop.
+./abstract.tex:7: Emergency stop.
  ...                                              
                                                   
 l.7 \begin{center}
                   {\LARGE A column generation approach \\for the bus crew sc...
+
 You're in trouble here.  Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
  
 Here is how much of TeX's memory you used:
- 17 strings out of 478287
- 528 string characters out of 5846753
- 288917 words of memory out of 5000000
- 18314 multiletter control sequences out of 15000+600000
- 469259 words of font info for 28 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 15i,0n,12p,143b,24s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 18 strings out of 478749
+ 466 string characters out of 5859015
+ 295185 words of memory out of 5000000
+ 18540 multiletter control sequences out of 15000+600000
+ 473130 words of font info for 45 fonts, out of 8000000 for 9000
+ 929 hyphenation exceptions out of 8191
+ 15i,0n,23p,143b,24s stack positions out of 5000i,500n,10000p,200000b,80000s
 No pages of output.
