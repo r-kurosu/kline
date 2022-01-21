@@ -17,12 +17,16 @@ from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
 
+BOOKING = 3
+COLOR = 6   # 6 = LP, 7 = DP
+
+print('booking plan {} を実行します'.format(BOOKING))
 
 t1 = time.time()
 
 df_list = [0]*5
 for i in range(5):
-    df_list[i] = pd.read_csv('data/car_group/seggroup'+str(12-i)+'_1.csv')
+    df_list[i] = pd.read_csv('data/car_group/seggroup'+str(12-i)+'_'+str(BOOKING)+'.csv')
 
 
 seg_dp12 = [0,0,0]
@@ -96,9 +100,9 @@ df_obs_ = [0]*13
 df_aisle_ = [0]*13
 def datainput(DK):
     for i in range(8,13):
-        # df_car[i] = pd.read_csv("data/car_"+str(i)+"dk_1.csv")
-        # df_car[i] = pd.read_csv("data/car_group/cargroup"+str(i)+"_1.csv")
-        df_car[i] = pd.read_csv("data/car_group/seggroup"+str(i)+"_1.csv")
+        # df_car[i] = pd.read_csv("data/car_"+str(i)+"dk_'+str(BOOKING)+'.csv")
+        # df_car[i] = pd.read_csv("data/car_group/cargroup"+str(i)+"'+str(BOOKING)+'.csv")
+        df_car[i] = pd.read_csv("data/car_group/seggroup"+str(i)+'_'+str(BOOKING)+'.csv')
         df_ship_[i] = pd.read_csv("data/ship_data/ship_"+str(i)+"dk.csv")
         df_ramp_[i] = pd.read_csv("data/ramp_data/ramp_"+str(i)+"dk.csv")
         df_obs_[i] = pd.read_csv("data/obs_data/obs_"+str(i)+"dk.csv")
@@ -499,7 +503,7 @@ def group_packing(DK,b,output):
     area = [df.iloc[i,1]*df.iloc[i,2]*df.iloc[i,3] for i in range(n)]
     unpacked_car = [0]*n
     
-    df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
+    df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     max_height = [0]*n
     max_width = [0]*n
     for i in range(n):
@@ -693,7 +697,7 @@ def detailed_packing(DK,output):
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
     # print(lp_order)
     # main packing
-    df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_1.csv')
+    df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     seg1 = df_car['SEG'] == 1
     seg2 = df_car['SEG'] == 2
     df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
@@ -745,7 +749,7 @@ def detailed_packing(DK,output):
                         for j in range(car_w):
                             stock_sheet[new_x + j] += car_h
                         if output == 1:
-                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i]), width = car_w, height = car_h, fc = color_check(df.iloc[i,7]), ec = 'k', linewidth = 0.2)
+                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i]), width = car_w, height = car_h, fc = color_check(df.iloc[i,COLOR]), ec = 'k', linewidth = 0.2)
                             axes[4-DK].add_patch(cars)
                             axes[4-DK].text(new_x+x_sol[i]+0.5, new_y+y_sol[i]+2, count, fontsize = 1)
                             axes[4-DK].text(new_x+x_sol[i]+car_w/2, new_y+y_sol[i] + car_h/2, '↑', fontsize = 1)
@@ -805,7 +809,7 @@ def detailed_packing(DK,output):
                         for j in range(car_w):
                             reverse_sheet[new_x + j] -= car_h
                         if output == 1:    
-                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[i,7]), ec = 'k', linewidth = 0.2)
+                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[i,COLOR]), ec = 'k', linewidth = 0.2)
                             axes[4-DK].add_patch(cars)
                             axes[4-DK].text(new_x+x_sol[i] + 0.5, new_y+y_sol[i] - car_h + 2, count, fontsize = 1)
                             axes[4-DK].text(new_x+x_sol[i] + car_w/2, new_y+y_sol[i] - car_h/2, '↓', fontsize = 1)
@@ -837,7 +841,7 @@ def detailed_packing(DK,output):
 def bl_packing(stock_sheet,group,DK,output):
     global df_obs
     new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
-    df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_1.csv')
+    df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y + car_h > h_sol[group]:
         print('over')
         return 0
@@ -846,7 +850,7 @@ def bl_packing(stock_sheet,group,DK,output):
         for j in range(car_w):
             stock_sheet[new_x + j] += car_h
         if output == 1:
-            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group]), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
+            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group]), width = car_w, height = car_h, fc = color_check(df.iloc[group,COLOR]), ec = 'k', linewidth = 0.2)
             axes[4-DK].add_patch(cars)
             axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count, fontsize = 1)
             axes[4-DK].text(new_x+x_sol[group]+car_w/2, new_y+y_sol[group] + car_h/2, '↑', fontsize = 1)
@@ -869,7 +873,7 @@ def bl_packing(stock_sheet,group,DK,output):
 def tl_packing(reverse_sheet,group,DK,output):
     global df_obs
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
-    df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_1.csv')
+    df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y - car_h < 0 or new_y + y_sol[group] - car_h < center_line_list[12-DK]:
         return 0
     # DP,LPによる通路制約は省略
@@ -877,7 +881,7 @@ def tl_packing(reverse_sheet,group,DK,output):
         for j in range(car_w):
             reverse_sheet[new_x + j] -= car_h
         if output == 1:
-            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[group,7]), ec = 'k', linewidth = 0.2)
+            cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[group,COLOR]), ec = 'k', linewidth = 0.2)
             axes[4-DK].add_patch(cars)
             axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count, fontsize = 1)
             axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
@@ -925,7 +929,7 @@ def new_detailed_packing(DK, output):
     df_lp = df.sort_values(by=['LP','DP'], ascending = [True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
-    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_1.csv')
+    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
     
@@ -975,7 +979,7 @@ def local_search(DK,Y,H,unpacked_car):
     print('===local search==')
     last_remain_car = remain_car[DK]
     remain_car[DK] = 0
-    df = pd.read_csv('data/car_group/seggroup'+str(DK)+'_1.csv')
+    df = pd.read_csv('data/car_group/seggroup'+str(DK)+'_'+str(BOOKING)+'.csv')
     df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
     df_seg = [0]*3
     df_seg[1] = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 1]
@@ -1081,7 +1085,7 @@ print('計算時間:{:.1f}s'.format(t2-t1))
 plt.axis("scaled")
 plt.tight_layout()
 # ax.set_aspect('equal')
-plt.savefig('output_data/output.png', dpi = 2000)
+plt.savefig('output_data/output_b'+str(BOOKING)+'.pdf', dpi = 2000)
 
 
 t3 = time.time()
