@@ -1,4 +1,138 @@
 \chapter{定式化}\label{formulation}
 
 この章では本研究における用語や制約，目的関数について説明する．
+本研究では2段階に分けた構築法を提案するため，それぞれ分けて説明する．
+それぞれの段階の説明は第4章に記す．
 
+\section{記号の定義}
+
+% \begin{table}[htb]
+%     \caption{変数の定義}
+%     \begin{center}
+%     \label{table31}
+%     \begin{tabular}{cp{35em}} \hline
+%     変数 & \hspace{2.0em}変数の説明 \\ \hline
+    
+%     $w_i$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}長方形iの横幅
+%     \end{tabular} \\ \hline
+
+%     $h_i$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}長方形iの高さ
+%     \end{tabular} \\ \hline
+
+%     $x_i$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}長方形iのx座標
+%     \end{tabular} \\ \hline
+
+%     $y_i$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}長方形iのy座標
+%     \end{tabular} \\ \hline
+
+%     $L$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}積み地の集合
+%     \end{tabular} \\ \hline
+    
+%     $D$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}揚げ地の集合
+%     \end{tabular} \\ \hline
+
+%     $S_i$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}長方形iの面積
+%     \end{tabular} \\ \hline
+
+%     $w_i$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}長方形iの横幅
+%     \end{tabular} \\ \hline
+
+
+%     \end{tabular}
+%     \end{center}
+%     \end{table}
+    
+%     \begin{table}[htb]
+%     \caption{定数の定義}
+%     \begin{center}
+%     \label{table32}
+%     \begin{tabular}{cp{35em}} \hline
+%     定数 & \hspace{2.0em}定数の説明  \\ \hline
+    
+%     $W$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}デッキの横幅
+%     \end{tabular} \\ \hline
+    
+%     $H$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}デッキの高さ
+%     \end{tabular} \\ \hline
+    
+%     $L$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}積み地の集合
+%     \end{tabular} \\ \hline
+    
+%     $D$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}揚げ地の集合
+%     \end{tabular} \\ \hline
+
+%     $O$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}障害物の集合
+%     \end{tabular} \\ \hline
+    
+%     $I_i$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}グループiに属する車の集合
+%     \end{tabular} \\ \hline
+
+%     $n$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}デッキ内のグループの数
+%     \end{tabular} \\ \hline
+    
+%     $H$ &
+%     \begin{tabular}{l}
+%     \hspace{1.4em}デッキの高さ
+%     \end{tabular} \\ \hline
+    
+%     \end{tabular}
+%     \end{center}
+%     \end{table}
+    
+
+
+\section{制約}
+本研究で扱う独自の制約について説明する．
+\subsection*{第一段階}
+\textgt{(i)自動車移動経路に関する制約}\\
+ランプから配置場所まで，自走で到達するためには，船の入口から配置場所まで移動する経路が必要である．
+従って本研究では，必要な導線上に，既配置の車がないようにする．\\
+
+\textgt{(ii)グループの大きさに関する制約}\\
+各グループの
+\subsection*{第二段階}
+\textgt{(i)配置位置に関する制約}\\
+各車の配置位置は，席割で決められたホールドに駐車しなければいけない．
+実際には，ホールド単位ではなくセグメント単位で行う．\\
+
+\textgt{(ii)駐車方法に関する制約}\\
+駐車は原則的にバック駐車で行う．
+配置場所付近に障害物等があると，物理的に駐車できない可能性がある．\\
+
+\textgt{(iii)駐車間隔に関する制約}\\
+駐車する車同士の間隔は，前後方向に10cm，左右方向に40cm空いていなければいけない．\\
+
+
+\section{目的関数}
+\subsection*{第一段階}
+\subsection*{第二段階}

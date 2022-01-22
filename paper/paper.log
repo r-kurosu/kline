@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  22 JAN 2022 12:50
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  22 JAN 2022 15:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -378,36 +378,52 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 
 
 
-]) [3]
+]
+Overfull \hbox (32.32077pt too wide) in paragraph at lines 74--84
+ [][][] 
+ []
+
+
+LaTeX Warning: Reference `tale22' on page 3 undefined on input line 88.
+
+
+LaTeX Warning: Reference `table23' on page 3 undefined on input line 89.
+
+
+Overfull \hbox (23.68399pt too wide) in paragraph at lines 97--104
+ [][][] 
+ []
+
+) [3]
 \openout2 = `chapter3.aux'.
 
  (./chapter3.tex
 第 3 章
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 116.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 116.
 ) [4
 
 
 
 
-]
+] [5]
 \openout2 = `chapter4.aux'.
 
  (./chapter4.tex
 第 4 章
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 11.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 11.
-[5
+[6
 
 
 
 
-]) [6]
+]) [7]
 \openout2 = `chapter5.aux'.
 
  (./chapter5.tex
 第 5 章
-) [7
+) [8
 
 
 
@@ -417,7 +433,7 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 
  (./chapter6.tex
 第 6 章
-) [8
+) [9
 
 
 
@@ -427,7 +443,7 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 
  (./chapter7.tex
 第 7 章
-) [9
+) [10
 
 
 
@@ -435,7 +451,7 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 ]
 \openout2 = `chapter8.aux'.
 
- (./chapter8.tex) [10
+ (./chapter8.tex) [11
 
 
 
@@ -449,20 +465,24 @@ LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
 (Font)              No change on input line 105.
 LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
 (Font)              No change on input line 112.
- [11
+ [12
 
 
 
-] (./paper.aux (./tekiyou.aux) (./chapter1.aux)
-(./chapter2.aux) (./chapter3.aux) (./chapter4.aux) (./chapter5.aux)
-(./chapter6.aux) (./chapter7.aux) (./chapter8.aux)) ) 
+] (./paper.aux (./tekiyou.aux) (./chapter1.aux) (./chapter2.aux) (./chapter3.au
+x) (./chapter4.aux) (./chapter5.aux)
+(./chapter6.aux) (./chapter7.aux) (./chapter8.aux))
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 4042 strings out of 478749
- 63213 string characters out of 5859015
- 358673 words of memory out of 5000000
- 22327 multiletter control sequences out of 15000+600000
+ 4048 strings out of 478749
+ 63271 string characters out of 5859015
+ 364695 words of memory out of 5000000
+ 22333 multiletter control sequences out of 15000+600000
  486113 words of font info for 79 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 55i,5n,62p,328b,261s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,8n,62p,328b,298s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on paper.dvi (14 pages, 24460 bytes).
+Output written on paper.dvi (15 pages, 29804 bytes).
