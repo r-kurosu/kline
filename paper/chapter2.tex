@@ -28,6 +28,9 @@
     \item ホールド \\
     各デッキ内を一定間隔の領域で仕切られた空間.
 
+    \item セグメント \\
+    隣接するいくつかのホールドをまとめた空間.
+
     \item ランプ \\
     上下デッキに移動するために各デッキの特定ホールドについているスロープ.
 
@@ -53,12 +56,50 @@
 
 \begin{itemize}
     \item 車情報 \\
-    車の数，大きさ，積み地，揚げ地，指定のホールドを受け取る．
+    車の数，種類，大きさ，積み地，揚げ地，指定のホールド．\\
+    本研究では実際のプランで使われているデータを利用した．
     \item 船体情報 \\
-    船体の大きさ，各階層のランプの位置，船内の障害物の位置や大きさは実際のデータを元に手入力で行った．
+    船体の大きさ，各階層のランプの位置，船内の障害物の位置や大きさ．\\
+    本研究では実際の図面データを元に手入力で行った．
+
 \end{itemize}
-入力情報のうち車体情報の例を表2．1に示す．
+入力情報のうち車体情報の例を表\ref{table21}に示す．
+
+\begin{table}[htbp]
+    \tabcolsep = 15pt
+    \renewcommand{\arraystretch}{0.8}
+    \caption{車体情報の例}
+    \label{table21}
+    \begin{center}
+    \begin{tabular}{rcccrrrr} \hline
+    番号 & 車種 & 積み地 & 揚げ地 & 数量 & ホールド & 横幅 & 高さ \\ \hline
+    1 & Prius & A港 & E港 & 100 & 1 & 200 & 500 \\
+    2 & Prius & A港 & E港 & 100 & 2 & 200 & 500 \\
+    3 & Aqua & B港 & F港 & 30 & 2 & 250 & 450 \\
+    4 & Carolla & C港 & G港 & 60 & 3 & 180 & 480 \\
+    5 & Lexus & C港 & G港 & 40 & 3 & 230 & 510 \\
+    6 & Lexus & D港 & H港 & 100 & 4 & 230 & 420 \\
+    \hline
+    \end{tabular}
+    \end{center}
+    \end{table}
 
 \section{出力}
-図2.2のような配置図を出力とする．
+また詰込むことのできなかった車の台数を表\ref{tale22}のように出力する．
+最終的に図\ref{table23}のような配置図を出力とする．
 
+\begin{table}[htbp]
+    \tabcolsep = 15pt
+    \renewcommand{\arraystretch}{0.8}
+    \caption{出力の例1}
+    \label{table22}
+    \begin{center}
+    \begin{tabular}{rcccrrrr} \hline
+    番号 & 車種 & 積み地 & 揚げ地 & 数量 & ホールド & 横幅 & 高さ \\ \hline
+    1 & Prius & A港 & E港 & 3 & 1 & 200 & 500 \\
+    2 & Prius & A港 & E港 & 5 & 2 & 200 & 500 \\
+    3 & Aqua & B港 & F港 & 10 & 4 & 250 & 450 \\
+    \hline
+    \end{tabular}
+    \end{center}
+    \end{table}
