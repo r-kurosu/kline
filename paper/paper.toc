@@ -9,7 +9,6 @@
 \contentsline {section}{\numberline {3.3}soft-rectangleパッキング}{5}{}%
 \contentsline {section}{\numberline {3.4}Sequence-pair}{5}{}%
 \contentsline {section}{\numberline {3.5}no-fit polygon}{5}{}%
-\contentsline {section}{\numberline {3.6}制約}{5}{}%
 \contentsline {chapter}{\numberline {第4章}提案手法}{6}{}%
 \contentsline {section}{\numberline {4.1}第一段階}{6}{}%
 \contentsline {subsection}{\numberline {4.1.1}第一段階に対する解法}{6}{}%

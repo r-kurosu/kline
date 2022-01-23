@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  23 JAN 2022 12:20
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  23 JAN 2022 15:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -378,7 +378,7 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 
 
 ]
-Overfull \hbox (32.32077pt too wide) in paragraph at lines 74--84
+Overfull \hbox (32.32077pt too wide) in paragraph at lines 68--78
  [][][] 
  []
 
@@ -434,16 +434,7 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 
 
 
-]
-LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
-(Font)              No change on input line 96.
-LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
-(Font)              No change on input line 100.
-LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
-(Font)              No change on input line 105.
-LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
-(Font)              No change on input line 112.
- [11
+] [11
 
 
 
@@ -451,12 +442,12 @@ LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
 (./chapter2.aux) (./chapter3.aux) (./chapter4.aux) (./chapter6.aux)
 (./chapter7.aux) (./chapter8.aux)) ) 
 Here is how much of TeX's memory you used:
- 4020 strings out of 478749
- 62548 string characters out of 5859015
- 364318 words of memory out of 5000000
+ 4019 strings out of 478749
+ 62527 string characters out of 5859015
+ 364321 words of memory out of 5000000
  22312 multiletter control sequences out of 15000+600000
- 486113 words of font info for 79 fonts, out of 8000000 for 9000
+ 485427 words of font info for 78 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
  55i,17n,62p,320b,376s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on paper.dvi (14 pages, 32804 bytes).
+Output written on paper.dvi (14 pages, 32068 bytes).

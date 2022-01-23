@@ -520,7 +520,6 @@ INPUT ./chapter8.tex
 INPUT chapter8.tex
 INPUT ./chapter8.tex
 INPUT chapter8.tex
-INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/jknappen/ec/ecti1000.tfm
 INPUT paper.aux
 INPUT ./tekiyou.aux
 INPUT tekiyou.aux
