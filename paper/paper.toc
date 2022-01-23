@@ -5,18 +5,24 @@
 \contentsline {section}{\numberline {2.3}出力}{3}{}%
 \contentsline {chapter}{\numberline {第3章}定式化}{4}{}%
 \contentsline {section}{\numberline {3.1}記号の定義}{4}{}%
-\contentsline {section}{\numberline {3.2}長方形詰込み問題}{4}{}%
-\contentsline {section}{\numberline {3.3}soft-rectangleパッキング}{5}{}%
-\contentsline {section}{\numberline {3.4}Sequence-pair}{5}{}%
-\contentsline {section}{\numberline {3.5}no-fit polygon}{5}{}%
-\contentsline {chapter}{\numberline {第4章}提案手法}{6}{}%
-\contentsline {section}{\numberline {4.1}第一段階}{6}{}%
-\contentsline {subsection}{\numberline {4.1.1}第一段階に対する解法}{6}{}%
-\contentsline {section}{\numberline {4.2}第二段階}{6}{}%
-\contentsline {subsection}{\numberline {4.2.1}bottom-left法}{6}{}%
-\contentsline {subsection}{\numberline {4.2.2}レクトリニア図形}{7}{}%
-\contentsline {chapter}{\numberline {第5章}計算実験}{8}{}%
-\contentsline {section}{\numberline {5.1}第一段階の求解結果}{8}{}%
-\contentsline {section}{\numberline {5.2}第二段階の求解結果}{8}{}%
-\contentsline {chapter}{\numberline {第6章}まとめと今後の研究計画}{9}{}%
-\contentsline {chapter}{参考文献}{11}{}%
+\contentsline {section}{\numberline {3.2}一般論(仮タイトル)}{4}{}%
+\contentsline {subsection}{\numberline {3.2.1}長方形詰込み問題}{4}{}%
+\contentsline {subsection}{\numberline {3.2.2}Soft-rectangleパッキング}{5}{}%
+\contentsline {subsection}{\numberline {3.2.3}Sequence-pair}{5}{}%
+\contentsline {subsection}{\numberline {3.2.4}No-fit polygon}{5}{}%
+\contentsline {section}{\numberline {3.3}第一段階}{5}{}%
+\contentsline {subsection}{\numberline {3.3.1}制約}{6}{}%
+\contentsline {subsection}{\numberline {3.3.2}目的関数}{6}{}%
+\contentsline {subsection}{\numberline {3.3.3}定式化}{7}{}%
+\contentsline {section}{\numberline {3.4}第二段階}{7}{}%
+\contentsline {subsection}{\numberline {3.4.1}制約}{7}{}%
+\contentsline {subsection}{\numberline {3.4.2}目的関数}{7}{}%
+\contentsline {subsection}{\numberline {3.4.3}定式化}{8}{}%
+\contentsline {chapter}{\numberline {第4章}提案手法}{9}{}%
+\contentsline {section}{\numberline {4.1}第一段階}{9}{}%
+\contentsline {section}{\numberline {4.2}第二段階}{9}{}%
+\contentsline {chapter}{\numberline {第5章}計算実験}{10}{}%
+\contentsline {section}{\numberline {5.1}第一段階の求解結果}{10}{}%
+\contentsline {section}{\numberline {5.2}第二段階の求解結果}{10}{}%
+\contentsline {chapter}{\numberline {第6章}まとめと今後の研究計画}{11}{}%
+\contentsline {chapter}{参考文献}{13}{}%
