@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  23 JAN 2022 10:11
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  23 JAN 2022 10:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -256,8 +256,7 @@ File: l3backend-dvips.def 2022-01-12 L3 backend support: dvips
 LaTeX Warning: Unused global option(s):
     [platex].
 
-(./paper.aux (./tekiyou.aux) (./chapter1.aux) (./chapter2.aux) (./chapter3.aux)
-(./chapter4.aux) (./chapter6.aux) (./chapter7.aux) (./chapter8.aux))
+(./paper.aux (./tekiyou.aux) (./chapter1.aux) (./chapter2.aux))
 \openout1 = `paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 37.
@@ -330,27 +329,7 @@ LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <20.74> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 73.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <20.74> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 73.
- (./paper.toc
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 1.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 3.
-
-(/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 3.
-
-(/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 3.
-
-
-(/usr/local/texlive/2021/texmf-dist/tex/latex/base/ulasy.fd
-File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
-))
+ (./paper.toc)
 \tf@toc=\write4
 \openout4 = `paper.toc'.
 
@@ -361,8 +340,7 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 ]
 \openout2 = `chapter1.aux'.
 
-
-(./chapter1.tex
+ (./chapter1.tex
 第 1 章
 ) [1
 
@@ -378,100 +356,23 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 
 
 ]
-Overfull \hbox (32.32077pt too wide) in paragraph at lines 74--84
- [][][] 
- []
+LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 66.
+LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 66.
 
 
-LaTeX Warning: Reference `tale22' on page 3 undefined on input line 94.
+LaTeX Warning: Reference `table21' on page 3 undefined on input line 66.
 
 
-LaTeX Warning: Reference `table23' on page 3 undefined on input line 95.
+LaTeX Warning: Reference `figure22' on page 3 undefined on input line 66.
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 74.
+
+(/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 74.
 
 
-Overfull \hbox (23.68399pt too wide) in paragraph at lines 103--110
- [][][] 
- []
-
-) [3] [4]
-\openout2 = `chapter3.aux'.
-
- (./chapter3.tex
-第 3 章
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 116.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 116.
-) [5
-
-
-
-
-] [6]
-\openout2 = `chapter4.aux'.
-
- (./chapter4.tex
-第 4 章
-[7
-
-
-
-
-]) [8]
-\openout2 = `chapter6.aux'.
-
- (./chapter6.tex
-第 5 章
-) [9
-
-
-
-
-]
-\openout2 = `chapter7.aux'.
-
- (./chapter7.tex
-第 6 章
-) [10
-
-
-
-
-]
-\openout2 = `chapter8.aux'.
-
- (./chapter8.tex) [11
-
-
-
-
-]
-LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
-(Font)              No change on input line 96.
-LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
-(Font)              No change on input line 100.
-LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
-(Font)              No change on input line 105.
-LaTeX Font Info:    Kanji font shape `JY1/mc/m/it' undefined
-(Font)              No change on input line 112.
- [12
-
-
-
-] (./paper.aux (./tekiyou.aux) (./chapter1.aux) (./chapter2.aux) (./chapter3.au
-x) (./chapter4.aux) (./chapter6.aux)
-(./chapter7.aux) (./chapter8.aux))
-
-LaTeX Warning: There were undefined references.
-
- ) 
-Here is how much of TeX's memory you used:
- 4021 strings out of 478749
- 62554 string characters out of 5859015
- 362299 words of memory out of 5000000
- 22313 multiletter control sequences out of 15000+600000
- 486113 words of font info for 79 fonts, out of 8000000 for 9000
- 929 hyphenation exceptions out of 8191
- 55i,8n,62p,320b,298s stack positions out of 5000i,500n,10000p,200000b,80000s
-
-Output written on paper.dvi (15 pages, 30512 bytes).
+(/usr/local/tex
