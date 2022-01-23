@@ -1,0 +1,11 @@
+# Fdb version 3
+["dvipdf"] 0 "latex_out/paper.dvi" "latex_out/paper.pdf" "latex_out/paper" 0
+  "latex_out/paper.dvi" 0 -1 0 "latex"
+  (generated)
+  "latex_out/paper.pdf"
+["latex"] 0 "/Users/kurosuryou/kline/paper/paper.tex" "latex_out/paper.dvi" "paper" 0
+  "/Users/kurosuryou/kline/paper/paper.tex" 0 -1 0 ""
+  "latex_out/paper.aux" 1642896522 32 3985256e7290058c681f74d7a3565a19 ""
+  (generated)
+  "latex_out/paper.dvi"
+  "latex_out/paper.log"
