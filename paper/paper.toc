@@ -7,7 +7,7 @@
 \contentsline {section}{\numberline {3.1}記号の定義}{4}{}%
 \contentsline {section}{\numberline {3.2}一般論(仮タイトル)}{4}{}%
 \contentsline {subsection}{\numberline {3.2.1}長方形詰込み問題}{4}{}%
-\contentsline {subsection}{\numberline {3.2.2}Soft-rectangleパッキング}{5}{}%
+\contentsline {subsection}{\numberline {3.2.2}Soft-rectangleパッキング問題}{5}{}%
 \contentsline {subsection}{\numberline {3.2.3}Sequence-pair}{5}{}%
 \contentsline {subsection}{\numberline {3.2.4}No-fit polygon}{5}{}%
 \contentsline {section}{\numberline {3.3}第一段階}{5}{}%
@@ -22,7 +22,8 @@
 \contentsline {section}{\numberline {4.1}第一段階}{9}{}%
 \contentsline {section}{\numberline {4.2}第二段階}{9}{}%
 \contentsline {chapter}{\numberline {第5章}計算実験}{10}{}%
-\contentsline {section}{\numberline {5.1}第一段階の求解結果}{10}{}%
-\contentsline {section}{\numberline {5.2}第二段階の求解結果}{10}{}%
+\contentsline {section}{\numberline {5.1}計算環境}{10}{}%
+\contentsline {section}{\numberline {5.2}第一段階の求解結果}{10}{}%
+\contentsline {section}{\numberline {5.3}第二段階の求解結果}{10}{}%
 \contentsline {chapter}{\numberline {第6章}まとめと今後の研究計画}{11}{}%
 \contentsline {chapter}{参考文献}{13}{}%
