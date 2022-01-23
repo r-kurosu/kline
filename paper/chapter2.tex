@@ -63,7 +63,7 @@
     本研究では実際の図面データを元に手入力で行った. 
 
 \end{itemize}
-入力情報のうち車体情報の例を表\ref{table21}に示し, 船内図を図\ref{figure22}に示す. 
+入力情報のうち車体情報の例を表\ref{table21}に示し, 船内図を図\ref{figure21}に示す. 
 
 \begin{table}[htbp]
     \tabcolsep = 15pt
@@ -84,28 +84,35 @@
     \end{center}
     \end{table}
 
-\begin{figure}[htbt]
-    \includegraphics{illustration/ship.pdf}
-    \caption{船内図の例}
-    \label{figure22}
+\begin{figure}[htbp]
+    % \includegraphics{illustration/ship.pdf}
+    \caption{船内図の例(仮)}
+    \label{figure21}
 \end{figure}
 
 \section{出力}
-また詰込むことのできなかった車の台数を表\ref{tale22}のように出力する. 
-最終的に図\ref{table23}のような配置図を出力とする. 
+詰め込むことのできなかった車の台数と配置図を出力する. \\
+配置図の例を図\ref{figure22}に示す. 
 
-\begin{table}[htbp]
-    \tabcolsep = 15pt
-    \renewcommand{\arraystretch}{0.8}
-    \caption{出力の例1}
-    \label{table22}
-    \begin{center}
-    \begin{tabular}{rcccrrrr} \hline
-    番号 & 車種 & 積み地 & 揚げ地 & 数量 & ホールド & 横幅 & 高さ \\ \hline
-    1 & Prius & A港 & E港 & 3 & 1 & 200 & 500 \\
-    2 & Prius & A港 & E港 & 5 & 2 & 200 & 500 \\
-    3 & Aqua & B港 & F港 & 10 & 4 & 250 & 450 \\
-    \hline
-    \end{tabular}
-    \end{center}
-    \end{table}
+\begin{figure}[htbp]
+    % \includegraphics[height=5cm]{illustration/ship.png}
+    \caption{車両配置図の例(仮)}
+    \label{figure22}
+\end{figure}
+
+
+% \begin{table}[htbp]
+%     \tabcolsep = 15pt
+%     \renewcommand{\arraystretch}{0.8}
+%     \caption{出力の例1}
+%     \label{table22}
+%     \begin{center}
+%     \begin{tabular}{rcccrrrr} \hline
+%     番号 & 車種 & 積み地 & 揚げ地 & 数量 & ホールド & 横幅 & 高さ \\ \hline
+%     1 & Prius & A港 & E港 & 3 & 1 & 200 & 500 \\
+%     2 & Prius & A港 & E港 & 5 & 2 & 200 & 500 \\
+%     3 & Aqua & B港 & F港 & 10 & 4 & 250 & 450 \\
+%     \hline
+%     \end{tabular}
+%     \end{center}
+%     \end{table}

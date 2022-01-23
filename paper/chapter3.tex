@@ -1,138 +1,125 @@
 \chapter{定式化}\label{formulation}
 
-この章では本研究における用語や制約，目的関数について説明する．
-本研究では2段階に分けた構築法を提案するため，それぞれ分けて説明する．
-それぞれの段階の説明は第4章に記す．
+この章では本研究における記号の定義や問題の定式化について説明する．\\
 
 \section{記号の定義}
 
-% \begin{table}[htb]
-%     \caption{変数の定義}
-%     \begin{center}
-%     \label{table31}
-%     \begin{tabular}{cp{35em}} \hline
-%     変数 & \hspace{2.0em}変数の説明 \\ \hline
-    
-%     $w_i$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}長方形iの横幅
-%     \end{tabular} \\ \hline
+\begin{table}[htb]
+    \begin{center}
+    \label{table31}
+    \begin{tabular}{cp{35em}} \hline
+    記号 & \hspace{2.0em}記号の説明 \\ \hline
 
-%     $h_i$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}長方形iの高さ
-%     \end{tabular} \\ \hline
+    $x_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}長方形$i$の左下のx座標
+    \end{tabular} \\ \hline
 
-%     $x_i$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}長方形iのx座標
-%     \end{tabular} \\ \hline
+    $y_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}長方形$i$の左下のy座標
+    \end{tabular} \\ \hline    
+    
+    $w_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}長方形$i$の幅
+    \end{tabular} \\ \hline
 
-%     $y_i$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}長方形iのy座標
-%     \end{tabular} \\ \hline
+    $w_i^l$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}長方形$i$の幅の下界
+    \end{tabular} \\ \hline
 
-%     $L$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}積み地の集合
-%     \end{tabular} \\ \hline
-    
-%     $D$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}揚げ地の集合
-%     \end{tabular} \\ \hline
+    $w_i^u$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}長方形$i$の幅の上界
+    \end{tabular} \\ \hline
 
-%     $S_i$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}長方形iの面積
-%     \end{tabular} \\ \hline
+    $h_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}長方形$i$の高さ
+    \end{tabular} \\ \hline
 
-%     $w_i$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}長方形iの横幅
-%     \end{tabular} \\ \hline
+    $h_i^l$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}長方形$i$の高さの下界
+    \end{tabular} \\ \hline
+
+    $h_i^u$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}長方形$i$の高さの上界
+    \end{tabular} \\ \hline
+    
+    $W$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}母材の横幅
+    \end{tabular} \\ \hline
+    $H$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}母材の高さ
+    \end{tabular} \\ \hline
+    $S_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}長方形$i$の面積
+    \end{tabular} \\ \hline
+    $I$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}詰め込む長方形の集合
+    \end{tabular} \\ \hline
+    
+    \end{tabular}
+    \end{center}
+    \end{table}
+
+\section{長方形詰込み問題}
+長方形詰込み問題とは，母材の幅$W$と高さ$H$, 長方形集合$I$に対し, 幅$w_i$, 高さ$h_i$が入力として与えられ, 母材からはみ出ることなくまた, どの二つの長方形も互いに重なることがないように詰め込む問題である．\\
+制約を定式化すると, 次のように書くことができる. \\
+制約: 長方形$i \in I$は母材上に配置される. \\
+\begin{eqnarray}
+    0 \leq x_i \leq W-w_i (i \in I)\\
+    0 \leq y_i \leq H-h_i (i \in I)
+\end{eqnarray}
+制約: 長方形$i,j \in I$は互いに重ならない. \\
+この制約条件は, 次の4つの不等式のうち一つ以上が成立しなければいけない.  
+\begin{eqnarray}
+    x_i + w_i \leq x_j \\
+    x_j + w_j \leq x_i \\
+    y_i + h_i \leq y_j \\
+    y_j + h_j \leq y_i
+\end{eqnarray}
+
+\section{soft-rectangleパッキング}
+長方形詰込み問題の一種で，詰め込む長方形として幅と高さを変数としたsoft-rectangle (可変形状長方形)を扱う．\\
+通常，面積に関する次のような等式制約または不等式制約が存在する．\\
+\begin{eqnarray}
+    w_i * h_i = S_i \\
+    w_i * h_i \geq S_i \\
+\end{eqnarray}
+また，幅と高さの上界，下界に関する以下の制約も存在する．
+\begin{eqnarray}
+    w_i^l \leq w_i \leq w_i^u \\
+    h_i^l \leq h_i \leq h_i^u
+\end{eqnarray}
+
+\section{Sequence-pair}
+Sequence-pairとは，二つの順列による長方形配置表現である. 
+長方形同士の相対位置関係を長方形名の順列対により表すことができる. 
+Sequence-pairはどのような配置表現でも一意の順列対に表現でき，逆に任意の順列対から一意に配置表現を求めることができる. 
 
 
-%     \end{tabular}
-%     \end{center}
-%     \end{table}
-    
-%     \begin{table}[htb]
-%     \caption{定数の定義}
-%     \begin{center}
-%     \label{table32}
-%     \begin{tabular}{cp{35em}} \hline
-%     定数 & \hspace{2.0em}定数の説明  \\ \hline
-    
-%     $W$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}デッキの横幅
-%     \end{tabular} \\ \hline
-    
-%     $H$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}デッキの高さ
-%     \end{tabular} \\ \hline
-    
-%     $L$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}積み地の集合
-%     \end{tabular} \\ \hline
-    
-%     $D$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}揚げ地の集合
-%     \end{tabular} \\ \hline
+\section{no-fit polygon}
+no-fit-polygon (NFP)とは, 平面上で多角形の重なりを判定する方法である．
+多角形$P$と$Q$が与えられ，$Q$の配置が固定されているとする．
+この時，$Q$と重なりを持つ領域をNFP($P,Q$)と書き，図\ref{figure31}に示す．
+図\ref{figure31}の太線がNFPの境界を表し，このNFP内に$P$を配置すると$Q$と重なることを意味する．
+母材内の既配置の長方形全てに対し，長方形$i$のNFPを作成すると, $i$の配置可能領域はどのNFPの内部にも含まれない領域であるといえる．
 
-%     $O$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}障害物の集合
-%     \end{tabular} \\ \hline
-    
-%     $I_i$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}グループiに属する車の集合
-%     \end{tabular} \\ \hline
-
-%     $n$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}デッキ内のグループの数
-%     \end{tabular} \\ \hline
-    
-%     $H$ &
-%     \begin{tabular}{l}
-%     \hspace{1.4em}デッキの高さ
-%     \end{tabular} \\ \hline
-    
-%     \end{tabular}
-%     \end{center}
-%     \end{table}
-    
+\begin{figure}
+    \label{figure31}
+    % \includegraphics{}
+    \caption{NFP($P,Q$)}
+\end{figure}
 
 
 \section{制約}
 本研究で扱う独自の制約について説明する．
-\subsection*{第一段階}
-\textgt{(i)自動車移動経路に関する制約}\\
-ランプから配置場所まで，自走で到達するためには，船の入口から配置場所まで移動する経路が必要である．
-従って本研究では，必要な導線上に，既配置の車がないようにする．\\
-
-\textgt{(ii)グループの大きさに関する制約}\\
-各グループの
-\subsection*{第二段階}
-\textgt{(i)配置位置に関する制約}\\
-各車の配置位置は，席割で決められたホールドに駐車しなければいけない．
-実際には，ホールド単位ではなくセグメント単位で行う．\\
-
-\textgt{(ii)駐車方法に関する制約}\\
-駐車は原則的にバック駐車で行う．
-配置場所付近に障害物等があると，物理的に駐車できない可能性がある．\\
-
-\textgt{(iii)駐車間隔に関する制約}\\
-駐車する車同士の間隔は，前後方向に10cm，左右方向に40cm空いていなければいけない．\\
-
-
-\section{目的関数}
-\subsection*{第一段階}
-\subsection*{第二段階}
