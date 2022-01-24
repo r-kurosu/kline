@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  24 JAN 2022 09:51
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  24 JAN 2022 11:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -377,72 +377,33 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 
 
 
-]) [3]
-\openout2 = `chapter3.aux'.
-
- (./chapter3.tex
-第 3 章
-LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 86.
-LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 86.
-[4
-
-
-
-
-] [5] [6] [7]) [8]
-\openout2 = `chapter4.aux'.
-
- (./chapter4.tex
-第 4 章
-) [9
-
-
-
-
 ]
-\openout2 = `chapter6.aux'.
 
- (./chapter6.tex
-第 5 章
-) [10
+! LaTeX Error: Cannot determine size of graphic in ./sozai//2car_haichi.png (no
+ BoundingBox).
 
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.83 ...ncludegraphics[scale=0.2]{2car_haichi.png}
+                                                  
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.83 ...ncludegraphics[scale=0.2]{2car_haichi.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
-
-
-]
-\openout2 = `chapter7.aux'.
-
- (./chapter7.tex
-第 6 章
-) [11
-
-
-
-
-]
-\openout2 = `chapter8.aux'.
-
- (./chapter8.tex) [12
-
-
-
-
-] [13
-
-
-
-] (./paper.aux (./tekiyou.aux) (./chapter1.aux) (./chapter2.aux) (./chapter3.au
-x) (./chapter4.aux) (./chapter6.aux)
-(./chapter7.aux) (./chapter8.aux)) ) 
+ 
 Here is how much of TeX's memory you used:
- 4025 strings out of 478749
- 62581 string characters out of 5859015
- 365363 words of memory out of 5000000
- 22318 multiletter control sequences out of 15000+600000
- 485427 words of font info for 78 fonts, out of 8000000 for 9000
+ 3919 strings out of 478749
+ 59597 string characters out of 5859015
+ 361363 words of memory out of 5000000
+ 22228 multiletter control sequences out of 15000+600000
+ 484651 words of font info for 77 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 55i,18n,62p,320b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
-
-Output written on paper.dvi (16 pages, 45592 bytes).
+ 55i,8n,62p,2299b,317s stack positions out of 5000i,500n,10000p,200000b,80000s
+Output written on paper.dvi (5 pages, 19716 bytes).
