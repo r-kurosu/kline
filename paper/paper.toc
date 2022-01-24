@@ -10,9 +10,9 @@
 \contentsline {subsection}{\numberline {3.2.2}Soft-rectangleパッキング問題}{5}{}%
 \contentsline {subsection}{\numberline {3.2.3}Sequence-pair}{5}{}%
 \contentsline {subsection}{\numberline {3.2.4}No-fit polygon}{5}{}%
-\contentsline {section}{\numberline {3.3}第一段階}{5}{}%
+\contentsline {section}{\numberline {3.3}第一段階}{6}{}%
 \contentsline {subsection}{\numberline {3.3.1}制約}{6}{}%
-\contentsline {subsection}{\numberline {3.3.2}目的関数}{6}{}%
+\contentsline {subsection}{\numberline {3.3.2}目的関数}{7}{}%
 \contentsline {subsection}{\numberline {3.3.3}定式化}{7}{}%
 \contentsline {section}{\numberline {3.4}第二段階}{7}{}%
 \contentsline {subsection}{\numberline {3.4.1}制約}{7}{}%
