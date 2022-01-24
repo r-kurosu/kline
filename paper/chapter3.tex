@@ -175,8 +175,27 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
     maximise. \sum_{i \in I} w_i*h_i  - a
 \end{eqnarray}
 \subsection{定式化}
-以上をまとめると以下のようになる. \\
-\centerline{(coming soon \dots)}
+パッキングするグループの集合を$I$とし, セグメントの幅と高さをそれぞれ$W, H$とすし, 以上をまとめると以下のようになる. \\
+\begin{center}
+    \begin{align}
+        & maximise. \nonumber \\
+        & \sum_{i \in I} w_i - h_i - a \\
+        & subject\  to \nonumber \\
+        & 0 \leq x_i \leq W - w_i & (i \in I) \\
+        & 0 \leq y_i \leq H - y_i & (i \in I) \\
+        & 0 \leq w_i \leq \max_{car \in i}w_car & (i \in I) \\
+        & 0 \leq h_i \leq \max_{car \in i}h_car & (i \in I) \\
+        & S_i \leq w_i*h_i \leq a*S_i &(i \in I)
+    \end{align}
+    \begin{eqnarray}
+        \left\{
+            \begin{array}{ll}
+                y_i + h_i \leq y_j & \sigma^+(..,i,..,j,..) \cap \sigma^-(..,i,..,j,..) \\
+                x_i + w_i \leq x_j & \sigma^+(..,i,..,j,..) \cap \sigma^-(..,j,..,i,..) \\
+            \end{array}
+        \right.
+    \end{eqnarray}
+\end{center}
 
 \section{第二段階}
 第二段階では, 第一段階で決められた領域をはみ出ることがないように, 車一台ずつの配置場所を決定する. 
@@ -210,6 +229,13 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 第二段階では, 目的関数の設定は行わず解の構築のみを行う. 
 
 \subsection{定式化}
-以上をまとめると以下のようになる. \\
-\centerline{(coming sooon)}
-
+以上をまとめると, グループ$I$内の車$i$をパッキングする時の制約は, 以下のようになる. 
+\begin{center}  
+\begin{align}
+    & subject \ to \nonumber \\
+    & 0 \leq x_i \leq W_I - w_i & (i \in I)\\
+    & 0 \leq y_i \leq H_I - h_i & (i \in I)\\
+    & x_i + w_i \leq x_j \hspace{1em}or \hspace{1em} x_j + w_j \leq x_i \hspace{1em}or \hspace{1em} y_i + h_i \leq y_j \hspace{1em}or \hspace{1em} y_j + h_j \leq y_i &(i,j \in I)\\
+    & (x_i, y_i) \neq \sum_{j in J} NFP(f(i)+g(i),j) + \sum_{\overline{i} \in \overline{I}}NFP(f(i)+g(i),\overline{i}) & (i \in I)
+\end{align}
+\end{center}
