@@ -445,7 +445,7 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/base/ulasy.fd
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/latex-fonts/lasy10.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/latex-fonts/lasy7.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/latex-fonts/lasy5.tfm
-INPUT ./2car_haichi.png
-INPUT ./2car_haichi.png
-INPUT 2car_haichi.png
-INPUT 2car_haichi.png
+INPUT ./sozai//2car_haichi.png
+INPUT ./sozai//2car_haichi.png
+INPUT ./sozai//2car_haichi.png
+INPUT ./sozai//2car_haichi.png
