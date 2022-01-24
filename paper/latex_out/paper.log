@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  24 JAN 2022 10:51
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  24 JAN 2022 11:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -219,7 +219,7 @@ File: l3backend-dvips.def 2022-01-12 L3 backend support: dvips
 LaTeX Warning: Unused global option(s):
     [platex].
 
-(latex_out/paper.aux (latex_out/tekiyou.aux) (latex_out/chapter1.aux) (latex_out/chapter2.aux))
+(latex_out/paper.aux)
 \openout1 = `paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
@@ -335,4 +335,5 @@ LaTeX Warning: Reference `table21' on page 3 undefined on input line 60.
 
 LaTeX Warning: Reference `figure21' on page 3 undefined on input line 60.
 
-LaTeX Font Info:    Trying to load font information
+LaTeX Font Info:    Trying to load font information for U+msa on input line 68.
+(/usr/local/texlive/2021/texmf-dist/tex/latex

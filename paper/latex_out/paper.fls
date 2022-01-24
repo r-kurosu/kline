@@ -368,15 +368,6 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/l3backend/l3backend-dvips.def
 INPUT latex_out/paper.aux
 INPUT latex_out/paper.aux
 INPUT latex_out/paper.aux
-INPUT latex_out/tekiyou.aux
-INPUT latex_out/tekiyou.aux
-INPUT latex_out/tekiyou.aux
-INPUT latex_out/chapter1.aux
-INPUT latex_out/chapter1.aux
-INPUT latex_out/chapter1.aux
-INPUT latex_out/chapter2.aux
-INPUT latex_out/chapter2.aux
-INPUT latex_out/chapter2.aux
 OUTPUT latex_out/paper.aux
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/ptex-fonts/standard/tmin10.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/ptex-fonts/standard/min10.tfm
@@ -454,7 +445,7 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/base/ulasy.fd
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/latex-fonts/lasy10.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/latex-fonts/lasy7.tfm
 INPUT /usr/local/texlive/2021/texmf-dist/fonts/tfm/public/latex-fonts/lasy5.tfm
-INPUT ./sozai//2car_haichi.png
-INPUT ./sozai//2car_haichi.png
-INPUT ./sozai//2car_haichi.png
-INPUT ./sozai//2car_haichi.png
+INPUT ./2car_haichi.png
+INPUT ./2car_haichi.png
+INPUT 2car_haichi.png
+INPUT 2car_haichi.png

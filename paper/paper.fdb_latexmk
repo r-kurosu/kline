@@ -3,7 +3,7 @@
   "paper.dvi" 1642986355 45592 fce9a4388e4048dc972204d4e4b14763 "latex"
   (generated)
   "paper.pdf"
-["latex"] 1642989078 "paper.tex" "paper.dvi" "paper" 1642989078
+["latex"] 1642990538 "paper.tex" "paper.dvi" "paper" 1642990538
   "/usr/local/texlive/2021/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/local/texlive/2021/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -70,14 +70,14 @@
   "/usr/local/texlive/2021/texmf-dist/web2c/texmf.cnf" 1621028613 40042 fe981136cbb5f3715ab1b0e46e3d3892 ""
   "/usr/local/texlive/2021/texmf-var/web2c/eptex/platex.fmt" 1642664942 2751854 acfc0af4e5576b631e429403a39ce999 ""
   "/usr/local/texlive/2021/texmf.cnf" 1616695596 577 4c1911a7228e554c6032256d3cf5567d ""
+  "3nfp.png" 1642984399 16867 041bf5765ea12b3e8b00ba0981251e93 ""
   "chapter1.aux" 0 -1 0 "latex"
   "chapter1.tex" 1642941874 2549 2cfbc742fe60a63edbc52344ed7a0e0e ""
   "chapter2.aux" 0 -1 0 "latex"
-  "chapter2.tex" 1642989069 3976 24e9b135293d1c03c16df2c2ed2e9aed ""
-  "paper.aux" 1642988905 73 5093208c60f7cd63392724cdb178d021 "latex"
-  "paper.tex" 1642988905 3812 b8911708a36c7f0c453c6aa1a9cc9758 ""
-  "paper.toc" 1642988905 0 d41d8cd98f00b204e9800998ecf8427e "latex"
-  "sozai//2car_haichi.png" 1642900583 188520 2cdf92c7c3db76aa379beaf1509fb901 ""
+  "chapter2.tex" 1642990535 3981 be3c7bef38a70d0fd5584570412fd833 ""
+  "paper.aux" 1642990537 73 5093208c60f7cd63392724cdb178d021 "latex"
+  "paper.tex" 1642990369 3812 b8911708a36c7f0c453c6aa1a9cc9758 ""
+  "paper.toc" 1642990511 0 d41d8cd98f00b204e9800998ecf8427e "latex"
   "tekiyou.aux" 0 -1 0 "latex"
   "tekiyou.tex" 1642941556 3063 5e0f185a9653dfdbdcb1a67ea4af6416 ""
   (generated)
