@@ -17,8 +17,8 @@ from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
 
-BOOKING = 3
-COLOR = 6   # 6 = LP, 7 = DP
+BOOKING = 1
+COLOR = 7   # 6 = LP, 7 = DP
 
 print('booking plan {} を実行します'.format(BOOKING))
 
