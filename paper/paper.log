@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  23 JAN 2022 22:18
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  24 JAN 2022 09:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -391,7 +391,7 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 
 
 
-] [5] [6]) [7] [8]
+] [5] [6] [7]) [8]
 \openout2 = `chapter4.aux'.
 
  (./chapter4.tex
@@ -437,12 +437,12 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 x) (./chapter4.aux) (./chapter6.aux)
 (./chapter7.aux) (./chapter8.aux)) ) 
 Here is how much of TeX's memory you used:
- 4026 strings out of 478749
- 62596 string characters out of 5859015
- 365363 words of memory out of 5000000
- 22319 multiletter control sequences out of 15000+600000
+ 4025 strings out of 478749
+ 62581 string characters out of 5859015
+ 366363 words of memory out of 5000000
+ 22318 multiletter control sequences out of 15000+600000
  485427 words of font info for 78 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
  55i,17n,62p,320b,376s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on paper.dvi (16 pages, 43088 bytes).
+Output written on paper.dvi (16 pages, 45400 bytes).

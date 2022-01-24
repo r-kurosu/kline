@@ -16,7 +16,7 @@
 \contentsline {subsection}{\numberline {3.3.3}定式化}{7}{}%
 \contentsline {section}{\numberline {3.4}第二段階}{7}{}%
 \contentsline {subsection}{\numberline {3.4.1}制約}{7}{}%
-\contentsline {subsection}{\numberline {3.4.2}目的関数}{7}{}%
+\contentsline {subsection}{\numberline {3.4.2}目的関数}{8}{}%
 \contentsline {subsection}{\numberline {3.4.3}定式化}{8}{}%
 \contentsline {chapter}{\numberline {第4章}提案手法}{9}{}%
 \contentsline {section}{\numberline {4.1}第一段階}{9}{}%
