@@ -17,7 +17,7 @@ from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
 
-BOOKING = 1
+BOOKING = 3
 COLOR = 7   # 6 = LP, 7 = DP
 
 print('booking plan {} を実行します'.format(BOOKING))
@@ -1033,12 +1033,12 @@ def single_packing():
 def main():
     for DK_number in range(8,13):
         st_time = time.time()
-        group_packing(12-DK_number,1,output=1)
-        new_detailed_packing(DK_number, output=1)
+        group_packing(12-DK_number,1,output=0)
+        new_detailed_packing(DK_number, output=0)
         print(unpacked_car)
         print(sum(unpacked_car))
-        # local_search(DK_number, y_sol, h_sol, unpacked_car)
-        # new_detailed_packing(DK_number, output=1)
+        local_search(DK_number, y_sol, h_sol, unpacked_car)
+        new_detailed_packing(DK_number, output=1)
         print(unpacked_car)
         print(sum(unpacked_car))
         print('local searchで更に{}台詰め込めました'.format(last_remain_car - remain_car[DK_number]))
@@ -1048,8 +1048,49 @@ def main():
         ed_time = time.time()
         print('このデッキには{:.1f}sかかりました'.format(ed_time - st_time))
 
-# single_packing() # 一つだけ詰め込みたいとき #
-main() # 複数デッキ #
+def main2():
+    global x_sol, y_sol, w_sol, h_sol
+    for DK_number in range(8,13):
+        st_time = time.time()
+        group_packing(12-DK_number,1,output=0)
+        new_detailed_packing(DK_number, output=0)
+        print(unpacked_car)
+        print(sum(unpacked_car))
+        best_X = x_sol
+        best_Y = y_sol
+        best_W = w_sol
+        best_H = h_sol
+        best_sol = sum(unpacked_car)
+        # local search ---------------------------------------
+        for times in range(10):
+            if sum(unpacked_car) == 0:
+                break
+            local_search(DK_number, y_sol, h_sol, unpacked_car)
+            new_detailed_packing(DK_number, output=0)
+            print(unpacked_car)
+            print(sum(unpacked_car))
+            if best_sol <= sum(unpacked_car):
+                x_sol, y_sol, w_sol, h_sol = best_X, best_Y, best_W, best_H
+                print('ローカルサーチを終了します')
+                print('改善の回数: {}'.format(times))
+                break
+            else:
+                best_X, best_Y, best_W, best_H = x_sol, y_sol, w_sol, h_sol
+                best_sol = sum(unpacked_car)
+                print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
+        # ---------------------------------------
+        remain_car[DK_number] = 0
+        # group_packing(12-DK_number,1,output=1)
+        new_detailed_packing(DK_number, output=1)
+        print(unpacked_car)
+        output_func(DK_number)
+        make_arrow(12-DK_number)
+        print(remain_car)
+        ed_time = time.time()
+        print('このデッキには{:.1f}sかかりました'.format(ed_time - st_time))
+
+# main() # 複数デッキ #
+main2() # local-searchあり #
 
 
 
