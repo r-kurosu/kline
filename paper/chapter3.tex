@@ -117,33 +117,36 @@
 \subsection{Sequence-pair}
 Sequence-pairとは, 二つの順列による長方形の配置表現である\cite{seq-pair}. 
 長方形同士の相対位置関係を長方形名の順列対により表すことができる. 
-例を図\ref{s-p-eg}に示す. 
+例を図\ref{s-p-eg}に示す. 制約の詳細は3.3節で説明する. 
 Sequence-pairはどのような配置表現でも一意の順列対に表現でき, 逆に任意の順列対から一意に配置表現を求めることができる. \\ 
 
-\begin{figure}[htbp]
-    \label{s-p-eg}
+\begin{figure}[b]
     \hspace{3cm}
-    \includegraphics[scale=0.3, bb = 0 0 1 1]{3-sequence-pair.png}
+    \includegraphics[scale=0.295, bb = 0 0 1 1]{3-sequence-pair.png}
     \caption{sequence-pairによる長方形配置表現}
+    \label{s-p-eg}
 \end{figure}
+\clearpage
 
 \subsection{No-fit polygon}
 No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方法である\cite{nfp}\cite{nfp2}. 
 多角形$P$と$Q$が与えられ, $Q$の配置が固定されているとする. 
 この時, 多角形$P$が$Q$と重なりを持つ領域をNFP($P,Q$)と書き, 図\ref{nfp-eg}に示す. 
 図\ref{nfp-eg}の太線がNFPの境界を表し, このNFP内に$P$を配置すると$Q$と重なることを意味する. 
-母材内の既配置の長方形全てに対し, 長方形$i$のNFPを作成すると, 長方形$i$の配置可能領域はどのNFPの内部にも含まれない領域である. 
+母材内の既配置の長方形全てに対し, 長方形$i$のNFPを作成すると, 長方形$i$の配置可能領域はどのNFPの内部にも含まれない領域である. \\
 
-\begin{figure}[htbp]
-    \label{nfp-eg}
+
+\begin{figure}[tbp]
     \hspace{3cm}
     \includegraphics[scale = 0.3, bb=0 0 10 10]{3nfp.png}
     \caption{NFP($P,Q$)}
+    \label{nfp-eg}
 \end{figure}
 
 \section{第一段階}
 第一段階では, 積み地・揚げ地が同じ車を一つのグループとし, 各グループのデッキ内における大まかな配置場所を決定する. 
 グループ内の車の総面積を計算し, soft-rectangleパッキング問題として定式化する. 
+このパッキングはセグメントごとに行う. 
 
 \subsection{制約}
 \textgt{(i)ランプから配置場所までの移動経路確保に関する制約}\\
@@ -181,7 +184,7 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 \ 各グループ$I$の幅と高さは, グループ内に属する車$i \in I$の幅と全長の最大値をもとに以下の下限を設定する: \\
 \begin{eqnarray}
     w_I \geq \max_{i \in I} w_i, \\
-    h_I \geq \max_{i \in I} h_i.
+    h_I \geq \max_{i \in I} h_i. 
 \end{eqnarray}
 
 
@@ -250,10 +253,10 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 まとめると, グループ$I$内の車$i$をパッキングする時の制約は, 以下のようになる. 
 \begin{center}  
 \begin{align}
-    & \textrm{subject\ to} \hspace{1cm}\\
-    &0 \leq x_i \leq W_I - w_i & (i \in I)\\
-    &0 \leq y_i \leq H_I - h_i & (i \in I)\\
-    &x_i + w_i \leq x_j \hspace{0.3cm}or\hspace{0.3cm} x_j + w_j \leq x_i \hspace{0.3cm}or\hspace{0.3cm} y_i + h_i \leq y_j \hspace{0.3cm}or\hspace{0.3cm} y_j + h_j \leq y_i &(i,j \in I)\\
-    &(x_i, y_i) \neq \sum_{j \in J} NFP(f(i)+g(i),j) + \sum_{\overline{i} \in \overline{I}}NFP(f(i)+g(i),\overline{i}) & (i \in I)
+    & \textrm{subject\ to} \hspace{1cm}0 \leq x_i \leq W_I - w_i & (i \in I)\\
+    & \hspace{2.6cm} 0 \leq y_i \leq H_I - h_i & (i \in I)\\
+    & \hspace{2.6cm} x_i + w_i \leq x_j \hspace{0.3cm}or\hspace{0.3cm} x_j + w_j \leq x_i \hspace{0.3cm}or \nonumber \\
+    & \hspace{2.6cm} y_i + h_i \leq y_j \hspace{0.3cm}or\hspace{0.3cm} y_j + h_j \leq y_i &(i,j \in I)\\
+    & \hspace{2cm} (x_i, y_i) \neq \sum_{j \in J} NFP(f(i)+g(i),j) + \sum_{\overline{i} \in \overline{I}}NFP(f(i)+g(i),\overline{i}) & (i \in I)
 \end{align}
 \end{center}
