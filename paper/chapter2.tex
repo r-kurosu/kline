@@ -7,7 +7,8 @@
 
 
 \section{用語定義}
-本研究で扱う船の航海等に関する専門用語の定義をする\cite{takeda}.
+本研究で扱う船の航海等に関する専門用語の定義をする. 
+用語や記号は関連研究\cite{takeda}に従う.
 
 \begin{itemize}
     \item 席割 \\
@@ -26,11 +27,11 @@
     船の内部の階層.
 
     \item ホールド \\
-    各デッキ内を一定間隔の領域で仕切られた空間.
+    各デッキ内を一定間隔の領域で仕切られた空間. \\
     本研究では, 各デッキは4つのホールドを持つ.
 
     \item セグメント \\
-    隣接するいくつかのホールドをまとめた空間.
+    隣接するいくつかのホールドをまとめた空間. \\
     本研究では, ホールド1,2とホールド3,4をまとめたものをそれぞれセグメント1, セグメント2と呼ぶ.
 
     \item ランプ \\
@@ -57,16 +58,16 @@
     本研究では実際の図面データを元に手入力で行った.
 
 \end{itemize}
-入力情報のうち車体情報の例を表\ref{table21}に示し, 船内図を図\ref{figure21}に示す.
+入力情報のうち車体情報の例を表\ref{table21}に示す.
 
 \begin{table}[htbp]
     \tabcolsep = 10pt
-    % \renewcommand{\arraystretch}{0.7}
+    \renewcommand{\arraystretch}{0.7}
     \caption{車体情報の例}
     \label{table21}
     \begin{center}
     \begin{tabular}{rcccrcrr} \hline
-    番号 & 車種 & 積み地 & 揚げ地 & 数量 & ホールド & 横幅 & 高さ \\ \hline
+    番号 & 車種 & 積み地 & 揚げ地 & 数量 & ホールド & 全幅 & 全長 \\ \hline
     1 & Prius & A港 & E港 & 100 & 1 & 200 & 500 \\
     2 & Prius & A港 & E港 & 100 & 2 & 200 & 500 \\
     3 & Aqua & B港 & F港 & 30 & 2 & 250 & 450 \\
@@ -78,22 +79,21 @@
     \end{center}
     \end{table}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[scale=0.5, bb=0 0 30 30]{2-sennaizu.png}
-    \caption{船内図の例(仮)}
-    \label{figure21}
-\end{figure}
+% \begin{figure}[htbp]
+%     \hspace{3cm}
+%     \includegraphics[scale=0.4, bb=0 0 10 10]{2-sennaizu.png}
+%     \caption{船内図の例(仮)}
+%     \label{figure21}
+% \end{figure}
+
 
 \section{出力}
 詰め込むことのできなかった車の台数と配置図を出力する. \\
-配置図の例を図\ref{figure22}に示す.\\
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5, bb = 0 0 1 10]{2ship.pdf}
-    \caption{車両配置図の例(仮)}
+配置図の例を図\ref{figure22}に示す.
+\begin{figure}[b]
+    \hspace{2cm}
+    \includegraphics[scale=0.3, bb = 0 0 1 1]{2car_haichi.pdf}
+    \caption{車両配置図の例}
     \label{figure22}
 \end{figure}
 

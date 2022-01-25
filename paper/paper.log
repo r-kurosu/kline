@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  24 JAN 2022 12:23
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  25 JAN 2022 11:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -211,6 +211,9 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 Package: enumerate 2015/07/23 v3.00 enumerate extensions (DPC)
 \@enLab=\toks26
 )
+(/usr/local/texlive/2021/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+)
 \c@thm=\count285
 \c@prf=\count286
 
@@ -260,24 +263,24 @@ LaTeX Warning: Unused global option(s):
 (./chapter4.aux) (./chapter6.aux) (./chapter7.aux) (./chapter8.aux))
 \openout1 = `paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
-LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 38.
-LaTeX Font Info:    ... okay on input line 38.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 39.
+LaTeX Font Info:    ... okay on input line 39.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: dvips
@@ -318,18 +321,18 @@ LaTeX Font Info:    ... okay on input line 38.
 
  (./tekiyou.tex
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 7.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 9.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <14.4> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 7.
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 9.
 ) [1
 
 
 
 ]
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <20.74> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 74.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 77.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <20.74> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 74.
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 77.
  (./paper.toc
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
@@ -378,10 +381,8 @@ File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 
 
 ]
-File: ./sozai//2-sennaizu.png Graphic file (type eps)
- <./sozai//2-sennaizu.png>
-File: ./sozai//2ship.pdf Graphic file (type eps)
- <./sozai//2ship.pdf>) [3]
+File: ./sozai//2car_haichi.pdf Graphic file (type eps)
+ <./sozai//2car_haichi.pdf>) [3]
 \openout2 = `chapter3.aux'.
 
  (./chapter3.tex
@@ -396,11 +397,16 @@ LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <12> not available
 
 
 ]
+File: ./sozai//3-sequence-pair.png Graphic file (type eps)
+ <./sozai//3-sequence-pair.png> [5]
 File: ./sozai//3nfp.png Graphic file (type eps)
- <./sozai//3nfp.png> [5] [6] [7]) [8]
+ <./sozai//3nfp.png> [6
+
+] [7]) [8]
 \openout2 = `chapter4.aux'.
 
- (./chapter4.tex
+
+(./chapter4.tex
 第 4 章
 ) [9
 
@@ -412,17 +418,23 @@ File: ./sozai//3nfp.png Graphic file (type eps)
 
  (./chapter6.tex
 第 5 章
-) [10
+File: ./sozai//5-first-no-rei.png Graphic file (type eps)
+<./sozai//5-first-no-rei.png> [10
 
 
 
 
 ]
+File: ./sozai//5-second-no-rei.png Graphic file (type eps)
+ <./sozai//5-second-no-rei.png>) [11
+
+]
 \openout2 = `chapter7.aux'.
 
- (./chapter7.tex
+
+(./chapter7.tex
 第 6 章
-) [11
+) [12
 
 
 
@@ -430,12 +442,12 @@ File: ./sozai//3nfp.png Graphic file (type eps)
 ]
 \openout2 = `chapter8.aux'.
 
- (./chapter8.tex) [12
+ (./chapter8.tex) [13
 
 
 
 
-] [13
+] [14
 
 
 
@@ -443,12 +455,12 @@ File: ./sozai//3nfp.png Graphic file (type eps)
 x) (./chapter4.aux) (./chapter6.aux)
 (./chapter7.aux) (./chapter8.aux)) ) 
 Here is how much of TeX's memory you used:
- 4094 strings out of 478749
- 64145 string characters out of 5859015
- 365363 words of memory out of 5000000
- 22366 multiletter control sequences out of 15000+600000
- 485427 words of font info for 78 fonts, out of 8000000 for 9000
+ 4190 strings out of 478749
+ 66865 string characters out of 5859015
+ 366615 words of memory out of 5000000
+ 22448 multiletter control sequences out of 15000+600000
+ 486961 words of font info for 80 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
- 55i,18n,62p,320b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 55i,18n,62p,273b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on paper.dvi (16 pages, 45812 bytes).
+Output written on paper.dvi (17 pages, 47336 bytes).
