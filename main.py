@@ -229,14 +229,14 @@ def calc_nfp(x, y, car_w, car_h, handle):   #左下が起点
         if (nfp[i].x9 < x < nfp[i].x9 + nfp[i].w9 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x2 < x < nfp[i].x2 + nfp[i].w2 and nfp[i].y2 < y < nfp[i].y2 + nfp[i].h2) or (nfp[i].x1 < x < nfp[i].w1 and nfp[i].y9 < y < nfp[i].y9 + nfp[i].h9):
             p = False
             break
-        if handle == 1: #左ハンドル
-            if ((nfp[i].x12 < x < nfp[i].x12 + nfp[i].w11) and (nfp[i].y12 < y < nfp[i].y12 + nfp[i].h11)):
-                p = False
-                break
-        elif handle == 2: #右ハンドル
-            if ((nfp[i].x11 < x < nfp[i].x11 + nfp[i].w11) and (nfp[i].y11 < y < nfp[i].y11 + nfp[i].h11)):
-                p = False
-                break
+        # if handle == 1: #左ハンドル
+        #     if ((nfp[i].x12 < x < nfp[i].x12 + nfp[i].w11) and (nfp[i].y12 < y < nfp[i].y12 + nfp[i].h11)):
+        #         p = False
+        #         break
+        # elif handle == 2: #右ハンドル
+        #     if ((nfp[i].x11 < x < nfp[i].x11 + nfp[i].w11) and (nfp[i].y11 < y < nfp[i].y11 + nfp[i].h11)):
+        #         p = False
+        #         break
     if p == True:
         # print('左向きに駐車します!')
         return True
@@ -245,14 +245,14 @@ def calc_nfp(x, y, car_w, car_h, handle):   #左下が起点
         if (nfp[i].x9 < x < nfp[i].x9 + nfp[i].w9 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x3 < x < nfp[i].x3 + nfp[i].w2 and nfp[i].y3 < y < nfp[i].y3 + nfp[i].h2 or (nfp[i].x1 < x < nfp[i].w1 and nfp[i].y9 < y < nfp[i].y9 + nfp[i].h9)):
             p = False
             break
-        if handle == 1: # 左ハンドる
-            if (nfp[i].x12 < x < nfp[i].x12 + nfp[i].w11 and nfp[i].y12 < y < nfp[i].y12 + nfp[i].h11):
-                p = False
-                break
-        elif handle == 2: # 右ハンドル
-            if (nfp[i].x11 < x < nfp[i].x11 + nfp[i].w11 and nfp[i].y11 < y < nfp[i].y11 + nfp[i].h11):
-                p = False
-                break
+        # if handle == 1: # 左ハンドる
+        #     if (nfp[i].x12 < x < nfp[i].x12 + nfp[i].w11 and nfp[i].y12 < y < nfp[i].y12 + nfp[i].h11):
+        #         p = False
+        #         break
+        # elif handle == 2: # 右ハンドル
+        #     if (nfp[i].x11 < x < nfp[i].x11 + nfp[i].w11 and nfp[i].y11 < y < nfp[i].y11 + nfp[i].h11):
+        #         p = False
+        #         break
     if p ==True:
         # print('右駐車!')
         return True
