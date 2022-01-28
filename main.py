@@ -17,7 +17,7 @@ from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
 
-BOOKING = 3
+BOOKING = 1
 COLOR = 7   # 6 = LP, 7 = DP
 
 print('booking plan {} を実行します'.format(BOOKING))
@@ -181,9 +181,17 @@ class NFP():
         self.h8 = h + 2*car_w
         self.x9 = x - car_w - 1 
         self.w9 = w + car_w + 2
-        self.h9 = 2
+        self.h9 = 3
         self.y9 = y + w
-        self.y10 = y - 4
+        self.y10 = y - 3
+        self.x11 = x - car_w - 4
+        self.y11 = y - car_h
+        self.w11 = w + 4
+        self.h11 = h + car_h
+        self.x12 = x
+        self.y12 = y - car_h
+        self.x13 = x
+        self.y13 = y
 
 
 def find_lowest_gap(stock_sheet, w):
@@ -213,7 +221,7 @@ def find_highest_gap(reverse_sheet, w):  #左上から詰めていく
     return x, y, gap
 
 
-def calc_nfp(x, y, car_w, car_h):   #左下が起点
+def calc_nfp(x, y, car_w, car_h, handle):   #左下が起点
     if x < 0 or x > ship_w - car_w or y < 0 or y > ship_h - car_h:
         return False
     p = True
@@ -221,6 +229,14 @@ def calc_nfp(x, y, car_w, car_h):   #左下が起点
         if (nfp[i].x9 < x < nfp[i].x9 + nfp[i].w9 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x2 < x < nfp[i].x2 + nfp[i].w2 and nfp[i].y2 < y < nfp[i].y2 + nfp[i].h2) or (nfp[i].x1 < x < nfp[i].w1 and nfp[i].y9 < y < nfp[i].y9 + nfp[i].h9):
             p = False
             break
+        if handle == 1: #左ハンドル
+            if ((nfp[i].x12 < x < nfp[i].x12 + nfp[i].w11) and (nfp[i].y12 < y < nfp[i].y12 + nfp[i].h11)):
+                p = False
+                break
+        elif handle == 2: #右ハンドル
+            if ((nfp[i].x11 < x < nfp[i].x11 + nfp[i].w11) and (nfp[i].y11 < y < nfp[i].y11 + nfp[i].h11)):
+                p = False
+                break
     if p == True:
         # print('左向きに駐車します!')
         return True
@@ -229,12 +245,20 @@ def calc_nfp(x, y, car_w, car_h):   #左下が起点
         if (nfp[i].x9 < x < nfp[i].x9 + nfp[i].w9 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x3 < x < nfp[i].x3 + nfp[i].w2 and nfp[i].y3 < y < nfp[i].y3 + nfp[i].h2 or (nfp[i].x1 < x < nfp[i].w1 and nfp[i].y9 < y < nfp[i].y9 + nfp[i].h9)):
             p = False
             break
+        if handle == 1: # 左ハンドる
+            if (nfp[i].x12 < x < nfp[i].x12 + nfp[i].w11 and nfp[i].y12 < y < nfp[i].y12 + nfp[i].h11):
+                p = False
+                break
+        elif handle == 2: # 右ハンドル
+            if (nfp[i].x11 < x < nfp[i].x11 + nfp[i].w11 and nfp[i].y11 < y < nfp[i].y11 + nfp[i].h11):
+                p = False
+                break
     if p ==True:
         # print('右駐車!')
         return True
     return False
 
-def calc_nfp_reverse(x, y, car_w, car_h):   #左上が起点
+def calc_nfp_reverse(x, y, car_w, car_h, handle):   #左上が起点
     # if x < 0 or x > ship_w - car_w or y < car_h or y > ship_h:
     #     return False
     p = True
@@ -242,6 +266,14 @@ def calc_nfp_reverse(x, y, car_w, car_h):   #左上が起点
         if (nfp[j].x9 < x < nfp[j].x9 + nfp[j].w9 and nfp[j].y5 < y < nfp[j].y5 + nfp[j].h1) or (nfp[j].x2 < x < nfp[j].x2 + nfp[j].w2 and nfp[j].y6 < y < nfp[j].y6 + nfp[j].h2) or (nfp[j].x1 < x < nfp[j].x1 + nfp[j].w1 and nfp[j].y10 < y < nfp[j].y10 + nfp[j].h9):
             p = False
             break
+        if handle == 2: # 右ハンドル
+            if nfp[j].x13 < x < nfp[j].x13 + nfp[j].w11 and nfp[j].y13 < y < nfp[j].y13 + nfp[j].h11:
+                p = False
+                break
+        elif handle == 1: # 左ハンドル
+            if nfp[j].x11 < x < nfp[j].x11 + nfp[j].w11 and nfp[j].y13 < y < nfp[j].y13 + nfp[j].h11:
+                p = False
+                break
     if p == True:
         return True
     p = True
@@ -249,6 +281,14 @@ def calc_nfp_reverse(x, y, car_w, car_h):   #左上が起点
         if (nfp[j].x9 < x < nfp[j].x9 + nfp[j].w9 and nfp[j].y5 < y < nfp[j].y5 + nfp[j].h1) or (nfp[j].x3 < x < nfp[j].x3 + nfp[j].w2 and nfp[j].y6 < y < nfp[j].y6 + nfp[j].h2) or (nfp[j].x1 < x < nfp[j].x1 + nfp[j].w1 and nfp[j].y10 < y < nfp[j].y10 + nfp[j].h9):
             p = False
             break
+        if handle == 2: # 右ハンドル
+            if nfp[j].x13 < x < nfp[j].x13 + nfp[j].w11 and nfp[j].y13 < y < nfp[j].y13 + nfp[j].h11:
+                p = False
+                break
+        elif handle == 1: # 左ハンドル
+            if nfp[j].x11 < x < nfp[j].x11 + nfp[j].w11 and nfp[j].y13 < y < nfp[j].y13 + nfp[j].h11:
+                p = False
+                break
     if p ==True:
         return True
     return False
@@ -838,7 +878,7 @@ def detailed_packing(DK,output):
     if output == 1:
         print(df)
 
-def bl_packing(stock_sheet,group,DK,output):
+def bl_packing(stock_sheet,group,DK,output,handle):
     global df_obs
     new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
@@ -846,7 +886,7 @@ def bl_packing(stock_sheet,group,DK,output):
         print('over')
         return 0
     # DP,LPによる通路制約は今は省略
-    if gap >= car_w and (calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
+    if gap >= car_w and (calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h, handle) == True):
         for j in range(car_w):
             stock_sheet[new_x + j] += car_h
         if output == 1:
@@ -857,7 +897,7 @@ def bl_packing(stock_sheet,group,DK,output):
         df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group], 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         return 1
 
-    elif gap >= car_w and calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False:
+    elif gap >= car_w and calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h, handle) == False:
         stock_sheet[new_x] += 1
     else:
         if new_x == 0:
@@ -870,14 +910,14 @@ def bl_packing(stock_sheet,group,DK,output):
             stock_sheet[new_x + j] = tonari
     return 0
 
-def tl_packing(reverse_sheet,group,DK,output):
+def tl_packing(reverse_sheet,group,DK,output,handle):
     global df_obs
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y - car_h < 0 or new_y + y_sol[group] - car_h < center_line_list[12-DK]:
         return 0
     # DP,LPによる通路制約は省略
-    if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == True):
+    if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h, handle) == True):
         for j in range(car_w):
             reverse_sheet[new_x + j] -= car_h
         if output == 1:
@@ -887,7 +927,7 @@ def tl_packing(reverse_sheet,group,DK,output):
             axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
         df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group] - car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         return 1
-    elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h) == False):
+    elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h, handle) == False):
         reverse_sheet[new_x] -= 1
     else:
         if new_x == 0:
@@ -930,7 +970,7 @@ def new_detailed_packing(DK, output):
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
-    df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
+    df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT','WIDTH','HANDLE'], ascending=[True,True,False,False,False,True])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
     
     for i in lp_order:
@@ -948,6 +988,7 @@ def new_detailed_packing(DK, output):
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
             car_amount = df_car.iloc[car,3]
+            car_handle = df_car.iloc[car,8]
             count = 0
             nfp = []
             for j in range(len(df_obs)):
@@ -956,14 +997,14 @@ def new_detailed_packing(DK, output):
             while car_amount > count:
                 new_x,new_y,gap = find_lowest_gap(stock_sheet, w_sol[i])
                 if new_y + y_sol[i] + car_h > center_line_list[DK]:
-                    count += tl_packing(reverse_sheet,i,12-DK,output)
+                    count += tl_packing(reverse_sheet,i,12-DK,output, car_handle)
                     new_x,new_y,gap = find_highest_gap(reverse_sheet,w_sol[i])
                     if new_y + y_sol[i] - car_h < center_line_list[DK] or new_y - car_h < 0:
                         break
                 else:
                     if new_y + car_h > h_sol[i]:
                         break
-                    count += bl_packing(stock_sheet,i,12-DK,output)
+                    count += bl_packing(stock_sheet,i,12-DK,output, car_handle)
             df.iloc[i,3] -= count
             count_sum += count
         remain_car[DK] += df.iloc[i,3]
