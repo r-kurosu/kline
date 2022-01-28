@@ -193,13 +193,13 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 また1つのグループが大きくなりすぎると, デッドスペースが生まれたり, 他のグループの領域で詰め込めない車が出てしまう可能性があるので, バランス良く大きくすることを目指す. 
 面積制約\ref{a_const}で用いたパラメータ$a$を用いて, 以下のように書くことができる: \\
 \begin{eqnarray}
-    \mathrm{maximise}\ \sum_{i \in I} w_i*h_i  - a. 
+    \mathrm{maximize}\ \sum_{i \in I} w_i*h_i  - a. 
 \end{eqnarray}
 \subsection{定式化}
 パッキングするグループの集合を$I$とし, セグメントの幅と高さをそれぞれ$W, H$とし, 以上をまとめると以下のようになる. \\
 \begin{center}
     \begin{align}
-        & \textrm{maximise} \hspace{1.5cm}
+        & \textrm{maximize} \hspace{1.5cm}
         \sum_{i \in I} w_i - h_i - a \\
         & \textrm{subject\ to} \hspace{1.5cm}
         0 \leq x_i \leq W - w_i & (i \in I) \\
