@@ -179,11 +179,11 @@ class NFP():
         self.y7 = y - car_w
         self.y8 = y - 2*car_w - car_h
         self.h8 = h + 2*car_w
-        self.x9 = x - car_w - 4 
-        self.w9 = w + car_w + 8
-        self.h9 = 1
+        self.x9 = x - car_w - 1 
+        self.w9 = w + car_w + 2
+        self.h9 = 2
         self.y9 = y + w
-        self.y10 = y - 1
+        self.y10 = y - 4
 
 
 def find_lowest_gap(stock_sheet, w):
