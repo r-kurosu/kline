@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  25 JAN 2022 11:03
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  28 JAN 2022 09:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -408,25 +408,25 @@ File: ./sozai//3nfp.png Graphic file (type eps)
 
 (./chapter4.tex
 第 4 章
-) [9
+[9
 
 
 
 
-]
+]) [10]
 \openout2 = `chapter6.aux'.
 
  (./chapter6.tex
 第 5 章
 File: ./sozai//5-first-no-rei.png Graphic file (type eps)
-<./sozai//5-first-no-rei.png> [10
+<./sozai//5-first-no-rei.png> [11
 
 
 
 
 ]
 File: ./sozai//5-second-no-rei.png Graphic file (type eps)
- <./sozai//5-second-no-rei.png>) [11
+ <./sozai//5-second-no-rei.png>) [12
 
 ]
 \openout2 = `chapter7.aux'.
@@ -434,7 +434,7 @@ File: ./sozai//5-second-no-rei.png Graphic file (type eps)
 
 (./chapter7.tex
 第 6 章
-) [12
+) [13
 
 
 
@@ -442,12 +442,12 @@ File: ./sozai//5-second-no-rei.png Graphic file (type eps)
 ]
 \openout2 = `chapter8.aux'.
 
- (./chapter8.tex) [13
+ (./chapter8.tex) [14
 
 
 
 
-] [14
+] [15
 
 
 
@@ -455,12 +455,12 @@ File: ./sozai//5-second-no-rei.png Graphic file (type eps)
 x) (./chapter4.aux) (./chapter6.aux)
 (./chapter7.aux) (./chapter8.aux)) ) 
 Here is how much of TeX's memory you used:
- 4190 strings out of 478749
- 66865 string characters out of 5859015
- 366615 words of memory out of 5000000
- 22448 multiletter control sequences out of 15000+600000
+ 4192 strings out of 478749
+ 66893 string characters out of 5859015
+ 366629 words of memory out of 5000000
+ 22450 multiletter control sequences out of 15000+600000
  486961 words of font info for 80 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
  55i,18n,62p,273b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on paper.dvi (17 pages, 47336 bytes).
+Output written on paper.dvi (18 pages, 52596 bytes).
