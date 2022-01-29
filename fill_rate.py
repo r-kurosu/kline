@@ -1,3 +1,4 @@
+from statistics import mean
 import pandas as pd
 
 print('---------------------------------------')
@@ -21,16 +22,16 @@ for BOOKING in range(1,4):
         print(str(DK)+'dkの車の面積の合計は{}'.format(sum_car_area))
         print('***')
         df_car_ave = pd.read_csv('data/car_group/seggroup'+str(DK)+'_'+str(BOOKING)+'.csv')
-        max_width = df_car_ave.loc[:,'WIDTH'].max()
-        max_height = df_car_ave.loc[:,'HEIGHT'].max()
-        max_car_area = max_width*max_height
+        s_i = [0]*len(df_car_ave)
+        for j in range(len(df_car_ave)):
+            s_i[j] = df_car_ave.at[j,'WIDTH']*df_car_ave.at[j,'HEIGHT']
 
-        ave_width = df_car_ave.loc[:,'WIDTH'].mean()        
-        ave_height = df_car_ave.loc[:,'HEIGHT'].mean()
-        ave_car_area = ave_width*ave_height
+        max_car_area = max(s_i)
+        min_car_area = min(s_i)
+        ave_car_area = mean(s_i)
         
-        ub = (2000*350 - sum_area)/ave_car_area
-        lb = (sum_area - sum_car_area)/ave_car_area
+        ub = (2000*350 - sum_area)/max_car_area
+        lb = (sum_area - sum_car_area)/min_car_area
         print(str(DK)+'dkに詰め込める車の上界は{}台'.format(int(ub)))
         print(str(DK)+'dkにおける余りの数の下界は{}台'.format(int(lb)))
         print('配置可能面積 -- 車の面積: {}'.format(sum_area - sum_car_area))
