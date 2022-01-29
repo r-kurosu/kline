@@ -12,3 +12,8 @@ output_data/output.png
 ## tex
 paperディレクトリに移動 \
 ```latexmk template.tex```
+
+## その他ファイル説明
+data/ : main.pyで使うデータファイル \
+fill_rate.py: 上界下界の計算用 \
+test/make_csv.py: main.pyで使うデータを作るためのプログラム
