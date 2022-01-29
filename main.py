@@ -17,7 +17,7 @@ from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
 
-BOOKING = 1
+BOOKING = 3
 COLOR = 7   # 6 = LP, 7 = DP
 
 print('booking plan {} を実行します'.format(BOOKING))
@@ -382,22 +382,21 @@ def color_check(key):  #出力時のカラーを決める
 
 # ランプの矢印を書く
 def make_arrow(DK):
-    match 12-DK:
-        case 12:
+        if 12-DK == 12:
             axes[4-DK].text(300, 750, '↓')
-        case 11:
+        elif 12-DK == 11:
             axes[4-DK].text(300, 1100, '↓')
             axes[4-DK].text(300, 900, '↓', color = 'w')
-        case 10:
+        elif 12-DK == 10:
             axes[4-DK].text(70, 1250, '↑')
             axes[4-DK].text(300, 1250, '↓', color = 'w')
-        case 9:
+        elif 12-DK == 9:
             axes[4-DK].text(60, 900, '↑')
             axes[4-DK].text(60, 1100, '↑', color = 'w')
-        case 8:
+        elif 12-DK == 8:
             axes[4-DK].text(60, 800, '↑', color = 'w')
             axes[4-DK].text(10, 800, '↓')
-        case _:
+        else:
             pass
 
 
@@ -970,7 +969,7 @@ def new_detailed_packing(DK, output):
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
-    df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT','WIDTH','HANDLE'], ascending=[True,True,False,False,False,True])
+    df_car = df_car.sort_values(by=['SEG','LP','DP','WIDTH','HEIGHT','HANDLE'], ascending=[True,True,False,False,False,True])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
     
     for i in lp_order:
