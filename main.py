@@ -569,8 +569,8 @@ def group_packing(DK,b,output):
             for i in range(n):
                 x[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
                 y[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                w[i] = model.addVar(lb = max_width[i] + 4, vtype=gp.GRB.CONTINUOUS)
-                h[i] = model.addVar(lb = max_height[i] + 1, vtype=gp.GRB.CONTINUOUS)
+                w[i] = model.addVar(lb = max_width[i] + 10, vtype=gp.GRB.CONTINUOUS)
+                h[i] = model.addVar(lb = max_height[i] + 10, vtype=gp.GRB.CONTINUOUS)
             model.update
             # 目的関数
             model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1) - a, sense=gp.GRB.MAXIMIZE)
@@ -636,8 +636,8 @@ def group_packing(DK,b,output):
             for i in range(n):
                 x[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
                 y[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                w[i] = model2.addVar(lb = max_width[i] + 4, vtype=gp.GRB.CONTINUOUS)
-                h[i] = model2.addVar(lb = max_height[i] + 1, vtype=gp.GRB.CONTINUOUS)
+                w[i] = model2.addVar(lb = max_width[i] + 10, vtype=gp.GRB.CONTINUOUS)
+                h[i] = model2.addVar(lb = max_height[i] + 10, vtype=gp.GRB.CONTINUOUS)
             model2.update
 
             # 目的関数
@@ -969,7 +969,7 @@ def new_detailed_packing(DK, output):
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
-    df_car = df_car.sort_values(by=['SEG','LP','DP','WIDTH','HEIGHT','HANDLE'], ascending=[True,True,False,False,False,True])
+    df_car = df_car.sort_values(by=['SEG','LP','DP','HANDLE','WIDTH','HEIGHT'], ascending=[True,True,True,False,False,False])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
     
     for i in lp_order:
