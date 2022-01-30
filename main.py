@@ -17,7 +17,7 @@ from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
 
-BOOKING = 3
+BOOKING = 1
 COLOR = 7   # 6 = LP, 7 = DP
 
 print('booking plan {} を実行します'.format(BOOKING))
@@ -569,8 +569,8 @@ def group_packing(DK,b,output):
             for i in range(n):
                 x[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
                 y[i] = model.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                w[i] = model.addVar(lb = max_width[i] + 4, vtype=gp.GRB.CONTINUOUS)
-                h[i] = model.addVar(lb = max_height[i] + 1, vtype=gp.GRB.CONTINUOUS)
+                w[i] = model.addVar(lb = max_width[i] + 10, vtype=gp.GRB.CONTINUOUS)
+                h[i] = model.addVar(lb = max_height[i] + 10, vtype=gp.GRB.CONTINUOUS)
             model.update
             # 目的関数
             model.setObjective(gp.quicksum(w[j]*h[j] for j in range(n) if df.iloc[j,4] == 1) - a, sense=gp.GRB.MAXIMIZE)
@@ -636,8 +636,8 @@ def group_packing(DK,b,output):
             for i in range(n):
                 x[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
                 y[i] = model2.addVar(lb = 0, vtype=gp.GRB.CONTINUOUS)
-                w[i] = model2.addVar(lb = max_width[i] + 4, vtype=gp.GRB.CONTINUOUS)
-                h[i] = model2.addVar(lb = max_height[i] + 1, vtype=gp.GRB.CONTINUOUS)
+                w[i] = model2.addVar(lb = max_width[i] + 10, vtype=gp.GRB.CONTINUOUS)
+                h[i] = model2.addVar(lb = max_height[i] + 10, vtype=gp.GRB.CONTINUOUS)
             model2.update
 
             # 目的関数
