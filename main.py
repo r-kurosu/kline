@@ -1,8 +1,10 @@
+from functools import cache
 import random
 from tokenize import group
 from typing import BinaryIO, OrderedDict
 from anytree import node
 from anytree.node import nodemixin
+from matplotlib.style import available
 import pandas as pd
 import numpy as np
 import csv
@@ -879,6 +881,7 @@ def detailed_packing(DK,output):
 
 def bl_packing(stock_sheet,group,DK,output,handle):
     global df_obs
+    global sum_area
     new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y + car_h > h_sol[group]:
@@ -894,6 +897,7 @@ def bl_packing(stock_sheet,group,DK,output,handle):
             axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count, fontsize = 1)
             axes[4-DK].text(new_x+x_sol[group]+car_w/2, new_y+y_sol[group] + car_h/2, '↑', fontsize = 1)
         df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group], 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
+        sum_area += car_w*car_h
         return 1
 
     elif gap >= car_w and calc_nfp(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h, handle) == False:
@@ -911,6 +915,7 @@ def bl_packing(stock_sheet,group,DK,output,handle):
 
 def tl_packing(reverse_sheet,group,DK,output,handle):
     global df_obs
+    global sum_area
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y - car_h < 0 or new_y + y_sol[group] - car_h < center_line_list[12-DK]:
@@ -925,6 +930,7 @@ def tl_packing(reverse_sheet,group,DK,output,handle):
             axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count, fontsize = 1)
             axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
         df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group] - car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
+        sum_area += car_w*car_h
         return 1
     elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[group], new_y+y_sol[group], car_w, car_h, handle) == False):
         reverse_sheet[new_x] -= 1
@@ -942,6 +948,7 @@ def tl_packing(reverse_sheet,group,DK,output,handle):
 
 center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
 remain_car = [0]*13
+sum_area = 0
 
 def new_detailed_packing(DK, output):
     print('今から'+str(DK)+'dkに詰め込みます')
@@ -958,6 +965,7 @@ def new_detailed_packing(DK, output):
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
     center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
     unpacked_car = [0]*len(df)
+    sum_area = 0
     
     # 障害物情報
     obs = []
@@ -1058,17 +1066,19 @@ def local_search(DK,Y,H,unpacked_car):
         cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
         axes[DK-8].add_patch(cars)
         axes[DK-8].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
-    
 
-
-def single_packing():
-    DK_number = int(input('何番デッキに詰め込みますか?'))
-    group_packing(12-DK_number,1,1)
-    new_detailed_packing(DK_number)
-    output_func(DK_number)
-    make_arrow(12-DK_number)
-    print(remain_car)
-
+def calc_parcent():
+    global available_area
+    for DK in range(8,13):
+        ship_area = 2000*350
+        df_obs = pd.read_csv('data/obs_data/obs_'+str(DK)+'dk.csv')
+        sum_area_local = 0 
+        for i in range(len(df_obs)):
+            area = df_obs.at[i,'WIDTH']*df_obs.at[i,'HEIGHT']
+            sum_area_local += area
+        available_area = ship_area - sum_area_local
+        print(str(DK)+'dkの配置可能面積は{}'.format(available_area))
+calc_parcent()
 
 def main():
     for DK_number in range(8,13):
@@ -1090,10 +1100,13 @@ def main():
 
 def main2():
     global x_sol, y_sol, w_sol, h_sol
+    global sum_area, available_area
     for DK_number in range(8,13):
         st_time = time.time()
         group_packing(12-DK_number,1,output=0)
         new_detailed_packing(DK_number, output=0)
+        print('配置した車の総面積は{}'.format(sum_area))
+        print('充填率は{} %'.format(100*sum_area/available_area))
         print(unpacked_car)
         print(sum(unpacked_car))
         best_X = x_sol
@@ -1122,6 +1135,8 @@ def main2():
         remain_car[DK_number] = 0
         # group_packing(12-DK_number,1,output=1)
         new_detailed_packing(DK_number, output=1)
+        print('最終的に配置した車の総面積は{}'.format(sum_area))
+        print('充填率は{} %'.format(100*sum_area/available_area))
         print(unpacked_car)
         output_func(DK_number)
         make_arrow(12-DK_number)
