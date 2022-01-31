@@ -19,7 +19,7 @@ from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
 
-BOOKING = 3
+BOOKING = 1
 COLOR = 7   # 6 = LP, 7 = DP
 
 print('booking plan {} を実行します'.format(BOOKING))
@@ -961,6 +961,7 @@ def new_detailed_packing(DK, output):
     global count
     global car_w, car_h, car_amount
     global remain_car, unpacked_car
+    global sum_area
     
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
     center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
