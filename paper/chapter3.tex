@@ -155,14 +155,14 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 本研究では, Sequence-pairを用いてグループの相対位置関係に関する制約を表現する. 
 各グループを積み地の昇順に並べた順列を$\sigma^+$とする. 
 積み地が同じグループが存在した場合, 揚げ地の降順に従う. 
-同様に, 揚げ地の降順に並べた順列を$\sigma^-$とする. 
-揚げ地が同じグループが存在する場合, 積み地の昇順に従う. \\
+同様に, 揚げ地の昇順に並べた順列を$\sigma^-$とする. 
+揚げ地が同じグループが存在する場合, 積み地の降順に従う. \\
 グループの集合を$I$とし, グループ$i,j \in I$に関して, 順序対$(\sigma^+,\sigma^-)$における$i,j$の順序関係をもとに, 以下のどちらかの制約を追加する: \\
 \begin{eqnarray}
     \left\{
         \begin{array}{ll}
-            y_i + h_i \leq y_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,i,\ldots,j,\ldots) \\
-            x_i + w_i \leq x_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,j,\ldots,i,\ldots) \\
+            x_i + w_i \leq x_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,i,\ldots,j,\ldots) \\
+            y_i + h_i \leq y_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,j,\ldots,i,\ldots) \\
         \end{array}
     \right.
 \end{eqnarray}\\
@@ -211,8 +211,8 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
     \begin{eqnarray}
         \hspace{2cm} \left\{
             \begin{array}{ll}
-                y_i + h_i \leq y_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,i,\ldots,j,\ldots) \\
-                x_i + w_i \leq x_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,j,\ldots,i,\ldots) \\
+                x_i + w_i \leq x_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,i,\ldots,j,\ldots) \\
+                y_i + h_i \leq y_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,j,\ldots,i,\ldots) \\
             \end{array}
         \hspace{2cm} \right.
     \end{eqnarray}
