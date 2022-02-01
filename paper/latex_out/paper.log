@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  30 JAN 2022 09:05
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  1 FEB 2022 09:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -221,7 +221,7 @@ File: l3backend-dvips.def 2022-01-12 L3 backend support: dvips
 LaTeX Warning: Unused global option(s):
     [platex].
 
-(latex_out/paper.aux)
+(latex_out/paper.aux (latex_out/tekiyou.aux) (latex_out/chapter1.aux) (latex_out/chapter2.aux))
 \openout1 = `paper.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 39.
@@ -294,18 +294,45 @@ LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <20.74> not available
 (Font)              Font shape `JT1/gt/m/n' tried instead on input line 77.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <20.74> not available
 (Font)              Font shape `JY1/gt/m/n' tried instead on input line 77.
- (./paper.toc
+ (latex_out/paper.toc)
+\tf@toc=\write4
+\openout4 = `paper.toc'.
+
+ [2
+
+
+
+]
+\openout2 = `chapter1.aux'.
+
+ (./chapter1.tex
+第 1 章
 LaTeX Font Info:    Font shape `JT1/mc/bx/n' in size <10> not available
-(Font)              Font shape `JT1/gt/m/n' tried instead on input line 1.
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 8.
 LaTeX Font Info:    Font shape `JY1/mc/bx/n' in size <10> not available
-(Font)              Font shape `JY1/gt/m/n' tried instead on input line 1.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 3.
- (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 3.
- (/usr/local/texlive/2021/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 3.
- (/usr/local/texlive/2021/tex
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 8.
+
+LaTeX Warning: Citation `mitsui' on page 1 undefined on input line 8.
+
+
+LaTeX Warning: Citation `takeda' on page 1 undefined on input line 10.
+
+) [1
+
+
+]
+\openout2 = `chapter2.aux'.
+
+ (./chapter2.tex
+第 2 章
+
+LaTeX Warning: Citation `takeda' on page 2 undefined on input line 11.
+
+[2
+
+
+
+
+]
+
+LaTeX W
