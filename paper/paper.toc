@@ -11,21 +11,23 @@
 \contentsline {subsection}{\numberline {3.3.2}Sequence-pair}{6}{}%
 \contentsline {subsection}{\numberline {3.3.3}No-fit polygon}{6}{}%
 \contentsline {section}{\numberline {3.4}第一段階}{7}{}%
-\contentsline {subsection}{\numberline {3.4.1}制約}{7}{}%
-\contentsline {subsection}{\numberline {3.4.2}目的関数}{8}{}%
-\contentsline {subsection}{\numberline {3.4.3}定式化}{8}{}%
-\contentsline {section}{\numberline {3.5}第二段階}{8}{}%
-\contentsline {subsection}{\numberline {3.5.1}制約}{9}{}%
-\contentsline {subsection}{\numberline {3.5.2}目的関数}{9}{}%
-\contentsline {subsection}{\numberline {3.5.3}定式化}{9}{}%
-\contentsline {chapter}{\numberline {第4章}提案手法}{10}{}%
-\contentsline {section}{\numberline {4.1}第一段階}{10}{}%
-\contentsline {section}{\numberline {4.2}第二段階}{10}{}%
-\contentsline {section}{\numberline {4.3}局所探索法}{10}{}%
-\contentsline {chapter}{\numberline {第5章}計算実験}{12}{}%
-\contentsline {section}{\numberline {5.1}計算環境}{12}{}%
-\contentsline {section}{\numberline {5.2}第一段階の求解結果}{12}{}%
-\contentsline {section}{\numberline {5.3}第二段階の求解結果}{13}{}%
-\contentsline {section}{\numberline {5.4}局所探索法による解の改善}{13}{}%
-\contentsline {chapter}{\numberline {第6章}まとめと今後の研究計画}{15}{}%
-\contentsline {chapter}{参考文献}{17}{}%
+\contentsline {subsection}{\numberline {3.4.1}記号定義}{7}{}%
+\contentsline {subsection}{\numberline {3.4.2}制約}{7}{}%
+\contentsline {subsection}{\numberline {3.4.3}目的関数}{8}{}%
+\contentsline {subsection}{\numberline {3.4.4}定式化}{8}{}%
+\contentsline {section}{\numberline {3.5}第二段階}{9}{}%
+\contentsline {subsection}{\numberline {3.5.1}記号定義}{9}{}%
+\contentsline {subsection}{\numberline {3.5.2}制約}{9}{}%
+\contentsline {subsection}{\numberline {3.5.3}目的関数}{10}{}%
+\contentsline {subsection}{\numberline {3.5.4}定式化}{10}{}%
+\contentsline {chapter}{\numberline {第4章}提案手法}{11}{}%
+\contentsline {section}{\numberline {4.1}第一段階}{11}{}%
+\contentsline {section}{\numberline {4.2}第二段階}{11}{}%
+\contentsline {section}{\numberline {4.3}局所探索法}{11}{}%
+\contentsline {chapter}{\numberline {第5章}計算実験}{13}{}%
+\contentsline {section}{\numberline {5.1}計算環境}{13}{}%
+\contentsline {section}{\numberline {5.2}第一段階の求解結果}{13}{}%
+\contentsline {section}{\numberline {5.3}第二段階の求解結果}{14}{}%
+\contentsline {section}{\numberline {5.4}局所探索法による解の改善}{14}{}%
+\contentsline {chapter}{\numberline {第6章}まとめと今後の研究計画}{16}{}%
+\contentsline {chapter}{参考文献}{18}{}%

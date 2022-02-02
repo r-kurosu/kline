@@ -80,11 +80,11 @@
     
     $W$ &
     \begin{tabular}{l}
-    \hspace{1.4em}デッキの横幅
+    \hspace{1.4em}母材の横幅
     \end{tabular} \\ \hline
     $H$ &
     \begin{tabular}{l}
-    \hspace{1.4em}デッキの高さ
+    \hspace{1.4em}母材の高さ
     \end{tabular} \\ \hline
     $S_i$ &
     \begin{tabular}{l}
@@ -155,10 +155,85 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
     \label{nfp-eg}
 \end{figure}
 
+
 \section{第一段階}
 第一段階では, 積み地・揚げ地が同じ車を一つのグループとし, 各グループのデッキ内における大まかな配置場所を決定する. 
-グループ内の車の総面積を計算し, soft-rectangleパッキング問題として定式化する. 
+グループ内の車の総面積を計算し, Soft-rectangleパッキング問題として定式化する. 
 このパッキングはセグメントごとに行う. 
+
+\subsection{記号定義}
+以下では, 第一段階の定式化に用いる記号について説明する. 
+
+\begin{table}[htbp]
+    \begin{center}
+    \label{first-kigou}
+    \begin{tabular}{cp{35em}} \hline
+    記号 & \hspace{2.0em}記号の説明 \\ \hline
+    
+    $i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$i$
+    \end{tabular} \\ \hline
+
+    $x_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$i$の左下の$x$座標
+    \end{tabular} \\ \hline
+
+    $y_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$i$の左下の$y$座標
+    \end{tabular} \\ \hline
+    
+    $w_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$i$の幅
+    \end{tabular} \\ \hline
+
+    $h_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$i$の高さ
+    \end{tabular} \\ \hline
+
+    $a$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}パラメータ変数
+    \end{tabular} \\ \hline
+    
+    $W$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}セグメントの横幅
+    \end{tabular} \\ \hline
+
+    $H$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}セグメントの高さ
+    \end{tabular} \\ \hline
+
+    $S_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$i$の面積
+    \end{tabular} \\ \hline
+
+    $I$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}同じセグメントに詰め込むグループの集合
+    \end{tabular} \\ \hline
+
+    $w^i_{j}$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$i$に詰め込む車$j$の幅
+    \end{tabular} \\ \hline
+
+    $h^i_{j}$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$i$に詰め込む車$j$の長さ
+    \end{tabular} \\ \hline
+    
+    \end{tabular}
+    \end{center}
+\end{table}
+
 
 \subsection{制約}
 \textgt{(i)ランプから配置場所までの移動経路確保に関する制約}\\
@@ -193,22 +268,23 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 \end{eqnarray}\\
 
 \textgt{(iii)各グループの幅と高さに関する制約}\\
-\ 各グループ$I$の幅と高さは, グループ内に属する車$i \in I$の幅と長さの最大値をもとに以下の下限を設定する: \\
+\ 各グループ$i \in I$の幅と高さは, グループ内に属する全ての車$j \in i$の幅と長さをもとに以下の制約を設定する: \\
 \begin{eqnarray}
-    w_I \geq \max_{i \in I} w_i, \\
-    h_I \geq \max_{i \in I} h_i. 
+    w_i \geq w^i_j \ (j \in i), \\
+    h_i \geq h^i_j \ (j \in i). 
 \end{eqnarray}
 
 
 \subsection{目的関数}
 目的関数として, デッキ内のより多くの領域を配置可能場所として使えることが望ましいので, グループの面積和の最大化を目指す. 
 また1つのグループが大きくなりすぎると, デッドスペースが生まれたり, 他のグループの領域で詰め込めない車が出てしまう可能性があるので, バランス良く大きくすることを目指す. 
-面積制約\ref{a_const}で用いたパラメータ$a$を用いて, 以下のように書くことができる: \\
+面積制約\ref{a_const}で用いたパラメータ変数$a$を用いて, 以下のように書くことができる: \\
 \begin{eqnarray}
     \mathrm{maximize}\ \sum_{i \in I} w_i*h_i  - a. 
 \end{eqnarray}
+
 \subsection{定式化}
-パッキングするグループの集合を$I$, セグメントの幅と高さをそれぞれ$W, H$とし, 以上をまとめると以下のようになる. \\
+以上をまとめると以下のようになる. \\
 \begin{center}
     \begin{align}
         & \textrm{maximize} \hspace{1.5cm}
@@ -216,8 +292,8 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
         & \textrm{subject\ to} \hspace{1.5cm}
         0 \leq x_i \leq W - w_i & (i \in I) \\
         &\hspace{3cm} 0 \leq y_i \leq H - y_i & (i \in I) \\
-        &\hspace{3cm} w_i \geq \max_{car \in i}w_{car} & (i \in I) \\
-        &\hspace{3cm} h_i \geq \max_{car \in i}h_{car} & (i \in I) \\
+        &\hspace{3cm} w_i \geq w^i_j & (i \in I,\ j \in i) \\
+        &\hspace{3cm} h_i \geq h^i_j & (i \in I,\ j \in i) \\
         &\hspace{2.8cm} S_i \leq w_i*h_i \leq a*S_i &(i \in I)
     \end{align}
     \begin{eqnarray}
@@ -233,6 +309,68 @@ No-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 \section{第二段階}
 第二段階では, 第一段階で決められた領域をはみ出ることがないように, 車一台ずつの配置場所を決定する. 
 車を長方形に近似することで, 長方形詰込み問題として定式化する. 
+このパッキングはグループごとに行う. 
+
+\subsection{記号定義}
+以下では, 第二段階の定式化に用いる記号について説明する. 
+
+\begin{table}[htbp]
+    \begin{center}
+    \label{second-kigou}
+    \begin{tabular}{cp{35em}} \hline
+    記号 & \hspace{2.0em}記号の説明 \\ \hline
+
+    $i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}車$i$
+    \end{tabular} \\ \hline
+
+    $x_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}車$i$の左下の$x$座標
+    \end{tabular} \\ \hline
+
+    $y_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}車$i$の左下の$y$座標
+    \end{tabular} \\ \hline
+    
+    $w_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}車$i$の幅
+    \end{tabular} \\ \hline
+
+    $h_i$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}車$i$の高さ
+    \end{tabular} \\ \hline
+    
+    $W_I$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$I$の横幅
+    \end{tabular} \\ \hline
+
+    $H_I$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$I$の高さ
+    \end{tabular} \\ \hline
+
+    $\overline{I}$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$I$内の既配置の車の集合, $\overline{I} \subseteq I$
+    \end{tabular} \\ \hline
+
+    $J$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}障害物の集合
+    \end{tabular} \\ \hline
+        
+    
+    \end{tabular}
+    \end{center}
+\end{table}
+
+
 
 \subsection{制約}
 \textgt{(i)駐車に必要な局所的なスペースに関する制約}\\
