@@ -1352,8 +1352,8 @@ def main3():
         make_arrow(12-DK_number)
 
 # main() # 複数デッキ #
-main2() # local-searchあり #
-# main3() # レベルアルゴリズム #
+# main2() # local-searchあり #
+main3() # レベルアルゴリズム #
 
 
 
