@@ -1,3 +1,4 @@
+from cmath import rect
 from functools import cache
 import random
 from tokenize import group
@@ -314,6 +315,23 @@ def calc_pnfp(x, y, car_w, car_h):  #左下が起点の縦列駐車
         return True
     return False
 
+def calc_simple_nfp(x, y, car_w, car_h):  #test
+    p = True
+    for i in range(len(nfp)):
+        if (nfp[i].x1 < x < nfp[i].x1 + nfp[i].w1 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x2 < x < nfp[i].x2 + nfp[i].w2 and nfp[i].y2 < y < nfp[i].y2 + nfp[i].h2):
+            p = False
+            break
+    if p == True:
+        return True
+    p = True
+    for i in range(len(nfp)):
+        if (nfp[i].x1 < x < nfp[i].x1 + nfp[i].w1 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x3 < x < nfp[i].x3 + nfp[i].w2 and nfp[i].y3 < y < nfp[i].y3 + nfp[i].h2):
+            p = False
+            break
+    if p ==True:
+        return True
+    return False
+
 def calc_pnfp_reverse(x, y, car_w, car_h):   #左上が起点に縦列駐車
     if x < 0 or x > ship_w - car_h or y < car_w or y > ship_h:
         return False
@@ -514,7 +532,7 @@ def group_packing(DK,b,output):
     df, df_ship, df_ramp, df_obs, df_aisle= datainput(12-DK)
     obs = []
     sepalation_line = add_hold_size(12-DK)
-    print(sepalation_line)
+    # print(sepalation_line)
     
     # ランプ情報
     enter_line = df_ramp.iloc[0,1]
@@ -535,9 +553,9 @@ def group_packing(DK,b,output):
     for i in range(n):
         siguma[i] = df_lp.iloc[i,0]
         siguma_[i] = df_dp.iloc[i,0]
-    if output == 1:
-        print('siguma+ : {}'.format(siguma))
-        print('siguma- : {}'.format(siguma_))
+    # if output == 1:
+    #     print('siguma+ : {}'.format(siguma))
+    #     print('siguma- : {}'.format(siguma_))
     width = ship_w
     height = sepalation_line
     depth = sepalation_line
@@ -607,7 +625,7 @@ def group_packing(DK,b,output):
             model.Params.OutputFlag = 0
             model.Params.MIPFocus = 3
             model.optimize()
-            print(a.X)
+            # print(a.X)
             # output
             if model.Status == gp.GRB.OPTIMAL:
                 # print(a.X)
@@ -916,7 +934,7 @@ def bl_packing(stock_sheet,group,DK,output,handle):
 def tl_packing(reverse_sheet,group,DK,output,handle):
     global df_obs
     global sum_area
-    new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group])
+    new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group]) #new_x,yは左上が起点．NFPはOKだけど，書き出し時は注意
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y - car_h < 0 or new_y + y_sol[group] - car_h < center_line_list[12-DK]:
         return 0
@@ -980,6 +998,7 @@ def new_detailed_packing(DK, output):
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     df_car = df_car.sort_values(by=['SEG','LP','DP','HANDLE','WIDTH','HEIGHT'], ascending=[True,True,True,False,False,False])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
+    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     
     for i in lp_order:
         print('group{}に詰め込めます'.format(i))
@@ -1021,52 +1040,174 @@ def new_detailed_packing(DK, output):
     unpacked_car = [df.iloc[i,3] for i in range(len(df))]
     # unpacked_car = [df.iloc[i,3] for i in lp_order]
 
+# level algorithm
+def level_algorithm(DK, output):
+    global nfp
+    global x_sol, y_sol, w_sol, h_sol
+    global new_x, new_y
+    global car_w, car_h, car_amount, car_handle
+    global df_obs
+    global remain_car, unpacked_car
+    
+    df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
+    # print(df)
+    center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
+    unpacked_car = [0]*len(df)
+    df_lp = df.sort_values(by=['LP','DP'], ascending = [True, False])
+    lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
+    
+    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
+    df_car = df_car.sort_values(by = ['HEIGHT'], ascending = [False])
+    car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
+    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
+    
+    car_x = []
+    car_y = []
+    for i in lp_order:
+        print('group{}に詰め込めます'.format(i))
+        group_w = w_sol[i]
+        group_h = h_sol[i]
+        X = x_sol[i]
+        Y = y_sol[i]
+        level_x = 0
+        level_y = 0
+        level_x_r = 0
+        level_y_r = h_sol[i]
+        first_flag = 0
+        first_flag_r = 0
+        count_sum = 0
+        temp_flag = 0
+        next_level = level_y
+        next_level_r = level_y_r
+        
+        for car in car_order:
+            if (df_car.iloc[car,4] != df_lp.at[i,'SEG']) or (df_car.iloc[car,6] != df_lp.at[i,'LP']) or (df_car.iloc[car,7] != df_lp.at[i,'DP']):
+                continue
+            
+            car_w = df_car.iloc[car,1]
+            car_h = df_car.iloc[car,2]
+            car_amount = df_car.iloc[car,3]
+            car_handle = df_car.iloc[car,8]
+            count = 0
+            nfp = []
+            for j in range(len(df_obs)):
+                nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
+                nfp.append(nfp_obs)
+                
+            while car_amount > count:                
+                new_x = level_x
+                new_y = level_y
+                if new_y + car_h > group_h: #レベル作成不可
+                    break
+                if new_y + car_h + Y <= center_line_list[DK] and temp_flag == 0:
+                    if new_x + car_w < group_w:
+                        if calc_nfp(new_x+X, new_y+Y, car_w, car_h, car_handle) == False:
+                            level_x += 1
+                            # print('nfpがアウト')
+                            continue
+                        car_x.append(new_x+X) #配置処理
+                        car_y.append(new_y+Y)
+                        if output == 1:
+                            cars = patches.Rectangle(xy=(new_x+X, new_y+Y), width = car_w, height = car_h, fc = color_check(df_car.iloc[car,COLOR]), ec = 'k', linewidth = 0.2)
+                            axes[DK-8].add_patch(cars)
+                            axes[DK-8].text(new_x+X+0.5, new_y+Y+2, count_sum + count, fontsize = 1)
+                        df_obs = df_obs.append({'X':new_x+X, 'Y':new_y+Y, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
+                        level_x += car_w + 1
+                        if first_flag == 0:
+                            next_level = new_y + car_h + 3
+                        first_flag = 1
+                        count += 1
+                    else:
+                        # print('新しいレベルを作ります{}'.format(next_level))
+                        if first_flag == 0:
+                            next_level += 1
+                        level_x = 0
+                        level_y = next_level
+                        first_flag = 0
+                
+                else: #上からレベル作成
+                    temp_flag = 1
+                    new_x = level_x_r
+                    new_y = level_y_r
+                    if new_y + Y < center_line_list[DK] or new_y - car_h < 0:
+                        break
+                    if new_x + car_w < group_w:
+                        if calc_nfp_reverse(new_x+X, new_y+Y, car_w, car_h, car_handle) == False:
+                            level_x_r += 1
+                            continue
+                        car_x.append(new_x+X)
+                        car_y.append(new_y+Y)
+                        if output == 1:
+                            cars = patches.Rectangle(xy=(new_x+X, new_y+Y-car_h), width = car_w, height = car_h, fc = color_check(df_car.iloc[car,COLOR]), ec = 'k', linewidth = 0.2)
+                            axes[DK-8].add_patch(cars)
+                            axes[DK-8].text(new_x+X+0.5, new_y+Y-car_h+2, count_sum + count, fontsize = 1)
+                        df_obs = df_obs.append({'X':new_x+X, 'Y':new_y+Y-car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
+                        level_x_r += car_w + 1
+                        if first_flag_r == 0:
+                            next_level_r = new_y - car_h - 3
+                        first_flag_r = 1
+                        count += 1
+                    else:
+                        # print('新しいレベルを作成')
+                        if first_flag_r == 0:
+                            next_level_r -= 1
+                        level_x_r = 0
+                        level_y_r = next_level_r
+                        first_flag_r = 0
+                
+            count_sum += count
+        remain_car[DK] += df.iloc[i,3] - count_sum
+        # print('group'+str(i)+'には{}台積みました'.format(count_sum))
+        # print('group'+str(i)+'には{}台積み込めませんでした'.format(df.iloc[i,3] - count_sum))
+        unpacked_car[i] = df.iloc[i,3] - count_sum
+
+
 last_remain_car = 0
 def local_search(DK,Y,H,unpacked_car):
-    global y_sol, h_sol
+    global y_sol, h_sol, x_sol, w_sol
     global last_remain_car
+    
     print('===local search==')
     last_remain_car = remain_car[DK]
     remain_car[DK] = 0
     df = pd.read_csv('data/car_group/seggroup'+str(DK)+'_'+str(BOOKING)+'.csv')
-    df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
-    df_seg = [0]*3
-    df_seg[1] = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 1]
-    df_seg[2] = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 2]
-    for seg in range(1,3):
-        flag = 0
-        for i in range(len(df_seg[seg])):
-            for j in range(len(df_seg[seg])):
-                if unpacked_car[i] >= 10 and unpacked_car[j] == 0:
-                    print('test')
-                    change_rate = unpacked_car[i]*50/20
-                    if y_sol[i] + h_sol[i] == y_sol[j] and x_sol[i] == x_sol[j]:
-                        vol_up = i
-                        vol_down = j
-                        print(vol_up, vol_down)
-                        y_sol[vol_down] = y_sol[vol_down] + change_rate
-                        h_sol[vol_down] = h_sol[vol_down] - change_rate
-                        h_sol[vol_up] = h_sol[vol_up] + change_rate
-                        flag = 1
-                        # new_detailed_packing(DK,output=1)
+    group_order = sorted(unpacked_car, reverse=True)
+    order = [group_order.index(s) for s in unpacked_car]
+    # print(group_order)
+    # print(order)
+    
+    flag = 0
+    for i in order:
+        for j in order:
+            if unpacked_car[i] >= 1 and unpacked_car[j] == 0:
+                if x_sol[i] != x_sol[j]:
+                    continue
+                change_rate = unpacked_car[i]*3
+                if y_sol[i] + h_sol[i] == y_sol[j] and x_sol[i] == x_sol[j]:
+                    vol_up = i
+                    vol_down = j
+                    print(vol_up, vol_down)
+                    if h_sol[vol_down] - change_rate <= 0:
                         break
-                    elif y_sol[j] + h_sol[j] == y_sol[i] and x_sol[i] == x_sol[j]:
-                        vol_up = i
-                        vol_down = j
-                        print(vol_up, vol_down)
-                        y_sol[vol_down] = y_sol[vol_down]
-                        h_sol[vol_down] = h_sol[vol_down] - change_rate
-                        y_sol[vol_up] = y_sol[vol_up] - change_rate
-                        h_sol[vol_up] = h_sol[vol_up] + change_rate
-                        flag = 1
-                        pass
-            if flag == 1:
-                break
+                    y_sol[vol_down] = y_sol[vol_down] + change_rate
+                    h_sol[vol_down] = h_sol[vol_down] - change_rate
+                    h_sol[vol_up] = h_sol[vol_up] + change_rate
+                    flag = 1
+                    break
+                elif y_sol[j] + h_sol[j] == y_sol[i] and x_sol[i] == x_sol[j]:
+                    vol_up = i
+                    vol_down = j
+                    print(vol_up, vol_down)
+                    if h_sol[vol_down] - change_rate <= 0:
+                        break
+                    h_sol[vol_down] = h_sol[vol_down] - change_rate
+                    y_sol[vol_up] = y_sol[vol_up] - change_rate
+                    h_sol[vol_up] = h_sol[vol_up] + change_rate
+                    flag = 1
+                    break
+        if flag == 1:
+            break
 
-    for i in range(len(df)):
-        cars = patches.Rectangle(xy=(x_sol[i], y_sol[i]), width = w_sol[i], height = h_sol[i], ec = 'k', fill = False)
-        axes[DK-8].add_patch(cars)
-        axes[DK-8].text(x_sol[i]+0.5*w_sol[i], y_sol[i]+0.5*h_sol[i], i, horizontalalignment = 'center', verticalalignment = 'center' , fontsize = 10)
 
 def calc_parcent():
     global available_area
@@ -1101,8 +1242,11 @@ def main():
 
 def main2():
     global x_sol, y_sol, w_sol, h_sol
-    global sum_area, available_area
+    global sum_area, available_area, unpacked_car, remain_car
+    
     for DK_number in range(8,13):
+        print('*************************************************************************')
+        print('今から'+str(DK_number)+'dkに詰め込みます')
         st_time = time.time()
         group_packing(12-DK_number,1,output=0)
         new_detailed_packing(DK_number, output=0)
@@ -1110,14 +1254,15 @@ def main2():
         print('充填率は{} %'.format(100*sum_area/available_area))
         print(unpacked_car)
         print(sum(unpacked_car))
+        # local search ---------------------------------------
         best_X = x_sol
         best_Y = y_sol
         best_W = w_sol
         best_H = h_sol
         best_sol = sum(unpacked_car)
-        # local search ---------------------------------------
         for times in range(10):
             if sum(unpacked_car) == 0:
+                print('余りはありません，ローカルサーチを終了します')
                 break
             local_search(DK_number, y_sol, h_sol, unpacked_car)
             new_detailed_packing(DK_number, output=0)
@@ -1130,11 +1275,14 @@ def main2():
                 break
             else:
                 best_X, best_Y, best_W, best_H = x_sol, y_sol, w_sol, h_sol
-                best_sol = sum(unpacked_car)
                 print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
+                best_sol = sum(unpacked_car)
         # ---------------------------------------
         remain_car[DK_number] = 0
-        # group_packing(12-DK_number,1,output=1)
+        df = pd.read_csv('data/car_group/seggroup'+str(DK_number)+'_'+str(BOOKING)+'.csv')
+        for i in range(len(df)):
+            rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
+            axes[DK_number - 8].add_patch(rect)
         new_detailed_packing(DK_number, output=1)
         print('最終的に配置した車の総面積は{}'.format(sum_area))
         print('充填率は{} %'.format(100*sum_area/available_area))
@@ -1145,34 +1293,53 @@ def main2():
         ed_time = time.time()
         print('このデッキには{:.1f}sかかりました'.format(ed_time - st_time))
 
+def main3():
+    global x_sol, y_sol ,w_sol, h_sol
+    global unpacked_car, remain_car
+    
+    for DK_number in range(8,13):
+        print('*************************************************************************')
+        print('今から'+str(DK_number)+'dkに詰め込みます')
+        group_packing(12-DK_number, b=1, output=1)
+        level_algorithm(DK_number, output=0)
+        print(unpacked_car)
+        print(sum(unpacked_car))
+        # local search ---------------------------------------
+        best_X = x_sol
+        best_Y = y_sol
+        best_W = w_sol
+        best_H = h_sol
+        best_sol = sum(unpacked_car)
+        for times in range(10):
+            if sum(unpacked_car) == 0:
+                break
+            local_search(DK_number, y_sol, h_sol, unpacked_car)
+            level_algorithm(DK_number, output=0)
+            print(unpacked_car)
+            print(sum(unpacked_car))
+            if best_sol <= sum(unpacked_car):
+                y_sol, h_sol = best_Y, best_H
+                print('ローカルサーチを終了します')
+                print('改善の回数: {}'.format(times))
+                break
+            else:
+                best_Y, best_H = y_sol, h_sol
+                print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
+                best_sol = sum(unpacked_car)
+        # ---------------------------------------
+        remain_car[DK_number] = 0
+        df = pd.read_csv('data/car_group/seggroup'+str(DK_number)+'_'+str(BOOKING)+'.csv')
+        for i in range(len(df)):
+            rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
+            axes[DK_number - 8].add_patch(rect)
+        
+        level_algorithm(DK_number, output=1)
+        output_func(DK_number)
+        make_arrow(12-DK_number)
+
 # main() # 複数デッキ #
 main2() # local-searchあり #
-
-
-
-def packing():
-    global b
-    for DK in range(5):
-        start = time.time()
-        bestvalue = 1000
-        bestsol = 1
-        for b in range(4,5):
-            best = b/10 + 1
-            group_packing(DK,best,0)
-            if model.Status != gp.GRB.OPTIMAL or model2.Status != gp.GRB.OPTIMAL:
-                continue
-            detailed_packing(DK,0)
-            if bestvalue >= remain_car[DK]:
-                bestvalue = remain_car[DK]
-                bestsol = best
-        group_packing(DK,bestsol,1)
-        detailed_packing(DK,1)
-        make_arrow(12-DK)
-        print('このデッキの余りは{}台です．'.format(remain_car[DK]))
-        print(bestsol)
-        end = time.time()
-        print(str(12-DK)+'の計算時間:{:.1f}s'.format(end-start))
-
+# main3() # レベルアルゴリズム #
 
 
 
