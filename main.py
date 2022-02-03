@@ -1047,7 +1047,7 @@ def level_algorithm(DK):
     global df_obs
     
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
-    
+    print(df)
     df_lp = df.sort_values(by=['LP','DP'], ascending = [True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
     
@@ -1100,7 +1100,7 @@ def level_algorithm(DK):
                     car_y.append(new_y+Y)
                     cars = patches.Rectangle(xy=(new_x+X, new_y+Y), width = car_w, height = car_h, fc = color_check(df_car.iloc[car,COLOR]), ec = 'k', linewidth = 0.2)
                     axes[DK-8].add_patch(cars)
-                    axes[DK-8].text(new_x+X+0.5, new_y+Y+2, count, fontsize = 1)
+                    axes[DK-8].text(new_x+X+0.5, new_y+Y+2, count_sum + count, fontsize = 1)
                     df_obs = df_obs.append({'X':new_x+X, 'Y':new_y+Y, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
                     level_x += car_w
                     if first_flag == 0:
@@ -1108,7 +1108,7 @@ def level_algorithm(DK):
                     first_flag = 1
                     count += 1
                 else:
-                    print('新しいレベルを作ります{}'.format(next_level))
+                    # print('新しいレベルを作ります{}'.format(next_level))
                     if first_flag == 0:
                         next_level += 1
                     level_x = 0
@@ -1117,6 +1117,7 @@ def level_algorithm(DK):
                     
             count_sum += count
         # remain_car[DK] = df.iloc[i,3] - count_sum
+        print('group'+str(i)+'には{}台積みました'.format(count_sum))
         print('group'+str(i)+'には{}台積み込めませんでした'.format(df.iloc[i,3] - count_sum))
 
 
@@ -1254,7 +1255,6 @@ def main3():
 # main() # 複数デッキ #
 main2() # local-searchあり #
 main3() # レベルアルゴリズム #
-
 
 def packing():
     global b
