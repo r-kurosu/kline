@@ -20,7 +20,7 @@ from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
 
-BOOKING = 3
+BOOKING = 1
 COLOR = 7   # 6 = LP, 7 = DP
 
 print('booking plan {} を実行します'.format(BOOKING))
@@ -1152,7 +1152,7 @@ def level_algorithm(DK, output):
 
 
 last_remain_car = 0
-def local_search(DK,Y,H,unpacked_car):
+def local_search(DK, unpacked_car):
     global y_sol, h_sol, x_sol, w_sol
     global last_remain_car
     
@@ -1211,14 +1211,14 @@ def calc_parcent():
         print(str(DK)+'dkの配置可能面積は{}'.format(available_area))
 calc_parcent()
 
-def main():
+def main1():
     for DK_number in range(8,13):
         st_time = time.time()
         group_packing(12-DK_number,1,output=0)
         new_detailed_packing(DK_number, output=0)
         print(unpacked_car)
         print(sum(unpacked_car))
-        local_search(DK_number, y_sol, h_sol, unpacked_car)
+        local_search(DK_number, unpacked_car)
         new_detailed_packing(DK_number, output=1)
         print(unpacked_car)
         print(sum(unpacked_car))
@@ -1253,7 +1253,7 @@ def main2():
             if sum(unpacked_car) == 0:
                 print('余りはありません，ローカルサーチを終了します')
                 break
-            local_search(DK_number, y_sol, h_sol, unpacked_car)
+            local_search(DK_number, unpacked_car)
             new_detailed_packing(DK_number, output=0)
             print('充填率は{} %'.format(100*sum_area/available_area))
             print(unpacked_car)
@@ -1285,6 +1285,8 @@ def main2():
         ed_time = time.time()
         print('このデッキには{:.1f}sかかりました'.format(ed_time - st_time))
 
+
+
 def main3():
     global x_sol, y_sol ,w_sol, h_sol
     global unpacked_car, remain_car, sum_area
@@ -1306,7 +1308,7 @@ def main3():
         for times in range(10):
             if sum(unpacked_car) == 0:
                 break
-            local_search(DK_number, y_sol, h_sol, unpacked_car)
+            local_search(DK_number, unpacked_car)
             level_algorithm(DK_number, output=0)
             print('充填率は{} %'.format(100*sum_area/available_area))
             print(unpacked_car)
