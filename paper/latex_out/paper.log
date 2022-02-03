@@ -1,4 +1,4 @@
-This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  2 FEB 2022 12:33
+This is e-pTeX, Version 3.141592653-p3.9.0-210218-2.6 (utf8.euc) (TeX Live 2021) (preloaded format=platex 2022.1.20)  2 FEB 2022 13:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -366,37 +366,37 @@ File: ./sozai//3-sequence-pair.png Graphic file (type eps)
 File: ./sozai//3nfp.png Graphic file (type eps)
  <./sozai//3nfp.png> [6
 
-] [7] [8]) [9]
+] [7] [8] [9]) [10]
 \openout2 = `chapter4.aux'.
 
  (./chapter4.tex
 第 4 章
-[10
+[11
 
 
 
 
-]) [11]
+]) [12]
 \openout2 = `chapter6.aux'.
 
  (./chapter6.tex
 第 5 章
 File: ./sozai//5-first-no-rei.png Graphic file (type eps)
-<./sozai//5-first-no-rei.png> [12
+<./sozai//5-first-no-rei.png> [13
 
 
 
 
 ]
 File: ./sozai//5-second-no-rei.png Graphic file (type eps)
- <./sozai//5-second-no-rei.png> [13
+ <./sozai//5-second-no-rei.png> [14
 
-] [14])
+] [15])
 \openout2 = `chapter7.aux'.
 
  (./chapter7.tex
 第 6 章
-) [15
+) [16
 
 
 
@@ -406,23 +406,23 @@ File: ./sozai//5-second-no-rei.png Graphic file (type eps)
 ]
 \openout2 = `chapter8.aux'.
 
- (./chapter8.tex) [16
+ (./chapter8.tex) [17
 
 
 
 
-] [17
+] [18
 
 
 
 ] (latex_out/paper.aux (latex_out/tekiyou.aux) (latex_out/chapter1.aux) (latex_out/chapter2.aux) (latex_out/chapter3.aux) (latex_out/chapter4.aux) (latex_out/chapter6.aux) (latex_out/chapter7.aux) (latex_out/chapter8.aux)) ) 
 Here is how much of TeX's memory you used:
- 4223 strings out of 478749
- 68066 string characters out of 5859015
- 367804 words of memory out of 5000000
- 22476 multiletter control sequences out of 15000+600000
+ 4225 strings out of 478749
+ 68093 string characters out of 5859015
+ 370830 words of memory out of 5000000
+ 22478 multiletter control sequences out of 15000+600000
  486961 words of font info for 80 fonts, out of 8000000 for 9000
  929 hyphenation exceptions out of 8191
  55i,18n,62p,312b,377s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on latex_out/paper.dvi (20 pages, 55316 bytes).
+Output written on latex_out/paper.dvi (21 pages, 58128 bytes).
