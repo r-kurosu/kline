@@ -1165,46 +1165,47 @@ last_remain_car = 0
 def local_search(DK,Y,H,unpacked_car):
     global y_sol, h_sol, x_sol, w_sol
     global last_remain_car
+    
     print('===local search==')
     last_remain_car = remain_car[DK]
     remain_car[DK] = 0
     df = pd.read_csv('data/car_group/seggroup'+str(DK)+'_'+str(BOOKING)+'.csv')
-    df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
-    df_seg = [0]*3
-    df_seg[1] = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 1]
-    df_seg[2] = [df_lp.iloc[i,0] for i in range(len(df_lp)) if df_lp.at[i,'SEG'] == 2]
-    for seg in range(1,3):
-        flag = 0
-        for i in range(len(df_seg[seg])):
-            for j in range(len(df_seg[seg])):
-                if unpacked_car[i] >= 10 and unpacked_car[j] == 0:
-                    if x_sol[i] != x_sol[j]:
-                        continue
-                    change_rate = unpacked_car[i]*3
-                    if y_sol[i] + h_sol[i] == y_sol[j] and x_sol[i] == x_sol[j]:
-                        vol_up = i
-                        vol_down = j
-                        print(vol_up, vol_down)
-                        if h_sol[vol_down] - change_rate <= 0:
-                            break
-                        y_sol[vol_down] = y_sol[vol_down] + change_rate
-                        h_sol[vol_down] = h_sol[vol_down] - change_rate
-                        h_sol[vol_up] = h_sol[vol_up] + change_rate
-                        flag = 1
+    group_order = sorted(unpacked_car, reverse=True)
+    order = [group_order.index(s) for s in unpacked_car]
+    # print(group_order)
+    # print(order)
+    
+    flag = 0
+    for i in order:
+        for j in order:
+            if unpacked_car[i] >= 1 and unpacked_car[j] == 0:
+                if x_sol[i] != x_sol[j]:
+                    continue
+                change_rate = unpacked_car[i]*3
+                if y_sol[i] + h_sol[i] == y_sol[j] and x_sol[i] == x_sol[j]:
+                    vol_up = i
+                    vol_down = j
+                    print(vol_up, vol_down)
+                    if h_sol[vol_down] - change_rate <= 0:
                         break
-                    elif y_sol[j] + h_sol[j] == y_sol[i] and x_sol[i] == x_sol[j]:
-                        vol_up = i
-                        vol_down = j
-                        print(vol_up, vol_down)
-                        if h_sol[vol_down] - change_rate <= 0:
-                            break
-                        h_sol[vol_down] = h_sol[vol_down] - change_rate
-                        y_sol[vol_up] = y_sol[vol_up] - change_rate
-                        h_sol[vol_up] = h_sol[vol_up] + change_rate
-                        flag = 1
+                    y_sol[vol_down] = y_sol[vol_down] + change_rate
+                    h_sol[vol_down] = h_sol[vol_down] - change_rate
+                    h_sol[vol_up] = h_sol[vol_up] + change_rate
+                    flag = 1
+                    break
+                elif y_sol[j] + h_sol[j] == y_sol[i] and x_sol[i] == x_sol[j]:
+                    vol_up = i
+                    vol_down = j
+                    print(vol_up, vol_down)
+                    if h_sol[vol_down] - change_rate <= 0:
                         break
-            if flag == 1:
-                break
+                    h_sol[vol_down] = h_sol[vol_down] - change_rate
+                    y_sol[vol_up] = y_sol[vol_up] - change_rate
+                    h_sol[vol_up] = h_sol[vol_up] + change_rate
+                    flag = 1
+                    break
+        if flag == 1:
+            break
 
 
 def calc_parcent():
