@@ -315,23 +315,6 @@ def calc_pnfp(x, y, car_w, car_h):  #左下が起点の縦列駐車
         return True
     return False
 
-def calc_simple_nfp(x, y, car_w, car_h):  #test
-    p = True
-    for i in range(len(nfp)):
-        if (nfp[i].x1 < x < nfp[i].x1 + nfp[i].w1 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x2 < x < nfp[i].x2 + nfp[i].w2 and nfp[i].y2 < y < nfp[i].y2 + nfp[i].h2):
-            p = False
-            break
-    if p == True:
-        return True
-    p = True
-    for i in range(len(nfp)):
-        if (nfp[i].x1 < x < nfp[i].x1 + nfp[i].w1 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x3 < x < nfp[i].x3 + nfp[i].w2 and nfp[i].y3 < y < nfp[i].y3 + nfp[i].h2):
-            p = False
-            break
-    if p ==True:
-        return True
-    return False
-
 def calc_pnfp_reverse(x, y, car_w, car_h):   #左上が起点に縦列駐車
     if x < 0 or x > ship_w - car_h or y < car_w or y > ship_h:
         return False
