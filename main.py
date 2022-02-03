@@ -995,7 +995,7 @@ def new_detailed_packing(DK, output):
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
-    df_car = df_car.sort_values(by=['SEG','LP','DP','HANDLE','WIDTH','HEIGHT'], ascending=[True,True,True,False,False,False])
+    df_car = df_car.sort_values(by=['HEIGHT'], ascending=[False])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
     
     for i in lp_order:
@@ -1039,8 +1039,12 @@ def new_detailed_packing(DK, output):
     # unpacked_car = [df.iloc[i,3] for i in lp_order]
 
 # level algorithm
-def level_algorithm(W, H, DK):
+def level_algorithm(DK):
     global nfp
+    global x_sol, y_sol, w_sol, h_sol
+    global new_x, new_y
+    global car_w, car_h, car_amount, car_handle
+    global df_obs
     
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
     
@@ -1050,60 +1054,71 @@ def level_algorithm(W, H, DK):
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     df_car = df_car.sort_values(by = ['HEIGHT'], ascending = [False])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
+    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     
     print(df_car)
     n = len(df_car)
     
-    level_x = 0
-    level_y = 0
     car_x = []
     car_y = []
-    car = 0
-    first_flag = 0
     for i in lp_order:
         print('group{}に詰め込めます'.format(i))
+        group_w = w_sol[i]
+        group_h = h_sol[i]
+        X = x_sol[i]
+        Y = y_sol[i]
+        level_x = 0
+        level_y = 0
+        first_flag = 0
+        count_sum = 0
         for car in car_order:
             if (df_car.iloc[car,4] != df_lp.at[i,'SEG']) or (df_car.iloc[car,6] != df_lp.at[i,'LP']) or (df_car.iloc[car,7] != df_lp.at[i,'DP']):
                 continue
-
+            
             car_w = df_car.iloc[car,1]
             car_h = df_car.iloc[car,2]
             car_amount = df_car.iloc[car,3]
             car_handle = df_car.iloc[car,8]
             count = 0
-            
-            if level_y + car_h > H: #レベル作成不可
-                break
-            
             nfp = []
             for j in range(len(df_obs)):
                 nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
                 nfp.append(nfp_obs)
                 
-            while car_amount > count:
+            while car_amount > count:                
                 new_x = level_x
                 new_y = level_y
-                if new_x + car_w < W:
-                    if calc_nfp(new_x, new_y, car_w, car_h, car_handle) == False:
+                if new_y + car_h > group_h: #レベル作成不可
+                    count_sum += count
+                    break
+                if new_x + car_w < group_w:
+                    if calc_nfp(new_x+X, new_y+Y, car_w, car_h, car_handle) == False:
                         level_x += 1
+                        # print('nfpがアウト')
                         continue
-                    car_x.append(new_x) #配置処理
-                    car_y.append(new_y)
-                    cars = patches.Rectangle(xy=(new_x, new_y), width = car_w, height = car_h, fc = color_check(df_car.iloc[car,COLOR]), ec = 'k', linewidth = 0.2)
+                    car_x.append(new_x+X) #配置処理
+                    car_y.append(new_y+Y)
+                    cars = patches.Rectangle(xy=(new_x+X, new_y+Y), width = car_w, height = car_h, fc = color_check(df_car.iloc[car,COLOR]), ec = 'k', linewidth = 0.2)
                     axes[DK-8].add_patch(cars)
-                    axes[DK-8].text(new_x+0.5, new_y+2, count, fontsize = 1)
+                    axes[DK-8].text(new_x+X+0.5, new_y+Y+2, count, fontsize = 1)
+                    df_obs = df_obs.append({'X':new_x+X, 'Y':new_y+Y, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
                     level_x += car_w
                     if first_flag == 0:
                         next_level = new_y + car_h + 3
                     first_flag = 1
                     count += 1
                 else:
+                    print('新しいレベルを作ります{}'.format(next_level))
+                    if first_flag == 0:
+                        next_level += 1
                     level_x = 0
                     level_y = next_level
                     first_flag = 0
-    print(car_x, car_y)
+                    
+            count_sum += count
+        # remain_car[DK] = df.iloc[i,3] - count_sum
+        print('group'+str(i)+'には{}台積み込めませんでした'.format(df.iloc[i,3] - count_sum))
 
-level_algorithm(350, 2000, 12)
 
 last_remain_car = 0
 def local_search(DK,Y,H,unpacked_car):
@@ -1229,9 +1244,16 @@ def main2():
         ed_time = time.time()
         print('このデッキには{:.1f}sかかりました'.format(ed_time - st_time))
 
+def main3():
+    global x_sol, y_sol ,w_sol, h_sol
+    
+    for DK_number in range(12,13):
+        group_packing(12-DK_number, b=1, output=1)
+        level_algorithm(DK_number)
+        
 # main() # 複数デッキ #
 main2() # local-searchあり #
-
+main3() # レベルアルゴリズム #
 
 
 def packing():
