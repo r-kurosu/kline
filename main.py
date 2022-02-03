@@ -1306,7 +1306,7 @@ def main3():
         print(y_sol)
         for times in range(10):
             print('{}回目の反復です'.format(times))
-            print(best_Y)
+            # print(best_Y)
             if sum(unpacked_car) == 0:
                 break
             print('ローカルサーチ前のbestY{}'.format(best_Y))
