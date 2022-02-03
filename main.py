@@ -314,6 +314,23 @@ def calc_pnfp(x, y, car_w, car_h):  #左下が起点の縦列駐車
         return True
     return False
 
+def calc_simple_nfp(x, y, car_w, car_h):  #test
+    p = True
+    for i in range(len(nfp)):
+        if (nfp[i].x1 < x < nfp[i].x1 + nfp[i].w1 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x2 < x < nfp[i].x2 + nfp[i].w2 and nfp[i].y2 < y < nfp[i].y2 + nfp[i].h2):
+            p = False
+            break
+    if p == True:
+        return True
+    p = True
+    for i in range(len(nfp)):
+        if (nfp[i].x1 < x < nfp[i].x1 + nfp[i].w1 and nfp[i].y1 < y < nfp[i].y1 + nfp[i].h1) or (nfp[i].x3 < x < nfp[i].x3 + nfp[i].w2 and nfp[i].y3 < y < nfp[i].y3 + nfp[i].h2):
+            p = False
+            break
+    if p ==True:
+        return True
+    return False
+
 def calc_pnfp_reverse(x, y, car_w, car_h):   #左上が起点に縦列駐車
     if x < 0 or x > ship_w - car_h or y < car_w or y > ship_h:
         return False
@@ -1021,6 +1038,73 @@ def new_detailed_packing(DK, output):
     unpacked_car = [df.iloc[i,3] for i in range(len(df))]
     # unpacked_car = [df.iloc[i,3] for i in lp_order]
 
+# level algorithm
+def level_algorithm(W, H, DK):
+    global nfp
+    
+    df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
+    
+    df_lp = df.sort_values(by=['LP','DP'], ascending = [True, False])
+    lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
+    
+    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
+    df_car = df_car.sort_values(by = ['HEIGHT'], ascending = [False])
+    car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
+    
+    print(df_car)
+    n = len(df_car)
+    
+    level_x = 0
+    level_y = 0
+    car_x = []
+    car_y = []
+    car = 0
+    first_flag = 0
+    for i in lp_order:
+        print('group{}に詰め込めます'.format(i))
+        for car in car_order:
+            if (df_car.iloc[car,4] != df_lp.at[i,'SEG']) or (df_car.iloc[car,6] != df_lp.at[i,'LP']) or (df_car.iloc[car,7] != df_lp.at[i,'DP']):
+                continue
+
+            car_w = df_car.iloc[car,1]
+            car_h = df_car.iloc[car,2]
+            car_amount = df_car.iloc[car,3]
+            car_handle = df_car.iloc[car,8]
+            count = 0
+            
+            if level_y + car_h > H: #レベル作成不可
+                break
+            
+            nfp = []
+            for j in range(len(df_obs)):
+                nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
+                nfp.append(nfp_obs)
+                
+            while car_amount > count:
+                new_x = level_x
+                new_y = level_y
+                if new_x + car_w < W:
+                    if calc_nfp(new_x, new_y, car_w, car_h, car_handle) == False:
+                        level_x += 1
+                        continue
+                    car_x.append(new_x) #配置処理
+                    car_y.append(new_y)
+                    cars = patches.Rectangle(xy=(new_x, new_y), width = car_w, height = car_h, fc = color_check(df_car.iloc[car,COLOR]), ec = 'k', linewidth = 0.2)
+                    axes[DK-8].add_patch(cars)
+                    axes[DK-8].text(new_x+0.5, new_y+2, count, fontsize = 1)
+                    level_x += car_w
+                    if first_flag == 0:
+                        next_level = new_y + car_h + 3
+                    first_flag = 1
+                    count += 1
+                else:
+                    level_x = 0
+                    level_y = next_level
+                    first_flag = 0
+    print(car_x, car_y)
+
+level_algorithm(350, 2000, 12)
+
 last_remain_car = 0
 def local_search(DK,Y,H,unpacked_car):
     global y_sol, h_sol
@@ -1104,38 +1188,38 @@ def main2():
     global sum_area, available_area
     for DK_number in range(8,13):
         st_time = time.time()
-        group_packing(12-DK_number,1,output=0)
-        new_detailed_packing(DK_number, output=0)
-        print('配置した車の総面積は{}'.format(sum_area))
-        print('充填率は{} %'.format(100*sum_area/available_area))
-        print(unpacked_car)
-        print(sum(unpacked_car))
-        best_X = x_sol
-        best_Y = y_sol
-        best_W = w_sol
-        best_H = h_sol
-        best_sol = sum(unpacked_car)
-        # local search ---------------------------------------
-        for times in range(10):
-            if sum(unpacked_car) == 0:
-                break
-            local_search(DK_number, y_sol, h_sol, unpacked_car)
-            new_detailed_packing(DK_number, output=0)
-            print(unpacked_car)
-            print(sum(unpacked_car))
-            if best_sol <= sum(unpacked_car):
-                x_sol, y_sol, w_sol, h_sol = best_X, best_Y, best_W, best_H
-                print('ローカルサーチを終了します')
-                print('改善の回数: {}'.format(times))
-                break
-            else:
-                best_X, best_Y, best_W, best_H = x_sol, y_sol, w_sol, h_sol
-                best_sol = sum(unpacked_car)
-                print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
-        # ---------------------------------------
-        remain_car[DK_number] = 0
+        # group_packing(12-DK_number,1,output=0)
+        # new_detailed_packing(DK_number, output=0)
+        # print('配置した車の総面積は{}'.format(sum_area))
+        # print('充填率は{} %'.format(100*sum_area/available_area))
+        # print(unpacked_car)
+        # print(sum(unpacked_car))
+        # best_X = x_sol
+        # best_Y = y_sol
+        # best_W = w_sol
+        # best_H = h_sol
+        # best_sol = sum(unpacked_car)
+        # # local search ---------------------------------------
+        # for times in range(10):
+        #     if sum(unpacked_car) == 0:
+        #         break
+        #     local_search(DK_number, y_sol, h_sol, unpacked_car)
+        #     new_detailed_packing(DK_number, output=0)
+        #     print(unpacked_car)
+        #     print(sum(unpacked_car))
+        #     if best_sol <= sum(unpacked_car):
+        #         x_sol, y_sol, w_sol, h_sol = best_X, best_Y, best_W, best_H
+        #         print('ローカルサーチを終了します')
+        #         print('改善の回数: {}'.format(times))
+        #         break
+        #     else:
+        #         best_X, best_Y, best_W, best_H = x_sol, y_sol, w_sol, h_sol
+        #         best_sol = sum(unpacked_car)
+        #         print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
+        # # ---------------------------------------
+        # remain_car[DK_number] = 0
         # group_packing(12-DK_number,1,output=1)
-        new_detailed_packing(DK_number, output=1)
+        # new_detailed_packing(DK_number, output=1)
         print('最終的に配置した車の総面積は{}'.format(sum_area))
         print('充填率は{} %'.format(100*sum_area/available_area))
         print(unpacked_car)
