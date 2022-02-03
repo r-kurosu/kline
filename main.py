@@ -20,7 +20,7 @@ from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
 
-BOOKING = 1
+BOOKING = 3
 COLOR = 7   # 6 = LP, 7 = DP
 
 print('booking plan {} を実行します'.format(BOOKING))
@@ -1266,15 +1266,18 @@ def main2():
                 break
             local_search(DK_number, y_sol, h_sol, unpacked_car)
             new_detailed_packing(DK_number, output=0)
+            print('充填率は{} %'.format(100*sum_area/available_area))
             print(unpacked_car)
             print(sum(unpacked_car))
             if best_sol <= sum(unpacked_car):
-                x_sol, y_sol, w_sol, h_sol = best_X, best_Y, best_W, best_H
+                y_sol = best_Y 
+                h_sol = best_H
                 print('ローカルサーチを終了します')
                 print('改善の回数: {}'.format(times))
                 break
             else:
-                best_X, best_Y, best_W, best_H = x_sol, y_sol, w_sol, h_sol
+                best_Y = y_sol
+                best_H = h_sol
                 print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
                 best_sol = sum(unpacked_car)
         # ---------------------------------------
@@ -1318,12 +1321,14 @@ def main3():
             print(unpacked_car)
             print(sum(unpacked_car))
             if best_sol <= sum(unpacked_car):
-                y_sol, h_sol = best_Y, best_H
+                y_sol = best_Y 
+                h_sol = best_H
                 print('ローカルサーチを終了します')
                 print('改善の回数: {}'.format(times))
                 break
             else:
-                best_Y, best_H = y_sol, h_sol
+                best_Y = y_sol
+                best_H = h_sol
                 print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
                 best_sol = sum(unpacked_car)
         # ---------------------------------------
