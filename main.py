@@ -1241,41 +1241,48 @@ def main():
 
 def main2():
     global x_sol, y_sol, w_sol, h_sol
-    global sum_area, available_area
+    global sum_area, available_area, unpacked_car, remain_car
+    
     for DK_number in range(8,13):
+        print('*************************************************************************')
+        print('今から'+str(DK_number)+'dkに詰め込みます')
         st_time = time.time()
-        # group_packing(12-DK_number,1,output=0)
-        # new_detailed_packing(DK_number, output=0)
-        # print('配置した車の総面積は{}'.format(sum_area))
-        # print('充填率は{} %'.format(100*sum_area/available_area))
-        # print(unpacked_car)
-        # print(sum(unpacked_car))
-        # best_X = x_sol
-        # best_Y = y_sol
-        # best_W = w_sol
-        # best_H = h_sol
-        # best_sol = sum(unpacked_car)
-        # # local search ---------------------------------------
-        # for times in range(10):
-        #     if sum(unpacked_car) == 0:
-        #         break
-        #     local_search(DK_number, y_sol, h_sol, unpacked_car)
-        #     new_detailed_packing(DK_number, output=0)
-        #     print(unpacked_car)
-        #     print(sum(unpacked_car))
-        #     if best_sol <= sum(unpacked_car):
-        #         x_sol, y_sol, w_sol, h_sol = best_X, best_Y, best_W, best_H
-        #         print('ローカルサーチを終了します')
-        #         print('改善の回数: {}'.format(times))
-        #         break
-        #     else:
-        #         best_X, best_Y, best_W, best_H = x_sol, y_sol, w_sol, h_sol
-        #         best_sol = sum(unpacked_car)
-        #         print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
-        # # ---------------------------------------
-        # remain_car[DK_number] = 0
-        # group_packing(12-DK_number,1,output=1)
-        # new_detailed_packing(DK_number, output=1)
+        group_packing(12-DK_number,1,output=0)
+        new_detailed_packing(DK_number, output=0)
+        print('配置した車の総面積は{}'.format(sum_area))
+        print('充填率は{} %'.format(100*sum_area/available_area))
+        print(unpacked_car)
+        print(sum(unpacked_car))
+        # local search ---------------------------------------
+        best_X = x_sol
+        best_Y = y_sol
+        best_W = w_sol
+        best_H = h_sol
+        best_sol = sum(unpacked_car)
+        for times in range(10):
+            if sum(unpacked_car) == 0:
+                print('余りはありません，ローカルサーチを終了します')
+                break
+            local_search(DK_number, y_sol, h_sol, unpacked_car)
+            new_detailed_packing(DK_number, output=0)
+            print(unpacked_car)
+            print(sum(unpacked_car))
+            if best_sol <= sum(unpacked_car):
+                x_sol, y_sol, w_sol, h_sol = best_X, best_Y, best_W, best_H
+                print('ローカルサーチを終了します')
+                print('改善の回数: {}'.format(times))
+                break
+            else:
+                best_X, best_Y, best_W, best_H = x_sol, y_sol, w_sol, h_sol
+                print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
+                best_sol = sum(unpacked_car)
+        # ---------------------------------------
+        remain_car[DK_number] = 0
+        df = pd.read_csv('data/car_group/seggroup'+str(DK_number)+'_'+str(BOOKING)+'.csv')
+        for i in range(len(df)):
+            rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
+            axes[DK_number - 8].add_patch(rect)
+        new_detailed_packing(DK_number, output=1)
         print('最終的に配置した車の総面積は{}'.format(sum_area))
         print('充填率は{} %'.format(100*sum_area/available_area))
         print(unpacked_car)
@@ -1330,8 +1337,8 @@ def main3():
         make_arrow(12-DK_number)
 
 # main() # 複数デッキ #
-# main2() # local-searchあり #
-main3() # レベルアルゴリズム #
+main2() # local-searchあり #
+# main3() # レベルアルゴリズム #
 
 
 
