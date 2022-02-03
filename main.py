@@ -1163,7 +1163,7 @@ def level_algorithm(DK, output):
 
 last_remain_car = 0
 def local_search(DK,Y,H,unpacked_car):
-    global y_sol, h_sol
+    global y_sol, h_sol, x_sol, w_sol
     global last_remain_car
     print('===local search==')
     last_remain_car = remain_car[DK]
@@ -1178,12 +1178,15 @@ def local_search(DK,Y,H,unpacked_car):
         for i in range(len(df_seg[seg])):
             for j in range(len(df_seg[seg])):
                 if unpacked_car[i] >= 10 and unpacked_car[j] == 0:
-                    print('test')
+                    if x_sol[i] != x_sol[j]:
+                        continue
                     change_rate = unpacked_car[i]*3
                     if y_sol[i] + h_sol[i] == y_sol[j] and x_sol[i] == x_sol[j]:
                         vol_up = i
                         vol_down = j
                         print(vol_up, vol_down)
+                        if h_sol[vol_down] - change_rate <= 0:
+                            break
                         y_sol[vol_down] = y_sol[vol_down] + change_rate
                         h_sol[vol_down] = h_sol[vol_down] - change_rate
                         h_sol[vol_up] = h_sol[vol_up] + change_rate
@@ -1193,12 +1196,13 @@ def local_search(DK,Y,H,unpacked_car):
                         vol_up = i
                         vol_down = j
                         print(vol_up, vol_down)
-                        y_sol[vol_down] = y_sol[vol_down]
+                        if h_sol[vol_down] - change_rate <= 0:
+                            break
                         h_sol[vol_down] = h_sol[vol_down] - change_rate
                         y_sol[vol_up] = y_sol[vol_up] - change_rate
                         h_sol[vol_up] = h_sol[vol_up] + change_rate
                         flag = 1
-                        pass
+                        break
             if flag == 1:
                 break
 
