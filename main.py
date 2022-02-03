@@ -1045,9 +1045,12 @@ def level_algorithm(DK):
     global new_x, new_y
     global car_w, car_h, car_amount, car_handle
     global df_obs
+    global remain_car, unpacked_car
     
     df, df_ship, df_ramp, df_obs, df_aisle = datainput(DK)
     print(df)
+    center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
+    unpacked_car = [0]*len(df)
     df_lp = df.sort_values(by=['LP','DP'], ascending = [True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
     
@@ -1089,7 +1092,6 @@ def level_algorithm(DK):
                 new_x = level_x
                 new_y = level_y
                 if new_y + car_h > group_h: #レベル作成不可
-                    count_sum += count
                     break
                 if new_x + car_w < group_w:
                     if calc_nfp(new_x+X, new_y+Y, car_w, car_h, car_handle) == False:
@@ -1116,9 +1118,10 @@ def level_algorithm(DK):
                     first_flag = 0
                     
             count_sum += count
-        # remain_car[DK] = df.iloc[i,3] - count_sum
+        remain_car[DK] += df.iloc[i,3] - count_sum
         print('group'+str(i)+'には{}台積みました'.format(count_sum))
         print('group'+str(i)+'には{}台積み込めませんでした'.format(df.iloc[i,3] - count_sum))
+        unpacked_car[i] = df.iloc[i,3] - count_sum
 
 
 last_remain_car = 0
@@ -1148,7 +1151,6 @@ def local_search(DK,Y,H,unpacked_car):
                         h_sol[vol_down] = h_sol[vol_down] - change_rate
                         h_sol[vol_up] = h_sol[vol_up] + change_rate
                         flag = 1
-                        # new_detailed_packing(DK,output=1)
                         break
                     elif y_sol[j] + h_sol[j] == y_sol[i] and x_sol[i] == x_sol[j]:
                         vol_up = i
@@ -1248,9 +1250,10 @@ def main2():
 def main3():
     global x_sol, y_sol ,w_sol, h_sol
     
-    for DK_number in range(12,13):
+    for DK_number in range(8,13):
         group_packing(12-DK_number, b=1, output=1)
         level_algorithm(DK_number)
+        print(unpacked_car)
         
 # main() # 複数デッキ #
 main2() # local-searchあり #
