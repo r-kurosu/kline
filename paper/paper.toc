@@ -4,28 +4,30 @@
 \contentsline {section}{\numberline {2.2}入力情報}{3}{}%
 \contentsline {section}{\numberline {2.3}出力}{3}{}%
 \contentsline {chapter}{\numberline {第3章}定式化}{4}{}%
-\contentsline {section}{\numberline {3.1}記号の定義}{4}{}%
-\contentsline {section}{\numberline {3.2}一般論(仮タイトル)}{4}{}%
-\contentsline {subsection}{\numberline {3.2.1}長方形詰込み問題}{4}{}%
-\contentsline {subsection}{\numberline {3.2.2}Soft-rectangleパッキング問題}{5}{}%
-\contentsline {subsection}{\numberline {3.2.3}Sequence-pair}{5}{}%
-\contentsline {subsection}{\numberline {3.2.4}No-fit polygon}{6}{}%
-\contentsline {section}{\numberline {3.3}第一段階}{6}{}%
-\contentsline {subsection}{\numberline {3.3.1}制約}{6}{}%
-\contentsline {subsection}{\numberline {3.3.2}目的関数}{7}{}%
-\contentsline {subsection}{\numberline {3.3.3}定式化}{7}{}%
-\contentsline {section}{\numberline {3.4}第二段階}{8}{}%
-\contentsline {subsection}{\numberline {3.4.1}制約}{8}{}%
-\contentsline {subsection}{\numberline {3.4.2}目的関数}{8}{}%
-\contentsline {subsection}{\numberline {3.4.3}定式化}{8}{}%
-\contentsline {chapter}{\numberline {第4章}提案手法}{9}{}%
-\contentsline {section}{\numberline {4.1}第一段階}{9}{}%
-\contentsline {section}{\numberline {4.2}第二段階}{9}{}%
-\contentsline {section}{\numberline {4.3}局所探索法}{9}{}%
-\contentsline {chapter}{\numberline {第5章}計算実験}{11}{}%
-\contentsline {section}{\numberline {5.1}計算環境}{11}{}%
-\contentsline {section}{\numberline {5.2}第一段階の求解結果}{11}{}%
-\contentsline {section}{\numberline {5.3}第二段階の求解結果}{12}{}%
-\contentsline {section}{\numberline {5.4}局所探索法による解の改善}{12}{}%
-\contentsline {chapter}{\numberline {第6章}まとめと今後の研究計画}{13}{}%
-\contentsline {chapter}{参考文献}{15}{}%
+\contentsline {section}{\numberline {3.1}長方形詰込み問題}{4}{}%
+\contentsline {section}{\numberline {3.2}記号の定義}{5}{}%
+\contentsline {section}{\numberline {3.3}準備}{6}{}%
+\contentsline {subsection}{\numberline {3.3.1}Soft-rectangleパッキング問題}{6}{}%
+\contentsline {subsection}{\numberline {3.3.2}Sequence-pair}{6}{}%
+\contentsline {subsection}{\numberline {3.3.3}No-fit polygon}{6}{}%
+\contentsline {section}{\numberline {3.4}第一段階}{7}{}%
+\contentsline {subsection}{\numberline {3.4.1}記号定義}{7}{}%
+\contentsline {subsection}{\numberline {3.4.2}制約}{7}{}%
+\contentsline {subsection}{\numberline {3.4.3}目的関数}{8}{}%
+\contentsline {subsection}{\numberline {3.4.4}定式化}{8}{}%
+\contentsline {section}{\numberline {3.5}第二段階}{9}{}%
+\contentsline {subsection}{\numberline {3.5.1}記号定義}{9}{}%
+\contentsline {subsection}{\numberline {3.5.2}制約}{9}{}%
+\contentsline {subsection}{\numberline {3.5.3}目的関数}{10}{}%
+\contentsline {subsection}{\numberline {3.5.4}定式化}{10}{}%
+\contentsline {chapter}{\numberline {第4章}提案手法}{11}{}%
+\contentsline {section}{\numberline {4.1}第一段階}{11}{}%
+\contentsline {section}{\numberline {4.2}第二段階}{11}{}%
+\contentsline {section}{\numberline {4.3}局所探索法}{11}{}%
+\contentsline {chapter}{\numberline {第5章}計算実験}{13}{}%
+\contentsline {section}{\numberline {5.1}計算環境}{13}{}%
+\contentsline {section}{\numberline {5.2}第一段階の求解結果}{13}{}%
+\contentsline {section}{\numberline {5.3}第二段階の求解結果}{14}{}%
+\contentsline {section}{\numberline {5.4}局所探索法による解の改善}{14}{}%
+\contentsline {chapter}{\numberline {第6章}まとめと今後の研究計画}{16}{}%
+\contentsline {chapter}{参考文献}{18}{}%
