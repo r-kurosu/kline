@@ -996,8 +996,9 @@ def new_detailed_packing(DK, output):
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
     df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
-    df_car = df_car.sort_values(by=['HEIGHT'], ascending=[False])
+    df_car = df_car.sort_values(by=['SEG','LP','DP','HANDLE','WIDTH','HEIGHT'], ascending=[True,True,True,False,False,False])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
+    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     
     for i in lp_order:
         print('group{}に詰め込めます'.format(i))
