@@ -1321,7 +1321,6 @@ def main3():
                 best_Y = copy.copy(y_sol)
                 best_H = copy.copy(h_sol)
                 print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
-                print(best_Y)
                 best_sol = sum(unpacked_car)
         # ---------------------------------------
         remain_car[DK_number] = 0
