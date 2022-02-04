@@ -19,6 +19,7 @@ import gurobipy as gp
 from pandas.core.indexing import _iLocIndexer
 from multiprocessing import Process, cpu_count, process
 import math
+import copy
 
 BOOKING = 1
 COLOR = 7   # 6 = LP, 7 = DP
@@ -1241,10 +1242,10 @@ def main2():
         print(unpacked_car)
         print(sum(unpacked_car))
         # local search ---------------------------------------
-        best_X = x_sol
-        best_Y = y_sol
-        best_W = w_sol
-        best_H = h_sol
+        best_X = copy.copy(x_sol)
+        best_Y = copy.copy(y_sol)
+        best_W = copy.copy(w_sol)
+        best_H = copy.copy(h_sol)
         best_sol = sum(unpacked_car)
         for times in range(10):
             if sum(unpacked_car) == 0:
@@ -1256,14 +1257,14 @@ def main2():
             print(unpacked_car)
             print(sum(unpacked_car))
             if best_sol <= sum(unpacked_car):
-                y_sol = best_Y 
-                h_sol = best_H
+                y_sol = copy.copy(best_Y)
+                h_sol = copy.copy(best_H)
                 print('ローカルサーチを終了します')
                 print('改善の回数: {}'.format(times))
                 break
             else:
-                best_Y = y_sol
-                best_H = h_sol
+                best_Y = copy.copy(y_sol)
+                best_H = copy.copy(h_sol)
                 print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
                 best_sol = sum(unpacked_car)
         # ---------------------------------------
@@ -1273,7 +1274,6 @@ def main2():
             rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
             axes[DK_number - 8].add_patch(rect)
         new_detailed_packing(DK_number, output=1)
-        # print('最終的に配置した車の総面積は{}'.format(sum_area))
         print('充填率は{:.1f} %'.format(100*sum_area/available_area))
         print(unpacked_car)
         output_func(DK_number)
@@ -1288,7 +1288,7 @@ def main3():
     global x_sol, y_sol ,w_sol, h_sol
     global unpacked_car, remain_car, sum_area
     
-    for DK_number in range(11,12):
+    for DK_number in range(8,13):
         print('*************************************************************************')
         print('今から'+str(DK_number)+'dkに詰め込みます')
         st_time = time.time()
@@ -1298,37 +1298,28 @@ def main3():
         print(unpacked_car)
         print(sum(unpacked_car))
         # local search ---------------------------------------
-        best_X = x_sol
-        best_Y = y_sol
-        best_W = w_sol
-        best_H = h_sol
+        best_X = copy.copy(x_sol)
+        best_Y = copy.copy(y_sol)
+        best_W = copy.copy(w_sol)
+        best_H = copy.copy(h_sol)
         best_sol = sum(unpacked_car)
-        print(y_sol)
         for times in range(10):
-            print('{}回目の反復です'.format(times))
-            # print(best_Y)
             if sum(unpacked_car) == 0:
                 break
-            print('ローカルサーチ前のbestY{}'.format(best_Y))
-            print('ローカルサーチ前のysol{}'.format(y_sol))
             local_search(DK_number, unpacked_car)
-            print('ローカルサーチ後のbestY{}'.format(best_Y))
-            print('ローカルサーチ後のysol{}'.format(y_sol))
             level_algorithm(DK_number, output=0)
             print('充填率は{:.1f} %'.format(100*sum_area/available_area))
             print(unpacked_car)
             print(sum(unpacked_car))
             if best_sol <= sum(unpacked_car):
-                # print('これまでのbestYは{}'.format(best_Y))
-                y_sol = best_Y 
-                h_sol = best_H
+                y_sol = copy.copy(best_Y)
+                h_sol = copy.copy(best_H)
                 print('ローカルサーチを終了します')
                 print('改善の回数: {}'.format(times))
                 break
             else:
-                best_Y = y_sol
-                best_H = h_sol
-                print('良質なbestYを記録します{}'.format(best_Y))
+                best_Y = copy.copy(y_sol)
+                best_H = copy.copy(h_sol)
                 print('local searchで更に{}台詰め込めました'.format(best_sol - sum(unpacked_car)))
                 print(best_Y)
                 best_sol = sum(unpacked_car)
