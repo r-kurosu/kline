@@ -1346,7 +1346,7 @@ def main3():
         
 
 # main() # 複数デッキ #
-# main2() # local-searchあり #
+# main2() # ボトムレフト #
 main3() # レベルアルゴリズム #
 
 
@@ -1362,7 +1362,7 @@ print('計算時間:{:.1f}s'.format(t2-t1))
 plt.axis("scaled")
 plt.tight_layout()
 # ax.set_aspect('equal')
-plt.savefig('output_data/output_b'+str(BOOKING)+'.pdf', dpi = 2000)
+plt.savefig('output_data/output_b'+str(BOOKING)+'.pdf', dpi = 5000)
 
 
 t3 = time.time()
