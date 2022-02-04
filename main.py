@@ -1239,6 +1239,8 @@ def main2():
         new_detailed_packing(DK_number, output=0)
         print('配置した車の総面積は{}'.format(sum_area))
         print('初期解の充填率は{:.1f} %'.format(100*sum_area/available_area))
+        mid_time = time.time()
+        print('初期解構築にかかった時間は{:.1f}'.format(mid_time - st_time))
         print(unpacked_car)
         print(sum(unpacked_car))
         # local search ---------------------------------------
@@ -1295,6 +1297,8 @@ def main3():
         group_packing(12-DK_number, b=1, output=1)
         level_algorithm(DK_number, output=0)
         print('初期解の充填率は{:.1f} %'.format(100*sum_area/available_area))
+        mid_time = time.time()
+        print('初期解構築にかかった時間は{:.1f}'.format(mid_time - st_time))
         print(unpacked_car)
         print(sum(unpacked_car))
         # local search ---------------------------------------
@@ -1341,8 +1345,8 @@ def main3():
         
 
 # main() # 複数デッキ #
-# main2() # local-searchあり #
-main3() # レベルアルゴリズム #
+main2() # local-searchあり #
+# main3() # レベルアルゴリズム #
 
 
 
