@@ -1099,6 +1099,7 @@ def level_algorithm(DK, output):
                             cars = patches.Rectangle(xy=(new_x+X, new_y+Y), width = car_w, height = car_h, fc = color_check(df_car.iloc[car,COLOR]), ec = 'k', linewidth = 0.2)
                             axes[DK-8].add_patch(cars)
                             axes[DK-8].text(new_x+X+0.5, new_y+Y+2, count_sum + count, fontsize = 1)
+                            axes[DK-8].text(new_x+X+car_w/2, new_y+Y + car_h/2, '↑', fontsize = 1)
                         df_obs = df_obs.append({'X':new_x+X, 'Y':new_y+Y, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
                         sum_area += car_w*car_h
                         level_x += car_w + 1
@@ -1130,6 +1131,7 @@ def level_algorithm(DK, output):
                             cars = patches.Rectangle(xy=(new_x+X, new_y+Y-car_h), width = car_w, height = car_h, fc = color_check(df_car.iloc[car,COLOR]), ec = 'k', linewidth = 0.2)
                             axes[DK-8].add_patch(cars)
                             axes[DK-8].text(new_x+X+0.5, new_y+Y-car_h+2, count_sum + count, fontsize = 1)
+                            axes[DK-8].text(new_x+X + car_w/2, new_y+Y - car_h/2, '↓', fontsize = 1)
                         df_obs = df_obs.append({'X':new_x+X, 'Y':new_y+Y-car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
                         sum_area += car_w*car_h
                         level_x_r += car_w + 1
@@ -1272,9 +1274,9 @@ def main2():
         # ---------------------------------------
         remain_car[DK_number] = 0
         df = pd.read_csv('data/car_group/seggroup'+str(DK_number)+'_'+str(BOOKING)+'.csv')
-        for i in range(len(df)):
-            rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
-            axes[DK_number - 8].add_patch(rect)
+        # for i in range(len(df)):
+        #     rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
+        #     axes[DK_number - 8].add_patch(rect)
         new_detailed_packing(DK_number, output=1)
         print('充填率は{:.1f} %'.format(100*sum_area/available_area))
         print(unpacked_car)
@@ -1294,7 +1296,7 @@ def main3():
         print('*************************************************************************')
         print('今から'+str(DK_number)+'dkに詰め込みます')
         st_time = time.time()
-        group_packing(12-DK_number, b=1, output=1)
+        group_packing(12-DK_number, b=1, output=0)
         level_algorithm(DK_number, output=0)
         print('初期解の充填率は{:.1f} %'.format(100*sum_area/available_area))
         mid_time = time.time()
@@ -1329,11 +1331,10 @@ def main3():
         # ---------------------------------------
         remain_car[DK_number] = 0
         df = pd.read_csv('data/car_group/seggroup'+str(DK_number)+'_'+str(BOOKING)+'.csv')
-        for i in range(len(df)):
-            rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
-            axes[DK_number - 8].add_patch(rect)
+        # for i in range(len(df)):
+        #     rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
+        #     axes[DK_number - 8].add_patch(rect)
         
-        print(y_sol)
         level_algorithm(DK_number, output=1)
         print(unpacked_car)
         print(sum(unpacked_car))
@@ -1345,8 +1346,8 @@ def main3():
         
 
 # main() # 複数デッキ #
-main2() # local-searchあり #
-# main3() # レベルアルゴリズム #
+# main2() # local-searchあり #
+main3() # レベルアルゴリズム #
 
 
 
