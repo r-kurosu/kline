@@ -21,6 +21,8 @@
 \contentsline {chapter}{\numberline {第4章}提案手法}{9}{}%
 \contentsline {section}{\numberline {4.1}第一段階}{9}{}%
 \contentsline {section}{\numberline {4.2}第二段階}{9}{}%
+\contentsline {subsection}{\numberline {4.2.1}bottom-left法}{9}{}%
+\contentsline {subsection}{\numberline {4.2.2}next-fit法}{9}{}%
 \contentsline {section}{\numberline {4.3}局所探索法}{10}{}%
 \contentsline {chapter}{\numberline {第5章}計算実験}{11}{}%
 \contentsline {section}{\numberline {5.1}計算環境}{11}{}%
