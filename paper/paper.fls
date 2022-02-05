@@ -332,6 +332,7 @@ INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/graphics/lscape.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/graphics/lscape.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/graphics/lscape.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/graphics/graphics.sty
+INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/here/here.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/base/latexsym.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/base/latexsym.sty
 INPUT /usr/local/texlive/2021/texmf-dist/tex/latex/base/latexsym.sty
@@ -540,9 +541,9 @@ INPUT ./sozai//5-first-no-rei.png
 INPUT ./sozai//5-second-no-rei.png
 INPUT ./sozai//5-second-no-rei.png
 INPUT ./sozai//5-second-no-rei.png
-INPUT ./sozai//5-second-no-rei.png
-INPUT ./sozai//5-second-no-rei.png
-INPUT ./sozai//5-second-no-rei.png
+INPUT ./sozai//nf-haitizu.png
+INPUT ./sozai//nf-haitizu.png
+INPUT ./sozai//nf-haitizu.png
 INPUT ./chapter7.tex
 INPUT ./chapter7.tex
 INPUT ./chapter7.tex

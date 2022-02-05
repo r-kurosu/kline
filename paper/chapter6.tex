@@ -17,14 +17,15 @@
 
 
 \section{第二段階の求解結果}
+各手法による計算結果と出力図を比較する. 
 BL法による計算結果と, 出力される配置図の例を図\ref{second-no-rei}に示す. 
 NF法による計算結果と, 出力される配置図の例を図\ref{nf-norei}に示す. 
-配置図上の各長方形が車を表し, 色は揚げ地の種類を表す. \\
+配置図上の各長方形が車を表し, 色は揚げ地の種類を表す. 
 
-\begin{table}[h]
+\begin{table}[H]
     % \tabcolsep = 10pt
         \centering
-        \caption{近傍操作による解の改善}
+        \caption{BL法による計算結果と近傍操作による解の改善}
         \label{review-local}
         \begin{tabular}{cccccccc}
         \hline
@@ -51,10 +52,9 @@ NF法による計算結果と, 出力される配置図の例を図\ref{nf-norei
         \end{tabular}
 \end{table}
 
-
-\begin{table}[b]
+\begin{table}[H]
     \centering
-    \caption{近傍操作による解の改善 (NF法)}
+    \caption{NF法による計算結果と近傍操作による解の改善}
     \label{review-local-nf}
     \begin{tabular}{cccccccc}
     \hline
@@ -81,15 +81,17 @@ NF法による計算結果と, 出力される配置図の例を図\ref{nf-norei
     \end{tabular}
 \end{table}
 
+\clearpage
 
-\begin{figure}[p]
+\begin{figure}[t]
     \includegraphics[scale=0.3, bb = 0 0 1 1]{5-second-no-rei.png}
     \caption{BL法による出力図の例}
     \label{second-no-rei}
 \end{figure}
 
-\begin{figure}[p]
-    \includegraphics[scale=0.3, bb = 0 0 1 1]{5-second-no-rei.png}
+
+\begin{figure}[b]
+    \includegraphics[scale=0.4, bb = 0 0 1 1]{nf-haitizu.png}
     \caption{NF法による出力図の例}
     \label{nf-norei}
 \end{figure}
