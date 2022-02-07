@@ -884,6 +884,7 @@ def detailed_packing(DK,output):
 def bl_packing(stock_sheet,group,DK,output,handle):
     global df_obs
     global sum_area
+    global count, count_sum
     new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y + car_h > h_sol[group]:
@@ -896,7 +897,7 @@ def bl_packing(stock_sheet,group,DK,output,handle):
         if output == 1:
             cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group]), width = car_w, height = car_h, fc = color_check(df.iloc[group,COLOR]), ec = 'k', linewidth = 0.2)
             axes[4-DK].add_patch(cars)
-            axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count, fontsize = 1)
+            axes[4-DK].text(new_x+x_sol[group]+0.5, new_y+y_sol[group]+2, count+count_sum, fontsize = 1)
             axes[4-DK].text(new_x+x_sol[group]+car_w/2, new_y+y_sol[group] + car_h/2, '↑', fontsize = 1)
         df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group], 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         sum_area += car_w*car_h
@@ -918,6 +919,7 @@ def bl_packing(stock_sheet,group,DK,output,handle):
 def tl_packing(reverse_sheet,group,DK,output,handle):
     global df_obs
     global sum_area
+    global count, count_sum
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group]) #new_x,yは左上が起点．NFPはOKだけど，書き出し時は注意
     df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y - car_h < 0 or new_y + y_sol[group] - car_h < center_line_list[12-DK]:
@@ -929,7 +931,7 @@ def tl_packing(reverse_sheet,group,DK,output,handle):
         if output == 1:
             cars = patches.Rectangle(xy=(new_x+x_sol[group], new_y+y_sol[group] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[group,COLOR]), ec = 'k', linewidth = 0.2)
             axes[4-DK].add_patch(cars)
-            axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count, fontsize = 1)
+            axes[4-DK].text(new_x+x_sol[group] + 0.5, new_y+y_sol[group] - car_h + 2, count+count_sum, fontsize = 1)
             axes[4-DK].text(new_x+x_sol[group] + car_w/2, new_y+y_sol[group] - car_h/2, '↓', fontsize = 1)
         df_obs = df_obs.append({'X':new_x+x_sol[group], 'Y':new_y+y_sol[group] - car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
         sum_area += car_w*car_h
@@ -960,7 +962,7 @@ def new_detailed_packing(DK, output):
     global center_line_list
     global stock_sheet, reverse_sheet
     global x_sol, y_sol, w_sol, h_sol
-    global count
+    global count, count_sum
     global car_w, car_h, car_amount
     global remain_car, unpacked_car
     global sum_area
@@ -1016,12 +1018,13 @@ def new_detailed_packing(DK, output):
                     if new_y + car_h > h_sol[i]:
                         break
                     count += bl_packing(stock_sheet,i,12-DK,output, car_handle)
-            df.iloc[i,3] -= count
             count_sum += count
-        remain_car[DK] += df.iloc[i,3]
+        remain_car[DK] += df.iloc[i,3] - count_sum 
         # print('packed:{}'.format(count_sum))
+        unpacked_car[i] = df.iloc[i,3] - count_sum 
+        
     print(df)
-    unpacked_car = [df.iloc[i,3] for i in range(len(df))]
+    # unpacked_car = [df.iloc[i,3] for i in range(len(df))]
     # unpacked_car = [df.iloc[i,3] for i in lp_order]
 
 # level algorithm(NF)
