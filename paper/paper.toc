@@ -7,9 +7,9 @@
 \contentsline {section}{\numberline {3.1}長方形詰込み問題}{4}{}%
 \contentsline {section}{\numberline {3.2}記号の定義}{5}{}%
 \contentsline {section}{\numberline {3.3}準備}{6}{}%
-\contentsline {subsection}{\numberline {3.3.1}Soft-rectangleパッキング問題}{6}{}%
-\contentsline {subsection}{\numberline {3.3.2}Sequence-pair}{6}{}%
-\contentsline {subsection}{\numberline {3.3.3}No-fit polygon}{6}{}%
+\contentsline {subsection}{\numberline {3.3.1}soft-rectangleパッキング問題}{6}{}%
+\contentsline {subsection}{\numberline {3.3.2}sequence-pair}{6}{}%
+\contentsline {subsection}{\numberline {3.3.3}no-fit polygon}{6}{}%
 \contentsline {section}{\numberline {3.4}第一段階}{7}{}%
 \contentsline {subsection}{\numberline {3.4.1}記号定義}{7}{}%
 \contentsline {subsection}{\numberline {3.4.2}制約}{7}{}%
