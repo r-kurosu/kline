@@ -284,7 +284,7 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 \end{eqnarray}
 
 \subsection{定式化}
-以上をまとめると以下のようになる. \\
+以上をまとめると次のようになる. \\
 \begin{center}
     \begin{align}
         & \textrm{maximize} \hspace{1.5cm}
@@ -308,7 +308,7 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 
 \section{第二段階}
 第二段階では, 第一段階で決められた領域をはみ出ることがないように, 車一台ずつの配置場所を決定する. 
-車を長方形に近似することで, 長方形詰込み問題として定式化する. 
+車をレクトリニア図形\cite{nfp2}に近似することで, レクトリニア図形の詰込み問題として定式化する. 
 このパッキングはグループごとに行う. 
 
 \subsection{記号定義}
@@ -364,7 +364,6 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
     \begin{tabular}{l}
     \hspace{1.4em}障害物の集合
     \end{tabular} \\ \hline
-        
     
     \end{tabular}
     \end{center}
@@ -379,20 +378,20 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 この点を考慮するため, 予め駐車に必要なスペースを定義する.
 プランナーへのヒアリングの結果から, 駐車にはおおよそ車体長さの半分に相当するスペースが必要で, このスペース上に障害物がなければ良いということが分かった. 
 車$i$の大きさと駐車に必要なスペースを合わせたレクトリニア図形を$f(i)$で定義する. 
-障害物の集合を$J$, 既配置の車の集合を$\overline{I}$とすると, 車$i$の配置不可能な領域はNFPの表現を用いて以下のように書くことができる.  
+障害物の集合を$J$, 既配置の車の集合を$\overline{I}$とすると, 車$i$の配置不可能な領域はNFPの表現を用いて以下のように書くことができる:  
 \begin{eqnarray}
     \label{nfp-eq1}
-    \sum_{j \in J} NFP(f(i),j) + \sum_{\overline{i} \in \overline{I}} NFP(f(i),\overline{i})
+    \sum_{j \in J} NFP(f(i),j) + \sum_{\overline{i} \in \overline{I}} NFP(f(i),\overline{i}).
 \end{eqnarray}\\
 
 \textgt{(ii)配置間隔に関する制約}\\
 配置される車の間隔は他の車両や障害物と前後方向に30 cm, 左右方向に10 cm空いている必要がある. 
 また, オペレーターの乗り降りのため, 左右の内ハンドル側に40 cm空いている必要がある. 
 先ほどの制約同様, 配置予定の車を上記の単位だけ大きくしてNFPを計算する. 
-車両$i$を上下方向に30 cmずつ, 左右方向に10 cmずつ, ハンドル側を40 cm大きくした長方形を$g(i)$とすると, 車両$i$の配置不可能な領域は以下のように表される. 
+車両$i$を上下方向に30 cmずつ, 左右方向に10 cmずつ, ハンドル側を40 cm大きくした長方形を$g(i)$とすると, 車両$i$の配置不可能な領域は以下のように表される: 
 \begin{eqnarray}
     \label{nfp-eq2}
-    \sum_{j \in J} NFP(g(i),j) + \sum_{\overline{i} \in \overline{I}} NFP(g(i),\overline{i})
+    \sum_{j \in J} NFP(g(i),j) + \sum_{\overline{i} \in \overline{I}} NFP(g(i),\overline{i}). 
 \end{eqnarray}
 
 車両$i$が配置可能な領域は, (\ref{nfp-eq1}), (\ref{nfp-eq2})以外の領域である. 
@@ -401,7 +400,7 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 第二段階では, 目的関数の設定は行わず解の構築のみを行う. 
 
 \subsection{定式化}
-まとめると, グループ$I$内の車$i$をパッキングする時の制約は, 以下のようになる. 
+まとめると, グループ$I$内の車$i$をパッキングする時の制約は, 次のようになる. 
 \begin{center}  
 \begin{align}
     & \textrm{subject\ to} \hspace{1cm}0 \leq x_i \leq W_I - w_i & (i \in I)\\
