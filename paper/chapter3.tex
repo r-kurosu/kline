@@ -4,7 +4,7 @@
 その後に, 本問題に関する独自の制約や目的関数を説明し, 定式化する. \\
 
 \section{長方形詰込み問題}
-長方形詰込み問題とは, 母材の幅$W$と高さ$H$, 長方形集合$I$に対し, 長方形$i \in I$の幅$w_i$, 高さ$h_i$が入力として与えられ, 母材からはみ出ることなくまた, どの二つの長方形も互いに重なることがないように詰め込む問題である. 
+長方形詰込み問題とは, 母材の幅$W$と高さ$H$, 長方形集合$I$に対し, 長方形$i \in I$の幅$w_i$, 高さ$h_i$が入力として与えられ, 母材からはみ出ることなくまた, どの二つの長方形も互いに重なることがないように詰め込む問題である\cite{rect-pack}. 
 長方形$i \in I$の左下の座標$(x_i, y_i)$を変数として扱う. \\
 以上の条件を定式化すると, 次のように書くことができる. \\
 \textgt{条件1: 長方形$i \in I$は母材上に配置される. }\\
@@ -94,15 +94,7 @@
     \begin{tabular}{l}
     \hspace{1.4em}詰め込む長方形の集合
     \end{tabular} \\ \hline
-    $\overline{I}$ &
-    \begin{tabular}{l}
-    \hspace{1.4em}既配置の長方形の集合\ $\overline{I} \subseteq I$
-    \end{tabular} \\ \hline
-    $J$ &
-    \begin{tabular}{l}
-    \hspace{1.4em}障害物の集合
-    \end{tabular} \\ \hline
-    
+
     
     \end{tabular}
     \end{center}
@@ -170,29 +162,29 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
     \begin{tabular}{cp{35em}} \hline
     記号 & \hspace{2.0em}記号の説明 \\ \hline
     
-    $i$ &
+    $k$ &
     \begin{tabular}{l}
-    \hspace{1.4em}グループ$i$
+    \hspace{1.4em}グループ$k$
     \end{tabular} \\ \hline
 
-    $x_i$ &
+    $x_k$ &
     \begin{tabular}{l}
-    \hspace{1.4em}グループ$i$の左下の$x$座標
+    \hspace{1.4em}グループ$k$の左下の$x$座標
     \end{tabular} \\ \hline
 
-    $y_i$ &
+    $y_k$ &
     \begin{tabular}{l}
-    \hspace{1.4em}グループ$i$の左下の$y$座標
+    \hspace{1.4em}グループ$k$の左下の$y$座標
     \end{tabular} \\ \hline
     
-    $w_i$ &
+    $w_k$ &
     \begin{tabular}{l}
-    \hspace{1.4em}グループ$i$の幅
+    \hspace{1.4em}グループ$k$の幅
     \end{tabular} \\ \hline
 
-    $h_i$ &
+    $h_k$ &
     \begin{tabular}{l}
-    \hspace{1.4em}グループ$i$の高さ
+    \hspace{1.4em}グループ$k$の高さ
     \end{tabular} \\ \hline
 
     $a$ &
@@ -210,26 +202,21 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
     \hspace{1.4em}セグメントの高さ
     \end{tabular} \\ \hline
 
-    $S_i$ &
+    $S_k$ &
     \begin{tabular}{l}
-    \hspace{1.4em}グループ$i$の面積
+    \hspace{1.4em}グループ$k$の面積
     \end{tabular} \\ \hline
 
-    $I$ &
+    $G$ &
     \begin{tabular}{l}
     \hspace{1.4em}同じセグメントに詰め込むグループの集合
     \end{tabular} \\ \hline
-
-    $w^i_{j}$ &
-    \begin{tabular}{l}
-    \hspace{1.4em}グループ$i$に詰め込む車$j$の幅
-    \end{tabular} \\ \hline
-
-    $h^i_{j}$ &
-    \begin{tabular}{l}
-    \hspace{1.4em}グループ$i$に詰め込む車$j$の長さ
-    \end{tabular} \\ \hline
     
+    $C_k$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$k$に詰め込む車の集合
+    \end{tabular} \\ \hline
+
     \end{tabular}
     \end{center}
 \end{table}
@@ -244,12 +231,12 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 積み地が同じグループが存在した場合, 揚げ地の降順に従う. 
 同様に, 揚げ地の昇順に並べた順列を$\sigma^-$とする. 
 揚げ地が同じグループが存在する場合, 積み地の降順に従う. \\
-グループの集合を$I$とし, グループ$i,j \in I$に関して, 順序対$(\sigma^+,\sigma^-)$における$i,j$の順序関係をもとに, 以下のどちらかの制約を追加する: \\
+グループの集合を$G$とし, グループ$k,l \in I$に関して, 順序対$(\sigma^+,\sigma^-)$における$i,j$の順序関係をもとに, 以下のどちらかの制約を追加する: \\
 \begin{eqnarray}
     \left\{
         \begin{array}{ll}
-            x_i + w_i \leq x_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,i,\ldots,j,\ldots) \\
-            y_i + h_i \leq y_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,j,\ldots,i,\ldots) \\
+            x_k + w_k \leq x_l & \sigma^+(\ldots,k,\ldots,l,\ldots) \cap \sigma^-(\ldots,k,\ldots,l,\ldots) \\
+            y_k + h_k \leq y_l & \sigma^+(\ldots,k,\ldots,l,\ldots) \cap \sigma^-(\ldots,k,\ldots,l,\ldots) \\
         \end{array}
     \right.
 \end{eqnarray}\\
@@ -257,21 +244,21 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 
 \textgt{(ii)各グループの面積に関する制約}\\
 \ 次の段階で各グループの車を詰め込むためには, グループの面積はグループ内に属する車の総面積よりも大きくなければいけない. 
-以上の制約は, グループの集合を$I$とし, グループ$i \in I$の車の総面積を$S_i$とすると, 以下のように書ける: \\
+以上の制約は, グループの集合を$G$とし, グループ$k \in G$の車の総面積を$S_k$とすると, 以下のように書ける: \\
 \begin{eqnarray}
-    w_i*h_i \geq S_i , 
+    w_k*h_k \geq S_k , 
 \end{eqnarray}
 一つのグループの領域が大きくなりすぎると, デッドスペースが生まれたり, 他のグループの領域で詰め込めない車が出てしまう可能性があるので, パラメータ変数$a\ (a \geq 1)$を用意して, 以下のように上から抑える:  
 \begin{eqnarray}
-    w_i*h_i \leq a*S_i.
+    w_k*h_k \leq a*S_k.
     \label{a_const}
 \end{eqnarray}\\
 
 \textgt{(iii)各グループの幅と高さに関する制約}\\
-\ 各グループ$i \in I$の幅と高さは, グループ内に属する全ての車$j \in i$の幅と長さをもとに以下の制約を設定する: \\
+\ 各グループ$k \in G$の幅と高さは, グループ内に属する車$i \in C_k$の幅と長さをもとに以下の制約を設定する: \\
 \begin{eqnarray}
-    w_i \geq w^i_j \ (j \in i), \\
-    h_i \geq h^i_j \ (j \in i). 
+    w_k \geq w_i \ (\forall i \in C_k), \\
+    h_k \geq h_i \ (\forall i \in C_k). 
 \end{eqnarray}
 
 
@@ -280,7 +267,7 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 また1つのグループが大きくなりすぎると, デッドスペースが生まれたり, 他のグループの領域で詰め込めない車が出てしまう可能性があるので, バランス良く大きくすることを目指す. 
 面積制約\ref{a_const}で用いたパラメータ変数$a$を用いて, 以下のように書くことができる: \\
 \begin{eqnarray}
-    \mathrm{maximize}\ \sum_{i \in I} w_i*h_i  - a. 
+    \mathrm{maximize}\ \sum_{k \in G} w_k*h_k  - a. 
 \end{eqnarray}
 
 \subsection{定式化}
@@ -288,19 +275,19 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 \begin{center}
     \begin{align}
         & \textrm{maximize} \hspace{1.5cm}
-        \sum_{i \in I} w_i*h_i - a \\
+        \sum_{k \in G} w_k*h_k - a \\
         & \textrm{subject\ to} \hspace{1.5cm}
-        0 \leq x_i \leq W - w_i & (i \in I) \\
-        &\hspace{3cm} 0 \leq y_i \leq H - y_i & (i \in I) \\
-        &\hspace{3cm} w_i \geq w^i_j & (i \in I,\ j \in i) \\
-        &\hspace{3cm} h_i \geq h^i_j & (i \in I,\ j \in i) \\
-        &\hspace{2.8cm} S_i \leq w_i*h_i \leq a*S_i &(i \in I)
+        0 \leq x_k \leq W - w_k & (k \in G) \\
+        &\hspace{3cm} 0 \leq y_k \leq H - y_k & (k \in G) \\
+        &\hspace{3cm} w_k \geq w_i & (\forall i \in C_k, \ k \in G) \\
+        &\hspace{3cm} h_k \geq h_i & (\forall i \in C_k, \ k \in G) \\
+        &\hspace{2.8cm} S_k \leq w_k*h_k \leq a*S_k &(k \in G)
     \end{align}
     \begin{eqnarray}
         \hspace{2cm} \left\{
             \begin{array}{ll}
-                x_i + w_i \leq x_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,i,\ldots,j,\ldots) \\
-                y_i + h_i \leq y_j & \sigma^+(\ldots,i,\ldots,j,\ldots) \cap \sigma^-(\ldots,j,\ldots,i,\ldots) \\
+                x_k + w_k \leq x_l & \sigma^+(\ldots,k,\ldots,l,\ldots) \cap \sigma^-(\ldots,k,\ldots,l,\ldots) \\
+                y_k + h_k \leq y_l & \sigma^+(\ldots,k,\ldots,l,\ldots) \cap \sigma^-(\ldots,l,\ldots,k,\ldots) \\
             \end{array}
         \hspace{2cm} \right.
     \end{eqnarray}
@@ -342,22 +329,27 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 
     $h_i$ &
     \begin{tabular}{l}
-    \hspace{1.4em}車$i$の高さ
+    \hspace{1.4em}車$i$の長さ
     \end{tabular} \\ \hline
     
-    $W_I$ &
+    $w_k$ &
     \begin{tabular}{l}
-    \hspace{1.4em}グループ$I$の横幅
+    \hspace{1.4em}グループ$k$の横幅
     \end{tabular} \\ \hline
 
-    $H_I$ &
+    $h_k$ &
     \begin{tabular}{l}
-    \hspace{1.4em}グループ$I$の高さ
+    \hspace{1.4em}グループ$k$の高さ
+    \end{tabular} \\ \hline
+
+    $I$ &
+    \begin{tabular}{l}
+    \hspace{1.4em}グループ$k$に詰め込む車の集合
     \end{tabular} \\ \hline
 
     $\overline{I}$ &
     \begin{tabular}{l}
-    \hspace{1.4em}グループ$I$内の既配置の車の集合, $\overline{I} \subseteq I$
+    \hspace{1.4em}グループ$k$内の既配置の車の集合, $\overline{I} \subseteq I$
     \end{tabular} \\ \hline
 
     $J$ &
@@ -400,11 +392,11 @@ no-fit polygon (NFP)とは, 平面上で多角形の重なりを判定する方�
 第二段階では, 目的関数の設定は行わず解の構築のみを行う. 
 
 \subsection{定式化}
-まとめると, グループ$I$内の車$i$をパッキングする時の制約は, 次のようになる. 
+まとめると, グループ$k$内の車$i \in I$をパッキングする時の制約は, 次のようになる. 
 \begin{center}  
 \begin{align}
-    & \textrm{subject\ to} \hspace{1cm}0 \leq x_i \leq W_I - w_i & (i \in I)\\
-    & \hspace{2.6cm} 0 \leq y_i \leq H_I - h_i & (i \in I)\\
+    & \textrm{subject\ to} \hspace{1cm}0 \leq x_i \leq w_k - w_i & (i \in I)\\
+    & \hspace{2.6cm} 0 \leq y_i \leq h_k - h_i & (i \in I)\\
     & \hspace{2.6cm} x_i + w_i \leq x_j \hspace{0.3cm}or\hspace{0.3cm} x_j + w_j \leq x_i \hspace{0.3cm}or \nonumber \\
     & \hspace{2.6cm} y_i + h_i \leq y_j \hspace{0.3cm}or\hspace{0.3cm} y_j + h_j \leq y_i &(i,j \in I)\\
     & \hspace{2cm} (x_i, y_i) \neq \sum_{j \in J} NFP(f(i)+g(i),j) + \sum_{\overline{i} \in \overline{I}}NFP(f(i)+g(i),\overline{i}) & (i \in I)
