@@ -338,13 +338,13 @@ def check_overlap(new_x, new_y, car_w, car_h):
         for l in range(ship_w - new_x):
             if reverse_sheet[new_x + l] <= new_y + car_h: 
                 print('これ以上詰めません!')
-                print('{}台詰めませんでした．．．'.format(car_amount - count - tuduki))
+                print('{}台詰めませんでした...'.format(car_amount - count - tuduki))
                 return False
     else:
         for l in range(car_w):
             if reverse_sheet[new_x + l] <= new_y + car_h: 
                 print('これ以上詰めません!')
-                print('{}台詰めませんでした．．．'.format(car_amount - count - tuduki))
+                print('{}台詰めませんでした...'.format(car_amount - count - tuduki))
                 return False
     return True
 
@@ -701,184 +701,6 @@ def group_packing(DK,b,output):
                 print('model2.status = {}'.format(model2.Status))
                 remain_car[DK] = 10000
 
-
-# second packing -- 
-def detailed_packing(DK,output):
-    if output == 1:
-        print("{}dkに車を詰め込みます".format(12-DK))
-    global new_x, new_y
-    global df_obs, obs
-    global nfp, nfp_p
-    global enter_line
-    global stock_sheet, reverse_sheet
-    global x_sol, y_sol, w_sol, h_sol
-    global remain_car
-    
-    df, df_ship, df_ramp, df_obs, df_aisle = datainput(12 - DK)
-    n = len(df)
-    remain_car[DK] = 0
-    center_line_list = [0,1,2,3,4,5,6,7,1000,1050,1300,1000,600]
-    
-    if output == 1:
-        for i in range(len(df_ramp)):
-            ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
-            axes[4-DK].add_patch(ramp)
-
-    # 障害物情報
-    obs = []
-    for i in range(len(df_obs)):
-        class_obs = Obstacle(df_obs.iloc[i, 0], df_obs.iloc[i, 1], df_obs.iloc[i,2], df_obs.iloc[i,3])
-        obs.append(class_obs)
-    if output == 1:
-        for i in range(len(obs)):
-            obstacle = patches.Rectangle(xy=(obs[i].x, obs[i].y), width = obs[i].w, height = obs[i].h, fc = 'k')
-            axes[4-DK].add_patch(obstacle)
-
-    df_lp = df.sort_values(by=['SEG','LP','DP'], ascending = [True, True, False])
-    lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
-    # print(lp_order)
-    # main packing
-    df_car = pd.read_csv('data/detailed_data/car'+str(12-DK)+'_'+str(BOOKING)+'.csv')
-    seg1 = df_car['SEG'] == 1
-    seg2 = df_car['SEG'] == 2
-    df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
-    
-    # for i in range(n):
-    for i in lp_order:
-        stock_sheet = [0]*w_sol[i]
-        reverse_sheet = [h_sol[i]]*w_sol[i]
-        lp = df.iloc[i,6]
-        dp = df.iloc[i,7]
-        mindp, maxlp = aisle_check_seg(12-DK, df.iloc[i,4])
-
-        df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
-        for car in range(seg1.sum()):
-            car_w = df_car.iloc[car,1]
-            car_h = df_car.iloc[car,2]
-            car_amount = df_car.iloc[car,3]
-            car_seg = df_car.iloc[car,4]
-            car_lp = df_car.iloc[car,6]
-            car_dp = df_car.iloc[car,7]
-            count = 0
-            if car_seg != df.at[i,'SEG'] or car_lp != lp or car_dp != dp:
-                continue
-            nfp = []
-            nfp_p = []
-            for j in range(len(df_obs)):
-                nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
-                nfp.append(nfp_obs)
-                nfpp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
-                nfp_p.append(nfpp_obs)
-            
-            if  car_seg == 1:
-                while car_amount != count:
-                    new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[i])
-                    if new_y + car_h > h_sol[i]:
-                        remain_car[DK] += car_amount - count
-                        break
-                    # DP,LPによる通路制約を確認
-                    if car_dp > mindp or car_lp < maxlp:
-                        flag = 1
-                        for l in range(len(df_aisle)):
-                            if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] - car_h < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3]):
-                                stock_sheet[new_x] += 1
-                                flag = 0
-                                break
-                        if flag == 0:
-                            continue
-                    if gap >= car_w and (calc_nfp(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
-                        for j in range(car_w):
-                            stock_sheet[new_x + j] += car_h
-                        if output == 1:
-                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i]), width = car_w, height = car_h, fc = color_check(df.iloc[i,COLOR]), ec = 'k', linewidth = 0.2)
-                            axes[4-DK].add_patch(cars)
-                            axes[4-DK].text(new_x+x_sol[i]+0.5, new_y+y_sol[i]+2, count, fontsize = 1)
-                            axes[4-DK].text(new_x+x_sol[i]+car_w/2, new_y+y_sol[i] + car_h/2, '↑', fontsize = 1)
-                            df_obs = df_obs.append({'X':new_x+x_sol[i], 'Y':new_y+y_sol[i], 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
-                        count += 1
-
-                    elif gap >= car_w and calc_nfp(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == False:
-                        stock_sheet[new_x] += 1
-                    else:
-                        if new_x == 0:
-                            tonari = stock_sheet[gap]
-                        elif new_x + gap == w_sol[i]:
-                            tonari = stock_sheet[new_x - 1]
-                        else:
-                            tonari = min(stock_sheet[new_x - 1], stock_sheet[new_x + gap ])
-                        for j in range(gap):
-                            stock_sheet[new_x + j] = tonari
-
-                df.iloc[i,3] -= count
-
-        df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[False,True,False,False])
-        for car in range(seg2.sum()):
-            car_w = df_car.iloc[car,1]
-            car_h = df_car.iloc[car,2]
-            car_amount = df_car.iloc[car,3]
-            car_seg = df_car.iloc[car,4]
-            car_lp = df_car.iloc[car,6]
-            car_dp = df_car.iloc[car,7]
-            count = 0
-            if car_seg != df.at[i,'SEG'] or car_lp != lp or car_dp != dp:
-                continue
-            nfp = []
-            nfp_p = []
-            for j in range(len(df_obs)):
-                nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
-                nfp.append(nfp_obs)
-                nfpp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
-                nfp_p.append(nfpp_obs)
-                
-            if car_seg == 2:
-                while car_amount != count:
-                    new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[i])
-                    if new_y - car_h < 0:
-                        remain_car[DK] += car_amount - count
-                        break
-                    # DP,LPによる通路制約を確認
-                    if car_dp > mindp or car_lp < maxlp:
-                        flag = 1
-                        for l in range(len(df_aisle)):
-                            if (df_aisle.iloc[l,0] - car_w < new_x < df_aisle.iloc[l,0] + df_aisle.iloc[l,2]) and (df_aisle.iloc[l,1] < new_y < df_aisle.iloc[l,1] + df_aisle.iloc[l,3] + car_h):
-                                reverse_sheet[new_x] -= 1
-                                flag = 0
-                                break
-                        if flag == 0:
-                            continue
-                    if gap >= car_w and (calc_nfp_reverse(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == True):
-                        for j in range(car_w):
-                            reverse_sheet[new_x + j] -= car_h
-                        if output == 1:    
-                            cars = patches.Rectangle(xy=(new_x+x_sol[i], new_y+y_sol[i] - car_h), width = car_w, height = car_h, fc = color_check(df.iloc[i,COLOR]), ec = 'k', linewidth = 0.2)
-                            axes[4-DK].add_patch(cars)
-                            axes[4-DK].text(new_x+x_sol[i] + 0.5, new_y+y_sol[i] - car_h + 2, count, fontsize = 1)
-                            axes[4-DK].text(new_x+x_sol[i] + car_w/2, new_y+y_sol[i] - car_h/2, '↓', fontsize = 1)
-                            df_obs = df_obs.append({'X':new_x+x_sol[i], 'Y':new_y+y_sol[i] - car_h, 'WIDTH':car_w, 'HEIGHT':car_h}, ignore_index = True)
-                        count += 1
-                    elif gap >= car_w and (calc_nfp_reverse(new_x+x_sol[i], new_y+y_sol[i], car_w, car_h) == False):
-                        reverse_sheet[new_x] -= 1
-                    else:
-                        if new_x == 0:
-                            tonari = reverse_sheet[gap]
-                        elif new_x + gap == w_sol[i]:
-                            tonari = reverse_sheet[new_x - 1]
-                        else:
-                            tonari = max(reverse_sheet[new_x - 1], reverse_sheet[new_x + gap])
-                        for j in range(gap):
-                            reverse_sheet[new_x + j] = tonari
-                    
-                df.iloc[i,3] -= count
-                
-        # remain_car[DK] += car_amount - count
-    if output == 1:
-        for i in range(len(df_ramp)):
-                ramp = patches.Rectangle(xy=(df_ramp.at[i,'X'], df_ramp.at[i,'Y']), width = df_ramp.at[i,'WIDTH'], height = df_ramp.at[i,'HEIGHT'], fc = 'silver', ec = 'k', linewidth = 0.2)
-                axes[4-DK].add_patch(ramp)
-    # make_arrow(DK) 
-    if output == 1:
-        print(df)
-
 def bl_packing(stock_sheet,group,DK,output,handle):
     global df_obs
     global sum_area
@@ -1212,24 +1034,6 @@ def calc_parcent():
         print(str(DK)+'dkの配置可能面積は{}'.format(available_area))
 calc_parcent()
 
-def main1():
-    for DK_number in range(8,13):
-        st_time = time.time()
-        group_packing(12-DK_number,1,output=0)
-        new_detailed_packing(DK_number, output=0)
-        print(unpacked_car)
-        print(sum(unpacked_car))
-        local_search(DK_number, unpacked_car)
-        new_detailed_packing(DK_number, output=1)
-        print(unpacked_car)
-        print(sum(unpacked_car))
-        print('local searchで更に{}台詰め込めました'.format(last_remain_car - remain_car[DK_number]))
-        output_func(DK_number)
-        make_arrow(12-DK_number)
-        print(remain_car)
-        ed_time = time.time()
-        print('このデッキには{:.1f}sかかりました'.format(ed_time - st_time))
-
 def main2():
     global x_sol, y_sol, w_sol, h_sol
     global sum_area, available_area, unpacked_car, remain_car
@@ -1344,9 +1148,6 @@ def main3():
         make_arrow(12-DK_number)
         ed_time = time.time()
         print('このデッキには{:.1f}sかかりました'.format(ed_time - st_time))
-        
-
-# main() # 複数デッキ #
 # main2() # ボトムレフト #
 main3() # レベルアルゴリズム #
 
