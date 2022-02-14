@@ -7,8 +7,8 @@ df_input = [0]*13
 df_output =[0]*13
 for booking in range(1,2):
     for i in range(1,13):
-        df_input[i] = pd.read_csv("data/new_car/carinfo_"+str(i)+"_"+str(booking)+".csv")
-        df_output[i] = pd.read_csv("data/new_car/template.csv")
+        df_input[i] = pd.read_csv("data/old_car_data/carinfo_"+str(i)+"_"+str(booking)+".csv")
+        df_output[i] = pd.read_csv("data/old_car_data/template.csv")
 
         count = 0
         for j in range(len(df_input[i])):
@@ -26,4 +26,4 @@ for booking in range(1,2):
             # 出力
             df_output[i] = df_output[i].append({'ID':j,'HOLD':hold,'SEG':seg,'HEIGHT':height,'WIDTH':width,'AMOUNT':df.at[j,'AMOUNT'],'LP':df.at[j,'LP'],'DP':df.at[j,'DP']}, ignore_index = True)
 
-        df_output[i].to_csv('data/new_data/car'+str(i)+'_'+str(booking)+'.csv', index = False)
+        df_output[i].to_csv('data/detailed_data/car'+str(i)+'_'+str(booking)+'.csv', index = False)

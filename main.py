@@ -21,6 +21,8 @@ from multiprocessing import Process, cpu_count, process
 import math
 import copy
 
+
+# ブッキングプランと出力時の色付けを指定
 BOOKING = 1
 COLOR = 7   # 6 = LP, 7 = DP
 
@@ -30,8 +32,7 @@ t1 = time.time()
 
 df_list = [0]*5
 for i in range(5):
-    df_list[i] = pd.read_csv('data/car_group/seggroup'+str(12-i)+'_'+str(BOOKING)+'.csv')
-
+    df_list[i] = pd.read_csv('data/car_data/seggroup'+str(12-i)+'_'+str(BOOKING)+'.csv')
 
 seg_dp12 = [0,0,0]
 seg_dp11 = [0,0,0]
@@ -95,7 +96,6 @@ def make_segtree():
 
 make_segtree()
 
-
 # input data
 df_car = [0]*13
 df_ship_ = [0]*13
@@ -104,16 +104,14 @@ df_obs_ = [0]*13
 df_aisle_ = [0]*13
 def datainput(DK):
     for i in range(8,13):
-        # df_car[i] = pd.read_csv("data/car_"+str(i)+"dk_'+str(BOOKING)+'.csv")
-        # df_car[i] = pd.read_csv("data/car_group/cargroup"+str(i)+"'+str(BOOKING)+'.csv")
-        df_car[i] = pd.read_csv("data/car_group/seggroup"+str(i)+'_'+str(BOOKING)+'.csv')
+        df_car[i] = pd.read_csv("data/car_data/seggroup"+str(i)+'_'+str(BOOKING)+'.csv')
         df_ship_[i] = pd.read_csv("data/ship_data/ship_"+str(i)+"dk.csv")
         df_ramp_[i] = pd.read_csv("data/ramp_data/ramp_"+str(i)+"dk.csv")
         df_obs_[i] = pd.read_csv("data/obs_data/obs_"+str(i)+"dk.csv")
         df_aisle_[i] = pd.read_csv("data/aisle_data/aisle_"+str(i)+"dk.csv")
     return df_car[DK], df_ship_[DK], df_ramp_[DK], df_obs_[DK], df_aisle_[DK]
 
-# ここで使用するデッキを選択
+# 仮のデッキを選択
 df, df_ship, df_ramp, df_obs, df_aisle = datainput(12)
 
 car_w = 0 
@@ -136,7 +134,7 @@ reverse_sheet = [ship_h] * ship_w
 # ランプ情報
 enter_line = df_ramp.iloc[0,1]
 
-# # 障害物を定義
+# 障害物を定義
 class Obstacle():
     def __init__(self, x, y, w, h):
         self.x = x
@@ -546,7 +544,7 @@ def group_packing(DK,b,output):
     area = [df.iloc[i,1]*df.iloc[i,2]*df.iloc[i,3] for i in range(n)]
     unpacked_car = [0]*n
     
-    df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_'+str(BOOKING)+'.csv')
+    df_car = pd.read_csv('data/detailed_data/car'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     max_height = [0]*n
     max_width = [0]*n
     for i in range(n):
@@ -740,7 +738,7 @@ def detailed_packing(DK,output):
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
     # print(lp_order)
     # main packing
-    df_car = pd.read_csv('data/new_data/car'+str(12-DK)+'_'+str(BOOKING)+'.csv')
+    df_car = pd.read_csv('data/detailed_data/car'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     seg1 = df_car['SEG'] == 1
     seg2 = df_car['SEG'] == 2
     df_car = df_car.sort_values(by=['SEG','LP','DP','HEIGHT'], ascending=[True,True,False,False])
@@ -886,7 +884,7 @@ def bl_packing(stock_sheet,group,DK,output,handle):
     global sum_area
     global count, count_sum
     new_x, new_y, gap = find_lowest_gap(stock_sheet, w_sol[group])
-    df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
+    df = pd.read_csv('data/car_data/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y + car_h > h_sol[group]:
         print('over')
         return 0
@@ -921,7 +919,7 @@ def tl_packing(reverse_sheet,group,DK,output,handle):
     global sum_area
     global count, count_sum
     new_x, new_y, gap = find_highest_gap(reverse_sheet, w_sol[group]) #new_x,yは左上が起点．NFPはOKだけど，書き出し時は注意
-    df = pd.read_csv('data/car_group/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
+    df = pd.read_csv('data/car_data/seggroup'+str(12-DK)+'_'+str(BOOKING)+'.csv')
     if new_y - car_h < 0 or new_y + y_sol[group] - car_h < center_line_list[12-DK]:
         return 0
     # DP,LPによる通路制約は省略
@@ -981,10 +979,10 @@ def new_detailed_packing(DK, output):
     df_lp = df.sort_values(by=['LP','DP'], ascending = [True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
 
-    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
+    df_car = pd.read_csv('data/detailed_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     df_car = df_car.sort_values(by=['SEG','LP','DP','HANDLE','WIDTH','HEIGHT'], ascending=[True,True,True,False,False,False])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
-    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
+    df_car = pd.read_csv('data/detailed_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     
     for i in lp_order:
         print('group{}に詰め込めます'.format(i))
@@ -1046,10 +1044,10 @@ def level_algorithm(DK, output):
     df_lp = df.sort_values(by=['LP','DP'], ascending = [True, False])
     lp_order = [df_lp.iloc[i,0] for i in range(len(df_lp))]
     
-    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
+    df_car = pd.read_csv('data/detailed_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     df_car = df_car.sort_values(by = ['HANDLE','HEIGHT'], ascending = [False, False])
     car_order = [df_car.iloc[i,0] for i in range(len(df_car))]
-    df_car = pd.read_csv('data/new_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
+    df_car = pd.read_csv('data/detailed_data/car'+str(DK)+'_'+str(BOOKING)+'.csv')
     
     car_x = []
     car_y = []
@@ -1276,7 +1274,7 @@ def main2():
                 best_sol = sum(unpacked_car)
         # ---------------------------------------
         remain_car[DK_number] = 0
-        df = pd.read_csv('data/car_group/seggroup'+str(DK_number)+'_'+str(BOOKING)+'.csv')
+        df = pd.read_csv('data/car_data/seggroup'+str(DK_number)+'_'+str(BOOKING)+'.csv')
         # for i in range(len(df)):
         #     rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
         #     axes[DK_number - 8].add_patch(rect)
@@ -1333,7 +1331,7 @@ def main3():
                 best_sol = sum(unpacked_car)
         # ---------------------------------------
         remain_car[DK_number] = 0
-        df = pd.read_csv('data/car_group/seggroup'+str(DK_number)+'_'+str(BOOKING)+'.csv')
+        df = pd.read_csv('data/car_data/seggroup'+str(DK_number)+'_'+str(BOOKING)+'.csv')
         # for i in range(len(df)):
         #     rect = patches.Rectangle(xy=(best_X[i], best_Y[i]), width = best_W[i], height = best_H[i], ec = 'k', fill = False)
         #     axes[DK_number - 8].add_patch(rect)
