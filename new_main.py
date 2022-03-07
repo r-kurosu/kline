@@ -216,6 +216,7 @@ def calc_nfp_reverse(x, y, car_w, car_h, handle):   #左上が起点
     return False
 
 def calc_pnfp(x, y, car_w, car_h):  #左下が起点の縦列駐車
+    # TODO fix nfp for rectrlinear
     if x < 0 or x > ship_w - car_h or y < 0 or y > ship_h - car_w:
         return False
     p = True
@@ -235,6 +236,7 @@ def calc_pnfp(x, y, car_w, car_h):  #左下が起点の縦列駐車
     return False
 
 def calc_pnfp_reverse(x, y, car_w, car_h):   #左上が起点に縦列駐車
+    # TODO fix nfp for rectrlinear
     if x < 0 or x > ship_w - car_h or y < car_w or y > ship_h:
         return False
     p = True
@@ -777,14 +779,31 @@ def level_algorithm(DK, output):
             car_handle = df_car.iloc[car,8]
             count = 0
             nfp = []
-            for j in range(len(df_obs)):
-                nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
-                nfp.append(nfp_obs)
+            # for j in range(len(df_obs)):
+            #     nfp_obs = NFP(df_obs.at[j,'X'], df_obs.at[j,'Y'], df_obs.at[j,'WIDTH'], df_obs.at[j,'HEIGHT'], car_w, car_h)
+            #     nfp.append(nfp_obs)
                 
             while car_amount > count:                
                 new_x = level_x
                 new_y = level_y
                 if new_y + car_h > group_h: #レベル作成不可
+                    # TODO 縦列駐車を考える
+                    if new_y + car_w > group_h:
+                        break
+                    if calc_pnfp(new_x+X, new_y+Y, car_w, car_h):
+                        car_x.append(new_x+X) #配置処理
+                        car_y.append(new_y+Y)
+                        if output == 1:
+                            cars = patches.Rectangle(xy=(new_x+X, new_y+Y), width = car_h, height = car_w, fc = color_check(df_car.iloc[car,COLOR]), ec = 'k', linewidth = 0.2)
+                            axes[DK-8].add_patch(cars)
+                            axes[DK-8].text(new_x+X+0.5, new_y+Y+2, count_sum + count, fontsize = 1)
+                            axes[DK-8].text(new_x+X+car_w/2, new_y+Y + car_h/2, '-', fontsize = 1)
+                        df_obs = df_obs.append({'X':new_x+X, 'Y':new_y+Y, 'WIDTH':car_h, 'HEIGHT':car_w}, ignore_index = True)
+                        level_x += car_h + 3
+                        if first_flag == 0:
+                            next_level = new_y + car_w + 3
+                        first_flag = 1
+                        # count += 1
                     break
                 if new_y + car_h + Y <= center_line_list[DK] and temp_flag == 0:
                     if new_x + car_w < group_w:
@@ -805,7 +824,7 @@ def level_algorithm(DK, output):
                         if first_flag == 0:
                             next_level = new_y + car_h + 3
                         first_flag = 1
-                        count += 1
+                        # count += 1
                     else:
                         # print('新しいレベルを作ります{}'.format(next_level))
                         if first_flag == 0:
@@ -837,7 +856,7 @@ def level_algorithm(DK, output):
                         if first_flag_r == 0:
                             next_level_r = new_y - car_h - 3
                         first_flag_r = 1
-                        count += 1
+                        # count += 1
                     else:
                         # print('新しいレベルを作成')
                         if first_flag_r == 0:
